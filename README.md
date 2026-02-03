@@ -1,2 +1,3 @@
 # HotSwapKernel
-Self-bootstrapping hyper modular kernel
+
+A hyper modular kernel which can simply change its internals at runtime!

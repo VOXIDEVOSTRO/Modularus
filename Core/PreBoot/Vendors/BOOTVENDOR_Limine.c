@@ -30,37 +30,37 @@
     {
         .id = LIMINE_MODULE_REQUEST, .revision = LimineRevision
     };
-#endif
 
-/*Request*/
-void* Limine_REQUEST(REQUEST_TYPE Type, SYSTEM_ERROR* Error)
-{
-    switch (Type)
+    /*Request*/
+    void* Limine_REQUEST(REQUEST_TYPE Type, SYSTEM_ERROR* Error)
     {
-        case RequestHHDM:
+        switch (Type)
         {
-            return (void*)&ReqHHDM;
-        }
-        case RequestMEMORYMAP:
-        {
-            return (void*)&ReqMEMORYMAP;
-        }
-        case RequestFRAMEBUFFER:
-        {
-            return (void*)&ReqFRAMEBUFFER;
-        }
-        case RequestSMP:
-        {
-            return (void*)&ReqSMP;
-        }
-        case RequestMODULE:
-        {
-            return (void*)&ReqMODULE;
-        }
-        default:
-        {
-            ErrorOut(Error, -BadRequest, FUNC_Limine_REQUEST);
-            return Error2Pointer(-BadRequest);
+            case RequestHHDM:
+            {
+                return (void*)&ReqHHDM;
+            }
+            case RequestMEMORYMAP:
+            {
+                return (void*)&ReqMEMORYMAP;
+            }
+            case RequestFRAMEBUFFER:
+            {
+                return (void*)&ReqFRAMEBUFFER;
+            }
+            case RequestSMP:
+            {
+                return (void*)&ReqSMP;
+            }
+            case RequestMODULE:
+            {
+                return (void*)&ReqMODULE;
+            }
+            default:
+            {
+                ErrorOut(Error, -BadRequest, FUNC_Limine_REQUEST);
+                return Error2Pointer(-BadRequest);
+            }
         }
     }
-}
+#endif

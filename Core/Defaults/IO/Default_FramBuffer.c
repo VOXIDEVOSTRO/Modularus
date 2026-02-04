@@ -13,22 +13,24 @@ static int Default_FrameBufferInit(SYSTEM_ERROR* Error)
         return Pointer2Error(Request.Pointer);
     }
     
-    struct limine_framebuffer_response* Response = ((struct limine_framebuffer_request*)Request.Pointer)->response;
+    #ifdef BOOTVENDOR_Limine
+        struct limine_framebuffer_response* Response = ((struct limine_framebuffer_request*)Request.Pointer)->response;
     
-    if(!Response || Response->framebuffer_count == 0)
-    {
-        ErrorOut(Error, -NotFound, General);
-        return -NotFound;
-    }
-    
-    DefaultFrameBufferRequest = Response->framebuffers[0];
-    
-    DefaultFrameBuffer.Information.Address = DefaultFrameBufferRequest->address;
-    DefaultFrameBuffer.Information.Width   = DefaultFrameBufferRequest->width;
-    DefaultFrameBuffer.Information.Height  = DefaultFrameBufferRequest->height;
-    DefaultFrameBuffer.Information.Pitch   = DefaultFrameBufferRequest->pitch;
-    DefaultFrameBuffer.Information.BPP     = DefaultFrameBufferRequest->bpp;
-    DefaultFrameBuffer.Information.Format  = PixelFormat_RGB;
+        if(!Response || Response->framebuffer_count == 0)
+        {
+            ErrorOut(Error, -NotFound, General);
+            return -NotFound;
+        }
+
+        DefaultFrameBufferRequest = Response->framebuffers[0];
+
+        DefaultFrameBuffer.Information.Address = DefaultFrameBufferRequest->address;
+        DefaultFrameBuffer.Information.Width   = DefaultFrameBufferRequest->width;
+        DefaultFrameBuffer.Information.Height  = DefaultFrameBufferRequest->height;
+        DefaultFrameBuffer.Information.Pitch   = DefaultFrameBufferRequest->pitch;
+        DefaultFrameBuffer.Information.BPP     = DefaultFrameBufferRequest->bpp;
+        DefaultFrameBuffer.Information.Format  = PixelFormat_RGB;
+    #endif
     
     return GeneralOK;
 }

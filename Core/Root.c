@@ -8,7 +8,7 @@ void _start(void)
     SYSTEM_ERROR* Error = &Err;
     
     LoadDefaults(Error);
-
+    
     for(;;)
     {
         __asm__("hlt");

@@ -9,3 +9,4 @@ Repo.sh
 *.swp
 *.img
 *.iso
+compile_commands.json

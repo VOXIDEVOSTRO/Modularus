@@ -8,3 +8,8 @@
 
 /*Types source*/
 #define StandardLIBC
+
+/*Limits*/
+#define MaxDependencies 64
+#define MaxModules 512
+#define PMM_MaxRegions 128

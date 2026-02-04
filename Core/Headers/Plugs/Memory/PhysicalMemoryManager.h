@@ -4,8 +4,6 @@
 #include <Modules/KExports.h>
 #include <Errors.h>
 
-#define PMM_MaxRegions 128
-
 typedef enum
 {
     PMMRegion_USABLE,

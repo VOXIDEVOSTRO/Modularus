@@ -382,7 +382,7 @@ struct limine_entry_point_request {
     LIMINE_PTR(limine_entry_point) entry;
 };
 
-/* Executable File */
+/* Executable FILE */
 
 #define LIMINE_EXECUTABLE_FILE_REQUEST_ID { LIMINE_COMMON_MAGIC, 0xad97e90e83f1ed67, 0x31eb5d1c5ff23b69 }
 

@@ -2,6 +2,7 @@
 
 /*Error codes with trace backs*/
 
+/*Global*/
 typedef
 enum
 {
@@ -12,10 +13,50 @@ enum
     BadRequest,
     BadParameters,
     NotFound,
+    Limits,
+
+    /*VFS Related*/
+    ENOENT,          /* No such file or directory */
+    ENOTDIR,         /* Not a directory */
+    EISDIR,          /* Is a directory */
+    ENAMETOOLONG,    /* Filename too long */
+    ELOOP,           /* Too many symbolic links */
+    ENOTEMPTY,       /* Directory not empty */
+    EACCES,          /* Permission denied */
+    EPERM,           /* Operation not permitted */
+    EROFS,           /* Read-only filesystem */
+    ENOSPC,          /* No space left on device */
+    ENOMEM,          /* Out of memory */
+    EMFILE,          /* Too many open files */
+    ENFILE,          /* File table overflow */
+    EDQUOT,          /* Disk quota exceeded */
+    EEXIST,          /* File exists */
+    ENODEV,          /* No such device */
+    EXDEV,           /* Cross-device link */
+    EBUSY,           /* Device or resource busy */
+    ETXTBSY,         /* Text file busy */
+    EIO,             /* I/O error */
+    EFBIG,           /* File too large */
+    ENOSYS,          /* Function not implemented */
+    EOPNOTSUPP,      /* Operation not supported */
+    EINVAL,          /* Invalid argument */
+    EBADF,           /* Bad file descriptor */
+    ESPIPE,          /* Illegal seek */
+    EFAULT,          /* Bad address */
+    ENOTMNT,         /* Not mounted */
+    EMNTFAILED,      /* Mount failed */
+    ECORRUPTED,      /* Filesystem corrupted */
+    EFSTYPE,         /* Wrong filesystem type */
+    EMLINK,          /* Too many links */
+    ENOLINK,         /* Link has been severed */
+    EDEADLK,         /* Resource deadlock avoided */
+    EINTR,           /* Interrupted system call */
+    ESTALE,          /* Stale file handle */
 
     MaxErrors,
 } ERROR_CODES;
 
+/*Local*/
 typedef
 enum
 {
@@ -26,84 +67,106 @@ enum
     
     FUNC_LookUpKExport,
 
-    FUNC_RegisterFrameBuffer,
-    FUNC_GetFrameBuffer,
-    FUNC_InitFrameBuffer,
-    FUNC_ExitFrameBuffer,
+    FUNC_RegisterErrorKeys,
 
-    FUNC_RegisterLoader,
-    FUNC_GetLoader,
-    FUNC_LoadFile,
-    FUNC_UnLoadFile,
+    /*VFS*/
+    FUNC_VfsInit,
+    FUNC_VfsShutdown,
+    FUNC_VfsRegisterFs,
+    FUNC_VfsUnregisterFs,
+    FUNC_VfsFindFs,
+    FUNC_VfsListFs,
+    FUNC_VfsMount,
+    FUNC_VfsUnmount,
+    FUNC_VfsSwitchRoot,
+    FUNC_VfsBindMount,
+    FUNC_VfsMoveMount,
+    FUNC_VfsRemount,
+    FUNC_VfsResolve,
+    FUNC_VfsResolveAt,
+    FUNC_VfsLookup,
+    FUNC_VfsMkpath,
+    FUNC_VfsRealpath,
+    FUNC_VfsOpen,
+    FUNC_VfsOpenAt,
+    FUNC_VfsClose,
+    FUNC_VfsRead,
+    FUNC_VfsWrite,
+    FUNC_VfsLseek,
+    FUNC_VfsIoctl,
+    FUNC_VfsFsync,
+    FUNC_VfsFstats,
+    FUNC_VfsStats,
+    FUNC_VfsReaddir,
+    FUNC_VfsReaddirF,
+    FUNC_VfsCreate,
+    FUNC_VfsUnlink,
+    FUNC_VfsMkdir,
+    FUNC_VfsRmdir,
+    FUNC_VfsSymlink,
+    FUNC_VfsReadlink,
+    FUNC_VfsLink,
+    FUNC_VfsRename,
+    FUNC_VfsChmod,
+    FUNC_VfsChown,
+    FUNC_VfsTruncate,
+    FUNC_VnodeRefInc,
+    FUNC_VnodeRefDec,
+    FUNC_VnodeGetAttr,
+    FUNC_VnodeSetAttr,
+    FUNC_DentryInvalidate,
+    FUNC_DentryRevalidate,
+    FUNC_DentryAttach,
+    FUNC_DentryDetach,
+    FUNC_DentryName,
+    FUNC_VfsSetCwd,
+    FUNC_VfsGetCwd,
+    FUNC_VfsSetRoot,
+    FUNC_VfsGetRoot,
+    FUNC_VfsSetUmask,
+    FUNC_VfsGetUmask,
+    FUNC_VfsNotifySubscribe,
+    FUNC_VfsNotifyUnsubscribe,
+    FUNC_VfsNotifyPoll,
+    FUNC_VfsAccess,
+    FUNC_VfsExists,
+    FUNC_VfsIsDir,
+    FUNC_VfsIsFile,
+    FUNC_VfsIsSymlink,
+    FUNC_VfsCopy,
+    FUNC_VfsMove,
+    FUNC_VfsReadAll,
+    FUNC_VfsWriteAll,
+    FUNC_VfsMountTableEnumerate,
+    FUNC_VfsMountTableFind,
+    FUNC_VfsNodePath,
+    FUNC_VfsNodeName,
+    FUNC_VfsAllocName,
+    FUNC_VfsFreeName,
+    FUNC_VfsJoinPath,
+    FUNC_VfsSetFlag,
+    FUNC_VfsClearFlag,
+    FUNC_VfsGetFlags,
+    FUNC_VfsSyncAll,
+    FUNC_VfsPruneCaches,
+    FUNC_VfsRegisterDevNode,
+    FUNC_VfsUnregisterDevNode,
+    FUNC_VfsRegisterPseudoFs,
+    FUNC_VfsUnregisterPseudoFs,
+    FUNC_VfsSetDefaultFs,
+    FUNC_VfsGetDefaultFs,
+    FUNC_VfsSetMaxName,
+    FUNC_VfsGetMaxName,
+    FUNC_VfsSetMaxPath,
+    FUNC_VfsGetMaxPath,
+    FUNC_VfsSetDirCacheLimit,
+    FUNC_VfsGetDirCacheLimit,
+    FUNC_VfsSetFileCacheLimit,
+    FUNC_VfsGetFileCacheLimit,
+    FUNC_VfsSetIoBlockSize,
+    FUNC_VfsGetIoBlockSize,
 
-    FUNC_RegisterPMM,
-    FUNC_GetPMM,
-    FUNC_AllocatePages,
-    FUNC_FreePages,
-    FUNC_InitPMM,
-    FUNC_ExitPMM,
-
-    FUNC_RegisterVMM,
-    FUNC_GetVMM,
-    FUNC_MapPage,
-    FUNC_UnMapPage,
-    FUNC_InitVMM,
-    FUNC_ExitVMM,
-    FUNC_GetPhysicalAddress,
-    FUNC_SetPageFlags,
-    FUNC_GetPageFlags,
-    FUNC_GetPageTable,
-    FUNC_SwitchPageTable,   
-    
-    FUNC_RegisterHeap,
-    FUNC_GetHeap,
-    FUNC_KAllocate,
-    FUNC_KFree,
-    FUNC_InitHeap,
-    FUNC_ExitHeap,
-
-    FUNC_RegisterIDT,
-    FUNC_GetIDT,
-    FUNC_SetIDTEntry,
-    FUNC_GetIDTEntry,
-    FUNC_LoadIDT,
-    FUNC_InitIDT,
-    FUNC_ExitIDT,
-
-    FUNC_RegisterGDT,
-    FUNC_GetGDT,
-    FUNC_SetGDTEntry,
-    FUNC_GetGDTEntry,
-    FUNC_LoadGDT,
-    FUNC_InitGDT,
-    FUNC_ExitGDT,
-
-    FUNC_RegisterTSS,
-    FUNC_GetTSS,
-    FUNC_SetTSSStack,
-    FUNC_GetTSSStack,
-    FUNC_LoadTSS,
-    FUNC_InitTSS,
-    FUNC_ExitTSS,
-
-    FUNC_RegisterISR,
-    FUNC_GetISR,
-    FUNC_RegisterISRHandler,
-    FUNC_UnregisterISRHandler,
-    FUNC_InitISR,
-    FUNC_ExitISR,
-
-    FUNC_RegisterIRQ,
-    FUNC_GetIRQ,
-    FUNC_RegisterIRQHandler,
-    FUNC_UnregisterIRQHandler,
-    FUNC_EnableIRQ,
-    FUNC_DisableIRQ,
-    FUNC_SendEOI,
-    FUNC_InitIRQ,
-    FUNC_ExitIRQ,
-
-    MaxTraceback,
+    MaxTraceback = 10000,
 } TRACEBACK_ID; /*Can also be called function IDs*/
 
 /*Core Error stuff*/
@@ -131,6 +194,7 @@ struct
 #define Probe4Error(Pointer)((intptr_t)(Pointer) < 0 && (intptr_t)(Pointer) >= -MaxErrors)
 
 /*String maps for the error code enum*/
+/*Global*/
 static const char*
 ErrorMap[MaxErrors]=
 {
@@ -140,93 +204,151 @@ ErrorMap[MaxErrors]=
     "Bad Parameters",
     "Not Found",
 
+    "No such file or directory",
+    "Not a directory",
+    "Is a directory",
+    "Filename too long",
+    "Too many symbolic links",
+    "Directory not empty",
+    "Permission denied",
+    "Operation not permitted",
+    "Read-only filesystem",
+    "No space left on device",
+    "Out of memory",
+    "Too many open files",
+    "File table overflow",
+    "Disk quota exceeded",
+    "File exists",
+    "No such device",
+    "Cross-device link",
+    "Device or resource busy",
+    "Text file busy",
+    "I/O error",
+    "File too large",
+    "Function not implemented",
+    "Operation not supported",
+    "Invalid argument",
+    "Bad file descriptor",
+    "Illegal seek",
+    "Bad address",
+    "Not mounted",
+    "Mount failed",
+    "Filesystem corrupted",
+    "Wrong filesystem type",
+    "Too many links",
+    "Link has been severed",
+    "Resource deadlock avoided",
+    "Interrupted system call",
+    "Stale file handle",
 };
 
+/*Core Local*/
 static const char*
 TraceBackMap[MaxTraceback]=
 {
     "General",
     
-    "Core/Headers/PreBoot.h->Limine_REQUEST",
+    "Core/Headers/Boot/PreBoot.h->Limine_REQUEST",
     
-    "Core/Modules/KExports.c->LookUpKExport",
+    "Core/KExports.c->LookUpKExport",
     
-    "Core/IO/FrameBuffer.c->RegisterFrameBuffer",
-    "Core/IO/FrameBuffer.c->GetFrameBuffer",
-    "Core/IO/FrameBuffer.c->InitFrameBuffer",
-    "Core/IO/FrameBuffer.c->ExitFrameBuffer",
-    
-    "Core/Modules/Loader.c->RegisterLoader",
-    "Core/Modules/Loader.c->GetLoader",
-    "Core/Modules/Loader.c->LoadFile",
-    "Core/Modules/Loader.c->UnLoadFile",
-    
-    "Core/Memory/PhysicalMemoryManager.c->RegisterPMM",
-    "Core/Memory/PhysicalMemoryManager.c->GetPMM",
-    "Core/Memory/PhysicalMemoryManager.c->AllocatePages",
-    "Core/Memory/PhysicalMemoryManager.c->FreePages",
-    "Core/Memory/PhysicalMemoryManager.c->InitPMM",
-    "Core/Memory/PhysicalMemoryManager.c->ExitPMM",
+    "Core/Errors.c->RegisterErrorContext",
 
-    "Core/Memory/VirtualMemoryManager.c->RegisterVMM",
-    "Core/Memory/VirtualMemoryManager.c->GetVMM",
-    "Core/Memory/VirtualMemoryManager.c->MapPage",
-    "Core/Memory/VirtualMemoryManager.c->UnMapPage",
-    "Core/Memory/VirtualMemoryManager.c->InitVMM",
-    "Core/Memory/VirtualMemoryManager.c->ExitVMM",
-    "Core/Memory/VirtualMemoryManager.c->GetPhysicalAddress",
-    "Core/Memory/VirtualMemoryManager.c->SetPageFlags",
-    "Core/Memory/VirtualMemoryManager.c->GetPageFlags",
-    "Core/Memory/VirtualMemoryManager.c->GetPageTable",
-    "Core/Memory/VirtualMemoryManager.c->SwitchPageTable",
-
-    "Core/Memory/KernelHeapManager.c->RegisterHeap",
-    "Core/Memory/KernelHeapManager.c->GetHeap",
-    "Core/Memory/KernelHeapManager.c->KAllocate",
-    "Core/Memory/KernelHeapManager.c->KFree",
-    "Core/Memory/KernelHeapManager.c->InitHeap",
-    "Core/Memory/KernelHeapManager.c->ExitHeap",
-
-    "Core/Interrupts/IDT.c->RegisterIDT",
-    "Core/Interrupts/IDT.c->GetIDT",
-    "Core/Interrupts/IDT.c->SetIDTEntry",
-    "Core/Interrupts/IDT.c->GetIDTEntry",
-    "Core/Interrupts/IDT.c->LoadIDT",
-    "Core/Interrupts/IDT.c->InitIDT",
-    "Core/Interrupts/IDT.c->ExitIDT",
-
-    "Core/Interrupts/GDT.c->RegisterGDT",
-    "Core/Interrupts/GDT.c->GetGDT",
-    "Core/Interrupts/GDT.c->SetGDTEntry",
-    "Core/Interrupts/GDT.c->GetGDTEntry",
-    "Core/Interrupts/GDT.c->LoadGDT",
-    "Core/Interrupts/GDT.c->InitGDT",
-    "Core/Interrupts/GDT.c->ExitGDT",
-
-    "Core/Interrupts/TSS.c->RegisterTSS",
-    "Core/Interrupts/TSS.c->GetTSS",
-    "Core/Interrupts/TSS.c->SetTSSStack",
-    "Core/Interrupts/TSS.c->GetTSSStack",
-    "Core/Interrupts/TSS.c->LoadTSS",
-    "Core/Interrupts/TSS.c->InitTSS",
-    "Core/Interrupts/TSS.c->ExitTSS",
-
-    "Core/Interrupts/ISR.c->RegisterISR",
-    "Core/Interrupts/ISR.c->GetISR",
-    "Core/Interrupts/ISR.c->RegisterISRHandler",
-    "Core/Interrupts/ISR.c->UnregisterISRHandler",
-    "Core/Interrupts/ISR.c->InitISR",
-    "Core/Interrupts/ISR.c->ExitISR",
-
-    "Core/Interrupts/IRQ.c->RegisterIRQ",
-    "Core/Interrupts/IRQ.c->GetIRQ",
-    "Core/Interrupts/IRQ.c->RegisterIRQHandler",
-    "Core/Interrupts/IRQ.c->UnregisterIRQHandler",
-    "Core/Interrupts/IRQ.c->EnableIRQ",
-    "Core/Interrupts/IRQ.c->DisableIRQ",
-    "Core/Interrupts/IRQ.c->SendEOI",
-    "Core/Interrupts/IRQ.c->InitIRQ",
-    "Core/Interrupts/IRQ.c->ExitIRQ",
+    "Core/VirtualFileSystem/*->VfsInit",
+    "Core/VirtualFileSystem/*->VfsShutdown",
+    "Core/VirtualFileSystem/*->VfsRegisterFs",
+    "Core/VirtualFileSystem/*->VfsUnregisterFs",
+    "Core/VirtualFileSystem/*->VfsFindFs",
+    "Core/VirtualFileSystem/*->VfsListFs",
+    "Core/VirtualFileSystem/*->VfsMount",
+    "Core/VirtualFileSystem/*->VfsUnmount",
+    "Core/VirtualFileSystem/*->VfsSwitchRoot",
+    "Core/VirtualFileSystem/*->VfsBindMount",
+    "Core/VirtualFileSystem/*->VfsMoveMount",
+    "Core/VirtualFileSystem/*->VfsRemount",
+    "Core/VirtualFileSystem/*->VfsResolve",
+    "Core/VirtualFileSystem/*->VfsResolveAt",
+    "Core/VirtualFileSystem/*->VfsLookup",
+    "Core/VirtualFileSystem/*->VfsMkpath",
+    "Core/VirtualFileSystem/*->VfsRealpath",
+    "Core/VirtualFileSystem/*->VfsOpen",
+    "Core/VirtualFileSystem/*->VfsOpenAt",
+    "Core/VirtualFileSystem/*->VfsClose",
+    "Core/VirtualFileSystem/*->VfsRead",
+    "Core/VirtualFileSystem/*->VfsWrite",
+    "Core/VirtualFileSystem/*->VfsLseek",
+    "Core/VirtualFileSystem/*->VfsIoctl",
+    "Core/VirtualFileSystem/*->VfsFsync",
+    "Core/VirtualFileSystem/*->VfsFstats",
+    "Core/VirtualFileSystem/*->VfsStats",
+    "Core/VirtualFileSystem/*->VfsReaddir",
+    "Core/VirtualFileSystem/*->VfsReaddirF",
+    "Core/VirtualFileSystem/*->VfsCreate",
+    "Core/VirtualFileSystem/*->VfsUnlink",
+    "Core/VirtualFileSystem/*->VfsMkdir",
+    "Core/VirtualFileSystem/*->VfsRmdir",
+    "Core/VirtualFileSystem/*->VfsSymlink",
+    "Core/VirtualFileSystem/*->VfsReadlink",
+    "Core/VirtualFileSystem/*->VfsLink",
+    "Core/VirtualFileSystem/*->VfsRename",
+    "Core/VirtualFileSystem/*->VfsChmod",
+    "Core/VirtualFileSystem/*->VfsChown",
+    "Core/VirtualFileSystem/*->VfsTruncate",
+    "Core/VirtualFileSystem/*->VnodeRefInc",
+    "Core/VirtualFileSystem/*->VnodeRefDec",
+    "Core/VirtualFileSystem/*->VnodeGetAttr",
+    "Core/VirtualFileSystem/*->VnodeSetAttr",
+    "Core/VirtualFileSystem/*->DentryInvalidate",
+    "Core/VirtualFileSystem/*->DentryRevalidate",
+    "Core/VirtualFileSystem/*->DentryAttach",
+    "Core/VirtualFileSystem/*->DentryDetach",
+    "Core/VirtualFileSystem/*->DentryName",
+    "Core/VirtualFileSystem/*->VfsSetCwd",
+    "Core/VirtualFileSystem/*->VfsGetCwd",
+    "Core/VirtualFileSystem/*->VfsSetRoot",
+    "Core/VirtualFileSystem/*->VfsGetRoot",
+    "Core/VirtualFileSystem/*->VfsSetUmask",
+    "Core/VirtualFileSystem/*->VfsGetUmask",
+    "Core/VirtualFileSystem/*->VfsNotifySubscribe",
+    "Core/VirtualFileSystem/*->VfsNotifyUnsubscribe",
+    "Core/VirtualFileSystem/*->VfsNotifyPoll",
+    "Core/VirtualFileSystem/*->VfsAccess",
+    "Core/VirtualFileSystem/*->VfsExists",
+    "Core/VirtualFileSystem/*->VfsIsDir",
+    "Core/VirtualFileSystem/*->VfsIsFile",
+    "Core/VirtualFileSystem/*->VfsIsSymlink",
+    "Core/VirtualFileSystem/*->VfsCopy",
+    "Core/VirtualFileSystem/*->VfsMove",
+    "Core/VirtualFileSystem/*->VfsReadAll",
+    "Core/VirtualFileSystem/*->VfsWriteAll",
+    "Core/VirtualFileSystem/*->VfsMountTableEnumerate",
+    "Core/VirtualFileSystem/*->VfsMountTableFind",
+    "Core/VirtualFileSystem/*->VfsNodePath",
+    "Core/VirtualFileSystem/*->VfsNodeName",
+    "Core/VirtualFileSystem/*->VfsAllocName",
+    "Core/VirtualFileSystem/*->VfsFreeName",
+    "Core/VirtualFileSystem/*->VfsJoinPath",
+    "Core/VirtualFileSystem/*->VfsSetFlag",
+    "Core/VirtualFileSystem/*->VfsClearFlag",
+    "Core/VirtualFileSystem/*->VfsGetFlags",
+    "Core/VirtualFileSystem/*->VfsSyncAll",
+    "Core/VirtualFileSystem/*->VfsPruneCaches",
+    "Core/VirtualFileSystem/*->VfsRegisterDevNode",
+    "Core/VirtualFileSystem/*->VfsUnregisterDevNode",
+    "Core/VirtualFileSystem/*->VfsRegisterPseudoFs",
+    "Core/VirtualFileSystem/*->VfsUnregisterPseudoFs",
+    "Core/VirtualFileSystem/*->VfsSetDefaultFs",
+    "Core/VirtualFileSystem/*->VfsGetDefaultFs",
+    "Core/VirtualFileSystem/*->VfsSetMaxName",
+    "Core/VirtualFileSystem/*->VfsGetMaxName",
+    "Core/VirtualFileSystem/*->VfsSetMaxPath",
+    "Core/VirtualFileSystem/*->VfsGetMaxPath",
+    "Core/VirtualFileSystem/*->VfsSetDirCacheLimit",
+    "Core/VirtualFileSystem/*->VfsGetDirCacheLimit",
+    "Core/VirtualFileSystem/*->VfsSetFileCacheLimit",
+    "Core/VirtualFileSystem/*->VfsGetFileCacheLimit",
+    "Core/VirtualFileSystem/*->VfsSetIoBlockSize",
+    "Core/VirtualFileSystem/*->VfsGetIoBlockSize",
 };
 
 /*Another helper but to map the enum code to a error string map*/
@@ -246,7 +368,7 @@ MapError(SYSTEM_ERROR* Error)
 
 /*Another helper but to map the traceback code to the location of the error from map*/
 static inline const char*
-TraceError(SYSTEM_ERROR* Error)
+CORE_TraceError(SYSTEM_ERROR* Error)
 {
     if (Error->ErrorCode < 0)
     {
@@ -263,4 +385,28 @@ TraceError(SYSTEM_ERROR* Error)
     return TraceBackMap[Error->TraceBack];
 }
 
+/*Per module*/
+typedef struct ERROR_KEYS
+{
+    const char* ModuleName;
+    int TracebackBase;
+    int TracebackCount;
 
+    /*Operations*/
+    const char* (*TraceMapper)(int);
+
+    struct ERROR_KEYS* Next;
+} ERROR_KEYS;
+
+typedef struct
+{
+    ERROR_KEYS* Head;
+    ERROR_KEYS* Tail;
+
+    int NextModuleBase;  /* Next available base ID */
+} ERROR_KEYS_REGISTRY;
+
+extern ERROR_KEYS_REGISTRY ErrorKeysRegistry;
+
+int RegisterErrorKeys(const char*, const char* (*TraceMapper)(int), int, SYSTEM_ERROR*);
+const char* TraceError(SYSTEM_ERROR*);

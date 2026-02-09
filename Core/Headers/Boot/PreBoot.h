@@ -2,7 +2,7 @@
 
 #include <__KCONF.h>
 #include <Errors.h>
-#include <Modules/KExports.h>
+#include <KExports.h>
 
 #ifdef BOOTVENDOR_Limine
     #include <Boot/Vendors/BOOTVENDOR_Limine.h>

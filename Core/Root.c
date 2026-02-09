@@ -1,14 +1,15 @@
 #include <__KCONF.h>
+#include <Errors.h>
 
-#include <Defaults/Defaults.h>
+#include <VirtualFileSystem.h>
 
 SYSTEM_ERROR Err;
 SYSTEM_ERROR* Error = &Err;
     
 void KernelBoot(void)
 {
-    LoadDefaults(Error);
-    
+    VfsInit(Error);
+
     for(;;)
     {
         __asm__("hlt");

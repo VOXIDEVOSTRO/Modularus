@@ -1,7 +1,7 @@
 #include <KernelCLibrary.h>
 #include <VirtualFileSystem.h>
 #include <__KCONF.h>
-#include <StaticPool.h>
+#include <DirtyHeap.h>
 
 int
 VfsFsync(FILE* FileHandle, SYSTEM_ERROR* Error)

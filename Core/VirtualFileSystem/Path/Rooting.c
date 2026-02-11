@@ -1,7 +1,7 @@
 #include <KernelCLibrary.h>
 #include <VirtualFileSystem.h>
 #include <__KCONF.h>
-#include <StaticPool.h>
+#include <DirtyHeap.h>
 
 int
 VfsSetCwd(const char* Path UNUSED, SYSTEM_ERROR* Error UNUSED)

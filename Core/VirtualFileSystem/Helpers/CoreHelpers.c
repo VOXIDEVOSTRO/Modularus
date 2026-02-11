@@ -1,7 +1,7 @@
 #include <KernelCLibrary.h>
 #include <VirtualFileSystem.h>
 #include <__KCONF.h>
-#include <StaticPool.h>
+#include <DirtyHeap.h>
 
 DIRECTORY_ENTRY*
 AllocateDirectoryEntry(const char* Name, DIRECTORY_ENTRY* Parent, VFS_NODE* Node, SYSTEM_ERROR* Error)

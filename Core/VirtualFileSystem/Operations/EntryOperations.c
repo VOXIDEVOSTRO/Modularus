@@ -1,7 +1,7 @@
 #include <KernelCLibrary.h>
 #include <VirtualFileSystem.h>
 #include <__KCONF.h>
-#include <StaticPool.h>
+#include <DirtyHeap.h>
 
 int
 VfsCreate(const char* Path, long Flags, VFS_PERMISSIONS Permission, SYSTEM_ERROR* Error)

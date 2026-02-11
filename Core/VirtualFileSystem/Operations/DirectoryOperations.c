@@ -1,7 +1,7 @@
 #include <KernelCLibrary.h>
 #include <VirtualFileSystem.h>
 #include <__KCONF.h>
-#include <StaticPool.h>
+#include <DirtyHeap.h>
 
 long
 VfsReaddir(const char* Path, void* Buffer, long BufferLength, SYSTEM_ERROR* Error)

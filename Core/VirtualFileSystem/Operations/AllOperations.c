@@ -1,7 +1,7 @@
 #include <KernelCLibrary.h>
 #include <VirtualFileSystem.h>
 #include <__KCONF.h>
-#include <StaticPool.h>
+#include <DirtyHeap.h>
 
 int
 VfsReadAll(const char* Path, void* Buffer, long BufferLength, long* OutLength, SYSTEM_ERROR* Error)

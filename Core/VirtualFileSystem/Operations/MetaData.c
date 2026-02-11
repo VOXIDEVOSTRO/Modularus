@@ -1,7 +1,7 @@
 #include <KernelCLibrary.h>
 #include <VirtualFileSystem.h>
 #include <__KCONF.h>
-#include <StaticPool.h>
+#include <DirtyHeap.h>
 
 int
 VfsFstats(FILE* FileHandle, VFS_STAT* StatBuffer, SYSTEM_ERROR* Error)

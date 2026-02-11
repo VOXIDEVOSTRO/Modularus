@@ -1,7 +1,7 @@
 #include <KernelCLibrary.h>
 #include <VirtualFileSystem.h>
 #include <__KCONF.h>
-#include <StaticPool.h>
+#include <DirtyHeap.h>
 
 int
 VfsNodePath(VFS_NODE* Node UNUSED, char* Buffer, long Length, SYSTEM_ERROR* Error)

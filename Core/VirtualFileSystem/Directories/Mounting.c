@@ -1,7 +1,7 @@
 #include <KernelCLibrary.h>
 #include <VirtualFileSystem.h>
 #include <__KCONF.h>
-#include <StaticPool.h>
+#include <DirtyHeap.h>
 
 SUPER_BLOCK*
 VfsMount(const char* Device, const char* Path, const char* Type, long Flags UNUSED, const char* Options, SYSTEM_ERROR* Error)

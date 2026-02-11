@@ -1,7 +1,7 @@
 #include <KernelCLibrary.h>
 #include <VirtualFileSystem.h>
 #include <__KCONF.h>
-#include <StaticPool.h>
+#include <DirtyHeap.h>
 
 int
 VfsRegisterFs(const FILESYSTEM_TYPE* FileSystemType, SYSTEM_ERROR* Error)

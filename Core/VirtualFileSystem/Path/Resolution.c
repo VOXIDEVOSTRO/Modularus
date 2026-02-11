@@ -1,7 +1,7 @@
 #include <KernelCLibrary.h>
 #include <VirtualFileSystem.h>
 #include <__KCONF.h>
-#include <StaticPool.h>
+#include <DirtyHeap.h>
 
 DIRECTORY_ENTRY*
 VfsResolve(const char* Path, SYSTEM_ERROR* Error)

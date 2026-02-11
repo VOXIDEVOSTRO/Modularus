@@ -1,5 +1,6 @@
 #include <__KCONF.h>
 #include <Errors.h>
+#include <DirtyHeap.h>
 
 #include <VirtualFileSystem.h>
 

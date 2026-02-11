@@ -1,7 +1,8 @@
 #include <KernelCLibrary.h>
 #include <VirtualFileSystem.h>
 #include <__KCONF.h>
-#include <StaticPool.h>
+#include <DirtyHeap.h>
+#include <BuiltIns/Heap/StaticPool.h>
 
 /*extremely unix-like VFS*/
 
@@ -22,7 +23,7 @@ long  IOBlockSize = 0;
 char  DefaultFileSystem[64] = {0};
 
 int
-VfsInit(SYSTEM_ERROR* Error UNUSED)
+VfsInit(SYSTEM_ERROR* Error)
 {
     FileSystemCount = 0;
     MountsCount = 0;
@@ -35,6 +36,9 @@ VfsInit(SYSTEM_ERROR* Error UNUSED)
     FileCacheLimit = 0;
     IOBlockSize = 0;
     DefaultFileSystem[0] = 0;
+
+    /*KickStart the heap*/
+    KickStartStaticPool(Error);
 
     return GeneralOK;
 }

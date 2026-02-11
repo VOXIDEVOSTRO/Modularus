@@ -1,7 +1,7 @@
 #include <KernelCLibrary.h>
 #include <VirtualFileSystem.h>
 #include <__KCONF.h>
-#include <StaticPool.h>
+#include <DirtyHeap.h>
 
 int
 VfsSymlink(const char* TargetPath, const char* LinkPath, VFS_PERMISSIONS Permission, SYSTEM_ERROR* Error)

@@ -4,14 +4,14 @@
 #include <DirtyHeap.h>
 
 int
-VfsMountTableEnumerate(char* Buffer, long Length, SYSTEM_ERROR* Error)
+VFS_MountTableEnumerate(char* Buffer, long Length, SYSTEM_ERROR* Error)
 {
-    #define ErrorOut_VfsMountTableEnumerate(Code) \
-        ErrorOut(Error, Code, FUNC_VfsMountTableEnumerate)
+    #define ErrorOut_VFS_MountTableEnumerate(Code) \
+        ErrorOut(Error, Code, FUNC_VFS_MountTableEnumerate)
  
     if (Probe4Error(Buffer) || !Buffer || Length <= 0)
     {
-        ErrorOut_VfsMountTableEnumerate(-EINVAL);
+        ErrorOut_VFS_MountTableEnumerate(-EINVAL);
         return Error->ErrorCode;
     }
 
@@ -39,14 +39,14 @@ VfsMountTableEnumerate(char* Buffer, long Length, SYSTEM_ERROR* Error)
 }
 
 int
-VfsMountTableFind(const char* Path, char* Buffer, long Length, SYSTEM_ERROR* Error)
+VFS_MountTableFind(const char* Path, char* Buffer, long Length, SYSTEM_ERROR* Error)
 {
-    #define ErrorOut_VfsMountTableFind(Code) \
-        ErrorOut(Error, Code, FUNC_VfsMountTableFind)
+    #define ErrorOut_VFS_MountTableFind(Code) \
+        ErrorOut(Error, Code, FUNC_VFS_MountTableFind)
     
     if (Probe4Error(Path) || !Path || Probe4Error(Buffer) || !Buffer || Length <= 0)
     {
-        ErrorOut_VfsMountTableFind(-EINVAL);
+        ErrorOut_VFS_MountTableFind(-EINVAL);
         return Error->ErrorCode;
     }
 
@@ -57,7 +57,7 @@ VfsMountTableFind(const char* Path, char* Buffer, long Length, SYSTEM_ERROR* Err
             long Index = (long)strlen(Mounts[Iteration].Path);
             if (Index >= Length)
             {
-                ErrorOut_VfsMountTableFind(-Limits);
+                ErrorOut_VFS_MountTableFind(-Limits);
                 return Error->ErrorCode;
             }
 
@@ -67,6 +67,6 @@ VfsMountTableFind(const char* Path, char* Buffer, long Length, SYSTEM_ERROR* Err
         }
     }
 
-    ErrorOut_VfsMountTableFind(-ENOENT);
+    ErrorOut_VFS_MountTableFind(-ENOENT);
     return Error->ErrorCode;
 }

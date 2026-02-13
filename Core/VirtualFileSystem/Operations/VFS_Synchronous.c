@@ -4,14 +4,14 @@
 #include <DirtyHeap.h>
 
 int
-VfsFsync(FILE* FileHandle, SYSTEM_ERROR* Error)
+VFS_FSync(FILE* FileHandle, SYSTEM_ERROR* Error)
 {
-    #define ErrorOut_VfsFsync(Code) \
-        ErrorOut(Error, Code, FUNC_VfsFsync)
+    #define ErrorOut_VFS_FSync(Code) \
+        ErrorOut(Error, Code, FUNC_VFS_FSync)
     
     if (Probe4Error(FileHandle) || !FileHandle || Probe4Error(FileHandle->Node) || !FileHandle->Node || Probe4Error(FileHandle->Node->Operations) || !FileHandle->Node->Operations)
     {
-        ErrorOut_VfsFsync(-EINVAL);
+        ErrorOut_VFS_FSync(-EINVAL);
         return Error->ErrorCode;
     }
 

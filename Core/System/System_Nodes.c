@@ -4,14 +4,14 @@
 #include <KernelCLibrary.h>
 
 SYSTEM_NODE*
-SystemCreateNode(const char* Name, SYSTEM_NODE_TYPE_ENUMERATION Type, const SYSTEM_OPERATIONS* Operations, void* Context, uint64_t ContextSize, SYSTEM_ERROR* Error)
+System_CreateNode(const char* Name, SYSTEM_NODE_TYPE_ENUMERATION Type, const SYSTEM_OPERATIONS* Operations, void* Context, uint64_t ContextSize, SYSTEM_ERROR* Error)
 {
-    #define ErrorOut_SystemCreateNode(Code) \
-        ErrorOut(Error, Code, FUNC_SystemCreateNode)
+    #define ErrorOut_System_CreateNode(Code) \
+        ErrorOut(Error, Code, FUNC_System_CreateNode)
 
     if (NodeAllocatedCount >= MaxSystemNodes)
     {
-        ErrorOut_SystemCreateNode(-ENOSPC);
+        ErrorOut_System_CreateNode(-ENOSPC);
         return Error2Pointer(Error->ErrorCode);
     }
     
@@ -37,14 +37,14 @@ SystemCreateNode(const char* Name, SYSTEM_NODE_TYPE_ENUMERATION Type, const SYST
 }
 
 int
-SystemDeleteNode(SYSTEM_NODE* Node, SYSTEM_ERROR* Error)
+System_DeleteNode(SYSTEM_NODE* Node, SYSTEM_ERROR* Error)
 {
-    #define ErrorOut_SystemDeleteNode(Code) \
-        ErrorOut(Error, Code, FUNC_SystemDeleteNode)
+    #define ErrorOut_System_DeleteNode(Code) \
+        ErrorOut(Error, Code, FUNC_System_DeleteNode)
 
     if (Probe4Error(Node) || !Node)
     {
-        ErrorOut_SystemDeleteNode(-EINVAL);
+        ErrorOut_System_DeleteNode(-EINVAL);
         return Error->ErrorCode;
     }
     
@@ -79,14 +79,14 @@ SystemDeleteNode(SYSTEM_NODE* Node, SYSTEM_ERROR* Error)
 }
 
 SYSTEM_NODE*
-SystemFindNode(SYSTEM_NODE* Parent, const char* Name, SYSTEM_ERROR* Error)
+System_FindNode(SYSTEM_NODE* Parent, const char* Name, SYSTEM_ERROR* Error)
 {
-    #define ErrorOut_SystemFindNode(Code) \
-        ErrorOut(Error, Code, FUNC_SystemFindNode)
+    #define ErrorOut_System_FindNode(Code) \
+        ErrorOut(Error, Code, FUNC_System_FindNode)
 
     if (Probe4Error(Parent) || !Parent || Probe4Error(Name) || !Name)
     {
-        ErrorOut_SystemFindNode(-EINVAL);
+        ErrorOut_System_FindNode(-EINVAL);
         return Error2Pointer(Error->ErrorCode);
     }
     
@@ -101,19 +101,19 @@ SystemFindNode(SYSTEM_NODE* Parent, const char* Name, SYSTEM_ERROR* Error)
         Child = Child->Next;
     }
     
-    ErrorOut_SystemFindNode(-EINVAL);
+    ErrorOut_System_FindNode(-EINVAL);
     return Error2Pointer(Error->ErrorCode);
 }
 
 int
-SystemAttachNode(SYSTEM_NODE* Parent, SYSTEM_NODE* Child, SYSTEM_ERROR* Error)
+System_AttachNode(SYSTEM_NODE* Parent, SYSTEM_NODE* Child, SYSTEM_ERROR* Error)
 {
-    #define ErrorOut_SystemAttachNode(Code) \
-        ErrorOut(Error, Code, FUNC_SystemAttachNode)
+    #define ErrorOut_System_AttachNode(Code) \
+        ErrorOut(Error, Code, FUNC_System_AttachNode)
 
     if (Probe4Error(Parent) || !Parent || Probe4Error(Child) || !Child)
     {
-        ErrorOut_SystemAttachNode(-EINVAL);
+        ErrorOut_System_AttachNode(-EINVAL);
         return Error->ErrorCode;
     }
     
@@ -125,20 +125,20 @@ SystemAttachNode(SYSTEM_NODE* Parent, SYSTEM_NODE* Child, SYSTEM_ERROR* Error)
 }
 
 int
-SystemDetachNode(SYSTEM_NODE* Node, SYSTEM_ERROR* Error)
+System_DetachNode(SYSTEM_NODE* Node, SYSTEM_ERROR* Error)
 {
-    return SystemDeleteNode(Node, Error);
+    return System_DeleteNode(Node, Error);
 }
 
 SYSTEM_NODE*
-SystemGetRoot(SYSTEM_ERROR* Error)
+System_GetRoot(SYSTEM_ERROR* Error)
 {
-    #define ErrorOut_SystemGetRoot(Code) \
-        ErrorOut(Error, Code, FUNC_SystemGetRoot)
+    #define ErrorOut_System_GetRoot(Code) \
+        ErrorOut(Error, Code, FUNC_System_GetRoot)
 
     if (Probe4Error(SystemRoot) || !SystemRoot)
     {
-        ErrorOut_SystemGetRoot(-ENOENT);
+        ErrorOut_System_GetRoot(-ENOENT);
         return Error2Pointer(Error->ErrorCode);
     }
     

@@ -67,37 +67,52 @@ extern uint64_t FileAllocatedCount;
 extern const uint64_t MaxSystemNodes;
 extern const uint64_t MaxSystemFiles;
 
-int SystemInit(SYSTEM_ERROR* Error);
-int SystemShutdown(SYSTEM_ERROR* Error);
+extern FILESYSTEM_TYPE SystemFileSystemType;
+extern SUPER_OPERATIONS SystemSuperOperations;
+extern VFS_NODE_OPERATIONS SystemVfsOperations;
 
-SYSTEM_NODE* SystemCreateNode(const char*, SYSTEM_NODE_TYPE_ENUMERATION, const SYSTEM_OPERATIONS*, void*, uint64_t, SYSTEM_ERROR*);
-int SystemDeleteNode(SYSTEM_NODE*, SYSTEM_ERROR*);
-SYSTEM_NODE* SystemFindNode(SYSTEM_NODE*, const char*, SYSTEM_ERROR*);
-SYSTEM_NODE* SystemGetRoot(SYSTEM_ERROR*);
-int SystemAttachNode(SYSTEM_NODE*, SYSTEM_NODE*, SYSTEM_ERROR*);
-int SystemDetachNode(SYSTEM_NODE*, SYSTEM_ERROR*);
+int System_KickStart(SYSTEM_ERROR*);
+int System_PowerOff(SYSTEM_ERROR*);
 
-SYSTEM_NODE* SystemCreateFile(const char*, const SYSTEM_OPERATIONS*, void*, uint64_t, SYSTEM_ERROR*);
-SYSTEM_NODE* SystemCreateDirectory(const char*, SYSTEM_ERROR*);
+SYSTEM_NODE* System_CreateNode(const char*, SYSTEM_NODE_TYPE_ENUMERATION, const SYSTEM_OPERATIONS*, void*, uint64_t, SYSTEM_ERROR*);
+int System_DeleteNode(SYSTEM_NODE*, SYSTEM_ERROR*);
+SYSTEM_NODE* System_FindNode(SYSTEM_NODE*, const char*, SYSTEM_ERROR*);
+SYSTEM_NODE* System_GetRoot(SYSTEM_ERROR*);
+int System_AttachNode(SYSTEM_NODE*, SYSTEM_NODE*, SYSTEM_ERROR*);
+int System_DetachNode(SYSTEM_NODE*, SYSTEM_ERROR*);
 
-int SystemVfsOpen(VFS_NODE*, FILE*, SYSTEM_ERROR*);
-int SystemVfsClose(FILE*, SYSTEM_ERROR*);
-long SystemVfsRead(FILE*, void*, uint64_t, SYSTEM_ERROR*);
-long SystemVfsWrite(FILE*, const void*, uint64_t, SYSTEM_ERROR*);
+SYSTEM_NODE* System_CreateFile(const char*, const SYSTEM_OPERATIONS*, void*, uint64_t, SYSTEM_ERROR*);
+SYSTEM_NODE* System_CreateDirectory(const char*, SYSTEM_ERROR*);
 
-long SystemVfsReaddir(VFS_NODE*, void*, uint64_t, SYSTEM_ERROR*);
-VFS_NODE* SystemVfsLookup(VFS_NODE*, const char*, SYSTEM_ERROR*);
+int System_Open(VFS_NODE*, FILE*, SYSTEM_ERROR*);
+int System_Close(FILE*, SYSTEM_ERROR*);
+long System_Read(FILE*, void*, long, SYSTEM_ERROR*);
+long System_Write(FILE*, const void*, long, SYSTEM_ERROR*);
 
-int SystemVfsStat(VFS_NODE*, VFS_STAT*, SYSTEM_ERROR*);
-int SystemGetattr(SYSTEM_NODE*, VFS_STAT*, SYSTEM_ERROR*);
-int SystemSetattr(SYSTEM_NODE*, const VFS_STAT*, SYSTEM_ERROR*);
+long System_ReadDirectory(VFS_NODE*, void*, long, SYSTEM_ERROR*);
+VFS_NODE* System_LookUp(VFS_NODE*, const char*, SYSTEM_ERROR*);
 
-int SystemStatFs(SUPER_BLOCK*, VFS_STAT_FILESYSTEM*, SYSTEM_ERROR*);
-int SystemSync(SUPER_BLOCK*, SYSTEM_ERROR*);
-void SystemRelease(SUPER_BLOCK*, SYSTEM_ERROR*);
+int System_Stat(VFS_NODE*, VFS_STAT*, SYSTEM_ERROR*);
+int System_GetAttribute(SYSTEM_NODE*, VFS_STAT*, SYSTEM_ERROR*);
+int System_SetAttribute(SYSTEM_NODE*, const VFS_STAT*, SYSTEM_ERROR*);
 
-int SystemSetContext(SYSTEM_NODE*, void*, uint64_t, SYSTEM_ERROR*);
-void* SystemGetContext(SYSTEM_NODE*, SYSTEM_ERROR*);
-uint64_t SystemGetContextSize(SYSTEM_NODE*, SYSTEM_ERROR*);
+int System_StatFileSystem(SUPER_BLOCK*, VFS_STAT_FILESYSTEM*, SYSTEM_ERROR*);
+int System_Sync(SUPER_BLOCK*, SYSTEM_ERROR*);
+void System_Release(SUPER_BLOCK*, SYSTEM_ERROR*);
 
-SYSTEM_NODE* SystemWalkPath(const char*, SYSTEM_ERROR*);
+int System_SetContext(SYSTEM_NODE*, void*, uint64_t, SYSTEM_ERROR*);
+void* System_GetContext(SYSTEM_NODE*, SYSTEM_ERROR*);
+uint64_t System_GetContextSize(SYSTEM_NODE*, SYSTEM_ERROR*);
+
+SYSTEM_NODE* System_Walk(const char*, SYSTEM_ERROR*);
+
+int System_RegisterFileSystem(SYSTEM_ERROR*);
+int System_UnRegisterFileSystem(SYSTEM_ERROR*);
+
+SUPER_BLOCK* System_Mount(const char*, const char*, SYSTEM_ERROR*);
+int System_UnMount(SUPER_BLOCK*, SYSTEM_ERROR*);
+
+KEXPORT(System_CreateFile)
+KEXPORT(System_AttachNode)
+KEXPORT(System_DetachNode)
+KEXPORT(System_DeleteNode)

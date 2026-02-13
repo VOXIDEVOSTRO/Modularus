@@ -4,28 +4,28 @@
 #include <DirtyHeap.h>
 
 FILE*
-VfsOpen(const char* Path, long Flags, SYSTEM_ERROR* Error)
+VFS_Open(const char* Path, long Flags, SYSTEM_ERROR* Error)
 {
-    #define ErrorOut_VfsOpen(Code) \
-        ErrorOut(Error, Code, FUNC_VfsOpen)
+    #define ErrorOut_VFS_Open(Code) \
+        ErrorOut(Error, Code, FUNC_VFS_Open)
 
-    DIRECTORY_ENTRY* DirectoryEntry = VfsResolve(Path, Error);
+    DIRECTORY_ENTRY* DirectoryEntry = VFS_Resolve(Path, Error);
     if (Probe4Error(DirectoryEntry) || !DirectoryEntry || Probe4Error(DirectoryEntry->Node) || !DirectoryEntry->Node)
     {
-        ErrorOut_VfsOpen(-ENOENT);
+        ErrorOut_VFS_Open(-ENOENT);
         return Error2Pointer(-ENOENT);
     }
 
     if (Probe4Error(DirectoryEntry->Node->Operations) || !DirectoryEntry->Node->Operations || Probe4Error(DirectoryEntry->Node->Operations->Open) || !DirectoryEntry->Node->Operations->Open)
     {
-        ErrorOut_VfsOpen(-ENOSYS);
+        ErrorOut_VFS_Open(-ENOSYS);
         return Error2Pointer(-ENOSYS);
     }
 
     FILE* FileHandle = (FILE*)KMalloc(sizeof(FILE), Error);
     if (Probe4Error(FileHandle) || !FileHandle)
     {
-        ErrorOut_VfsOpen(-ENOMEM);
+        ErrorOut_VFS_Open(-ENOMEM);
         return Error2Pointer(-ENOMEM);
     }
 
@@ -39,7 +39,7 @@ VfsOpen(const char* Path, long Flags, SYSTEM_ERROR* Error)
     {
         KFree(FileHandle, Error);
 
-        ErrorOut_VfsOpen(Error->ErrorCode);
+        ErrorOut_VFS_Open(Error->ErrorCode);
         return Error2Pointer(Error->ErrorCode);
     }
 
@@ -47,14 +47,14 @@ VfsOpen(const char* Path, long Flags, SYSTEM_ERROR* Error)
 }
 
 int
-VfsClose(FILE* FileHandle, SYSTEM_ERROR* Error)
+VFS_Close(FILE* FileHandle, SYSTEM_ERROR* Error)
 {
-    #define ErrorOut_VfsClose(Code) \
-        ErrorOut(Error, Code, FUNC_VfsClose)
+    #define ErrorOut_VFS_Close(Code) \
+        ErrorOut(Error, Code, FUNC_VFS_Close)
 
     if (Probe4Error(FileHandle) || !FileHandle)
     {
-        ErrorOut_VfsClose(-EINVAL);
+        ErrorOut_VFS_Close(-EINVAL);
         return Error->ErrorCode;
     }
 
@@ -69,20 +69,20 @@ VfsClose(FILE* FileHandle, SYSTEM_ERROR* Error)
 }
 
 long
-VfsRead(FILE* FileHandle, void* OutputBuffer, long BufferLength, SYSTEM_ERROR* Error)
+VFS_Read(FILE* FileHandle, void* OutputBuffer, long BufferLength, SYSTEM_ERROR* Error)
 {
-    #define ErrorOut_VfsRead(Code) \
-        ErrorOut(Error, Code, FUNC_VfsRead)
+    #define ErrorOut_VFS_Read(Code) \
+        ErrorOut(Error, Code, FUNC_VFS_Read)
     
     if (Probe4Error(FileHandle) || !FileHandle || Probe4Error(OutputBuffer) || !OutputBuffer || BufferLength <= 0)
     {
-        ErrorOut_VfsRead(-EINVAL);
+        ErrorOut_VFS_Read(-EINVAL);
         return Error->ErrorCode;
     }
 
     if (Probe4Error(FileHandle->Node) || !FileHandle->Node || Probe4Error(FileHandle->Node->Operations) || !FileHandle->Node->Operations || Probe4Error(FileHandle->Node->Operations->Read) || !FileHandle->Node->Operations->Read)
     {
-        ErrorOut_VfsRead(-ENOSYS);
+        ErrorOut_VFS_Read(-ENOSYS);
         return Error->ErrorCode;
     }
 
@@ -96,20 +96,20 @@ VfsRead(FILE* FileHandle, void* OutputBuffer, long BufferLength, SYSTEM_ERROR* E
 }
 
 long
-VfsWrite(FILE* FileHandle, const void* InputBuffer, long BufferLength, SYSTEM_ERROR* Error)
+VFS_Write(FILE* FileHandle, const void* InputBuffer, long BufferLength, SYSTEM_ERROR* Error)
 {
-    #define ErrorOut_VfsWrite(Code) \
-        ErrorOut(Error, Code, FUNC_VfsWrite)
+    #define ErrorOut_VFS_Write(Code) \
+        ErrorOut(Error, Code, FUNC_VFS_Write)
     
     if (Probe4Error(FileHandle) || !FileHandle || Probe4Error(InputBuffer) || !InputBuffer || BufferLength <= 0)
     {
-        ErrorOut_VfsWrite(-EINVAL);
+        ErrorOut_VFS_Write(-EINVAL);
         return Error->ErrorCode;
     }
 
     if (Probe4Error(FileHandle->Node) || !FileHandle->Node || Probe4Error(FileHandle->Node->Operations) || !FileHandle->Node->Operations || Probe4Error(FileHandle->Node->Operations->Write) || !FileHandle->Node->Operations->Write)
     {
-        ErrorOut_VfsWrite(-ENOSYS);
+        ErrorOut_VFS_Write(-ENOSYS);
         return Error->ErrorCode;
     }
 
@@ -123,29 +123,29 @@ VfsWrite(FILE* FileHandle, const void* InputBuffer, long BufferLength, SYSTEM_ER
 }
 
 FILE*
-VfsOpenAt(DIRECTORY_ENTRY* BaseDirectory, const char* ResolvePath, long Flags, SYSTEM_ERROR* Error)
+VFS_OpenAt(DIRECTORY_ENTRY* BaseDirectory, const char* ResolvePath, long Flags, SYSTEM_ERROR* Error)
 {
-    #define ErrorOut_VfsOpenAt(Code) \
-        ErrorOut(Error, Code, FUNC_VfsOpenAt)
+    #define ErrorOut_VFS_OpenAt(Code) \
+        ErrorOut(Error, Code, FUNC_VFS_OpenAt)
     
-    DIRECTORY_ENTRY* DirectoryEntry = VfsResolveAt(BaseDirectory, ResolvePath, Error);
+    DIRECTORY_ENTRY* DirectoryEntry = VFS_ResolveAt(BaseDirectory, ResolvePath, Error);
     if (Probe4Error(DirectoryEntry) || !DirectoryEntry || Probe4Error(DirectoryEntry->Node) || !DirectoryEntry->Node)
     {
-        ErrorOut_VfsOpenAt(-ENOENT);
+        ErrorOut_VFS_OpenAt(-ENOENT);
         return Error2Pointer(-ENOENT);
     }
 
     if (Probe4Error(DirectoryEntry->Node->Operations) || !DirectoryEntry->Node->Operations || Probe4Error(DirectoryEntry->Node->Operations->Open) ||
         !DirectoryEntry->Node->Operations->Open)
     {
-        ErrorOut_VfsOpenAt(-ENOSYS);
+        ErrorOut_VFS_OpenAt(-ENOSYS);
         return Error2Pointer(-ENOSYS);
     }
 
     FILE* FileHandle = (FILE*)KMalloc(sizeof(FILE), Error);
     if (Probe4Error(FileHandle) || !FileHandle)
     {
-        ErrorOut_VfsOpenAt(-ENOMEM);
+        ErrorOut_VFS_OpenAt(-ENOMEM);
         return Error2Pointer(-ENOMEM);
     }
 
@@ -159,7 +159,7 @@ VfsOpenAt(DIRECTORY_ENTRY* BaseDirectory, const char* ResolvePath, long Flags, S
     {
         KFree(FileHandle, Error);
 
-        ErrorOut_VfsOpenAt(Error->ErrorCode);
+        ErrorOut_VFS_OpenAt(Error->ErrorCode);
         return Error2Pointer(Error->ErrorCode);
     }
 
@@ -167,20 +167,20 @@ VfsOpenAt(DIRECTORY_ENTRY* BaseDirectory, const char* ResolvePath, long Flags, S
 }
 
 long
-VfsLseek(FILE* FileHandle, long Offset, int Whence, SYSTEM_ERROR* Error)
+VFS_LSeek(FILE* FileHandle, long Offset, int Whence, SYSTEM_ERROR* Error)
 {
-    #define ErrorOut_VfsLseek(Code) \
-        ErrorOut(Error, Code, FUNC_VfsLseek)
+    #define ErrorOut_VFS_LSeek(Code) \
+        ErrorOut(Error, Code, FUNC_VFS_LSeek)
     
     if (Probe4Error(FileHandle) || !FileHandle)
     {
-        ErrorOut_VfsLseek(-EINVAL);
+        ErrorOut_VFS_LSeek(-EINVAL);
         return Error->ErrorCode;
     }
 
     if (Probe4Error(FileHandle->Node) || !FileHandle->Node || Probe4Error(FileHandle->Node->Operations) || !FileHandle->Node->Operations || Probe4Error(FileHandle->Node->Operations->Lseek) || !FileHandle->Node->Operations->Lseek)
     {
-        ErrorOut_VfsLseek(-ENOSYS);
+        ErrorOut_VFS_LSeek(-ENOSYS);
         return Error->ErrorCode;
     }
 
@@ -194,20 +194,20 @@ VfsLseek(FILE* FileHandle, long Offset, int Whence, SYSTEM_ERROR* Error)
 }
 
 int
-VfsIoctl(FILE* FileHandle, unsigned long Command, void* Argument, SYSTEM_ERROR* Error)
+VFS_IOControl(FILE* FileHandle, unsigned long Command, void* Argument, SYSTEM_ERROR* Error)
 {
-    #define ErrorOut_VfsIoctl(Code) \
-        ErrorOut(Error, Code, FUNC_VfsIoctl)
+    #define ErrorOut_VFS_IOControl(Code) \
+        ErrorOut(Error, Code, FUNC_VFS_IOControl)
     
     if (Probe4Error(FileHandle) || !FileHandle)
     {
-        ErrorOut_VfsIoctl(-EINVAL);
+        ErrorOut_VFS_IOControl(-EINVAL);
         return Error->ErrorCode;
     }
 
     if (Probe4Error(FileHandle->Node) || !FileHandle->Node || Probe4Error(FileHandle->Node->Operations) || !FileHandle->Node->Operations || Probe4Error(FileHandle->Node->Operations->Ioctl) || !FileHandle->Node->Operations->Ioctl)
     {
-        ErrorOut_VfsIoctl(-ENOSYS);
+        ErrorOut_VFS_IOControl(-ENOSYS);
         return Error->ErrorCode;
     }
 

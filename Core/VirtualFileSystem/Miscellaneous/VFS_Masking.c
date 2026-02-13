@@ -4,7 +4,7 @@
 #include <DirtyHeap.h>
 
 int
-VfsSetUmask(long Mode, SYSTEM_ERROR* Error __UNUSED)
+VFS_SetUnMask(long Mode, SYSTEM_ERROR* Error __UNUSED)
 {
     UnMask = Mode;
     
@@ -12,7 +12,7 @@ VfsSetUmask(long Mode, SYSTEM_ERROR* Error __UNUSED)
 }
 
 long
-VfsGetUmask(SYSTEM_ERROR* Error __UNUSED)
+VFS_GetUnMask(SYSTEM_ERROR* Error __UNUSED)
 {
     return UnMask;
 }

@@ -4,14 +4,14 @@
 #include <DirtyHeap.h>
 
 int
-DentryInvalidate(DIRECTORY_ENTRY* DirectoryEntry, SYSTEM_ERROR* Error)
+VFS_DentryInvalidate(DIRECTORY_ENTRY* DirectoryEntry, SYSTEM_ERROR* Error)
 {
-    #define ErrorOut_DentryInvalidate(Code) \
-        ErrorOut(Error, Code, FUNC_DentryInvalidate)
+    #define ErrorOut_VFS_DentryInvalidate(Code) \
+        ErrorOut(Error, Code, FUNC_VFS_DentryInvalidate)
     
     if (Probe4Error(DirectoryEntry) || !DirectoryEntry)
     {
-        ErrorOut_DentryInvalidate(-EINVAL);
+        ErrorOut_VFS_DentryInvalidate(-EINVAL);
         return Error->ErrorCode;
     }
 
@@ -21,14 +21,14 @@ DentryInvalidate(DIRECTORY_ENTRY* DirectoryEntry, SYSTEM_ERROR* Error)
 }
 
 int
-DentryRevalidate(DIRECTORY_ENTRY* DirectoryEntry, SYSTEM_ERROR* Error)
+VFS_DentryRevalidate(DIRECTORY_ENTRY* DirectoryEntry, SYSTEM_ERROR* Error)
 {
-    #define ErrorOut_DentryRevalidate(Code) \
-        ErrorOut(Error, Code, FUNC_DentryRevalidate)
+    #define ErrorOut_VFS_DentryRevalidate(Code) \
+        ErrorOut(Error, Code, FUNC_VFS_DentryRevalidate)
 
     if (Probe4Error(DirectoryEntry) || !DirectoryEntry)
     {
-        ErrorOut_DentryRevalidate(-EINVAL);
+        ErrorOut_VFS_DentryRevalidate(-EINVAL);
         return Error->ErrorCode;
     }
 
@@ -38,14 +38,14 @@ DentryRevalidate(DIRECTORY_ENTRY* DirectoryEntry, SYSTEM_ERROR* Error)
 }
 
 int
-DentryAttach(DIRECTORY_ENTRY* DirectoryEntry, VFS_NODE* Node, SYSTEM_ERROR* Error)
+VFS_DentryAttach(DIRECTORY_ENTRY* DirectoryEntry, VFS_NODE* Node, SYSTEM_ERROR* Error)
 {
-    #define ErrorOut_DentryAttach(Code) \
-        ErrorOut(Error, Code, FUNC_DentryAttach)
+    #define ErrorOut_VFS_DentryAttach(Code) \
+        ErrorOut(Error, Code, FUNC_VFS_DentryAttach)
 
     if (Probe4Error(DirectoryEntry) || !DirectoryEntry || Probe4Error(Node) || !Node)
     {
-        ErrorOut_DentryAttach(-EINVAL);
+        ErrorOut_VFS_DentryAttach(-EINVAL);
         return Error->ErrorCode;
     }
 
@@ -55,14 +55,14 @@ DentryAttach(DIRECTORY_ENTRY* DirectoryEntry, VFS_NODE* Node, SYSTEM_ERROR* Erro
 }
 
 int
-DentryDetach(DIRECTORY_ENTRY* DirectoryEntry, SYSTEM_ERROR* Error)
+VFS_DentryDetach(DIRECTORY_ENTRY* DirectoryEntry, SYSTEM_ERROR* Error)
 {
-    #define ErrorOut_DentryDetach(Code) \
-        ErrorOut(Error, Code, FUNC_DentryDetach)
+    #define ErrorOut_VFS_DentryDetach(Code) \
+        ErrorOut(Error, Code, FUNC_VFS_DentryDetach)
 
     if (Probe4Error(DirectoryEntry) || !DirectoryEntry)
     {
-        ErrorOut_DentryDetach(-EINVAL);
+        ErrorOut_VFS_DentryDetach(-EINVAL);
         return Error->ErrorCode;
     }
 
@@ -72,21 +72,21 @@ DentryDetach(DIRECTORY_ENTRY* DirectoryEntry, SYSTEM_ERROR* Error)
 }
 
 int
-DentryName(DIRECTORY_ENTRY* DirectoryEntry, char* Buffer, long Length, SYSTEM_ERROR* Error)
+VFS_DentryName(DIRECTORY_ENTRY* DirectoryEntry, char* Buffer, long Length, SYSTEM_ERROR* Error)
 {
-    #define ErrorOut_DentryName(Code) \
-        ErrorOut(Error, Code, FUNC_DentryName)
+    #define ErrorOut_VFS_DentryName(Code) \
+        ErrorOut(Error, Code, FUNC_VFS_DentryName)
 
     if (Probe4Error(DirectoryEntry) || !DirectoryEntry || Probe4Error(Buffer) || !Buffer || Length <= 0)
     {
-        ErrorOut_DentryName(-EINVAL);
+        ErrorOut_VFS_DentryName(-EINVAL);
         return Error->ErrorCode;
     }
 
     long Index = (long)strlen(DirectoryEntry->Name);
     if (Index >= Length)
     {
-        ErrorOut_DentryName(-Limits);
+        ErrorOut_VFS_DentryName(-Limits);
         return Error->ErrorCode;
     }
 

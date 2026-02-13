@@ -4,18 +4,33 @@
 #include <VirtualFileSystem.h>
 #include <System.h>/*sysfs++*/
 
+#ifdef BUILTINS
+    #include <BuiltIns/Device/UART.h>
+#endif
+
 SYSTEM_ERROR Err;
 SYSTEM_ERROR* Error = &Err;
     
-void KernelBoot(void)
+void KernelMain(void)
 {
     /*STANDARD*/
-    VfsInit(Error);
+    VFS_KickStart(Error);
 
     /*sysfs++ as root*/
-    SystemInit(Error);
-    SystemRoot = SystemCreateDirectory("/", Error);
-    VfsMount("", "/", "sysfs++", 0, 0, Error);
+    System_KickStart(Error);
+    VFS_Mount("", "/", "sysfs++", 0, 0, Error);
+
+    /*BuiltIns*/
+    #ifdef BUILTINS
+        UART_KickStart(Error);
+    #endif
+
+    #ifdef TESTING
+        char Message[] = "\nHello World!\n";
+        FILE* File = VFS_Open("/uart", VFS_OpenFlag_WRITEONLY, Error);
+        VFS_Write(File, Message, strlen(Message), Error);
+        VFS_Close(File, Error);
+    #endif
 
     for(;;)
     {

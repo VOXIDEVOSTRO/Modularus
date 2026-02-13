@@ -4,14 +4,14 @@
 #include <DirtyHeap.h>
 
 int
-VfsNodePath(VFS_NODE* Node __UNUSED, char* Buffer, long Length, SYSTEM_ERROR* Error)
+VFS_NodePath(VFS_NODE* Node __UNUSED, char* Buffer, long Length, SYSTEM_ERROR* Error)
 {
-    #define ErrorOut_VfsNodePath(Code) \
-        ErrorOut(Error, Code, FUNC_VfsNodePath)
+    #define ErrorOut_VFS_NodePath(Code) \
+        ErrorOut(Error, Code, FUNC_VFS_NodePath)
 
     if (Probe4Error(Buffer) || !Buffer || Length <= 0)
     {
-        ErrorOut_VfsNodePath(-EINVAL);
+        ErrorOut_VFS_NodePath(-EINVAL);
         return Error->ErrorCode;
     }
 
@@ -19,7 +19,7 @@ VfsNodePath(VFS_NODE* Node __UNUSED, char* Buffer, long Length, SYSTEM_ERROR* Er
     long Index = (long)strlen(Path);
     if (Index >= Length)
     {
-        ErrorOut_VfsNodePath(-Limits);
+        ErrorOut_VFS_NodePath(-Limits);
         return Error->ErrorCode;
     }
 
@@ -29,14 +29,14 @@ VfsNodePath(VFS_NODE* Node __UNUSED, char* Buffer, long Length, SYSTEM_ERROR* Er
 }
 
 int
-VfsNodeName(VFS_NODE* Node __UNUSED, char* Buffer, long Length, SYSTEM_ERROR* Error)
+VFS_NodeName(VFS_NODE* Node __UNUSED, char* Buffer, long Length, SYSTEM_ERROR* Error)
 {
-    #define ErrorOut_VfsNodeName(Code) \
-        ErrorOut(Error, Code, FUNC_VfsNodeName)
+    #define ErrorOut_VFS_NodeName(Code) \
+        ErrorOut(Error, Code, FUNC_VFS_NodeName)
 
     if (Probe4Error(Buffer) || !Buffer || Length <= 0)
     {
-        ErrorOut_VfsNodeName(-EINVAL);
+        ErrorOut_VFS_NodeName(-EINVAL);
         return Error->ErrorCode;
     }
 
@@ -44,7 +44,7 @@ VfsNodeName(VFS_NODE* Node __UNUSED, char* Buffer, long Length, SYSTEM_ERROR* Er
     long Index = (long)strlen(Path);
     if (Index >= Length)
     {
-        ErrorOut_VfsNodeName(-Limits);
+        ErrorOut_VFS_NodeName(-Limits);
         return Error->ErrorCode;
     }
 
@@ -54,21 +54,21 @@ VfsNodeName(VFS_NODE* Node __UNUSED, char* Buffer, long Length, SYSTEM_ERROR* Er
 }
 
 int
-VfsAllocName(char** Output, long Length, SYSTEM_ERROR* Error)
+VFS_AllocateName(char** Output, long Length, SYSTEM_ERROR* Error)
 {
-    #define ErrorOut_VfsAllocName(Code) \
-        ErrorOut(Error, Code, FUNC_VfsAllocName)
+    #define ErrorOut_VFS_AllocateName(Code) \
+        ErrorOut(Error, Code, FUNC_VFS_AllocateName)
 
     if (Probe4Error(Output) || !Output || Length <= 0)
     {
-        ErrorOut_VfsAllocName(-EINVAL);
+        ErrorOut_VFS_AllocateName(-EINVAL);
         return Error->ErrorCode;
     }
 
     *Output = (char*)KMalloc((size_t)Length, Error);
     if (Probe4Error(*Output) || !*Output)
     {
-        ErrorOut_VfsAllocName(-ENOMEM);
+        ErrorOut_VFS_AllocateName(-ENOMEM);
         return Error->ErrorCode;
     }
 
@@ -76,14 +76,14 @@ VfsAllocName(char** Output, long Length, SYSTEM_ERROR* Error)
 }
 
 int
-VfsFreeName(char* Name, SYSTEM_ERROR* Error)
+VFS_FreeName(char* Name, SYSTEM_ERROR* Error)
 {
-    #define ErrorOut_VfsFreeName(Code) \
-        ErrorOut(Error, Code, FUNC_VfsFreeName)
+    #define ErrorOut_VFS_FreeName(Code) \
+        ErrorOut(Error, Code, FUNC_VFS_FreeName)
 
     if (Probe4Error(Name) || !Name)
     {
-        ErrorOut_VfsFreeName(-EINVAL);
+        ErrorOut_VFS_FreeName(-EINVAL);
         return Error->ErrorCode;
     }
 
@@ -93,14 +93,14 @@ VfsFreeName(char* Name, SYSTEM_ERROR* Error)
 }
 
 int
-VfsJoinPath(const char* FirstPath, const char* SecondPath, char* Output, long Length, SYSTEM_ERROR* Error)
+VFS_JoinPath(const char* FirstPath, const char* SecondPath, char* Output, long Length, SYSTEM_ERROR* Error)
 {
-    #define ErrorOut_VfsJoinPath(Code) \
-        ErrorOut(Error, Code, FUNC_VfsJoinPath)
+    #define ErrorOut_VFS_JoinPath(Code) \
+        ErrorOut(Error, Code, FUNC_VFS_JoinPath)
 
     if (Probe4Error(FirstPath) || !FirstPath || Probe4Error(SecondPath) || !SecondPath || Probe4Error(Output) || !Output || Length <= 0)
     {
-        ErrorOut_VfsJoinPath(-EINVAL);
+        ErrorOut_VFS_JoinPath(-EINVAL);
         return Error->ErrorCode;
     }
 
@@ -109,7 +109,7 @@ VfsJoinPath(const char* FirstPath, const char* SecondPath, char* Output, long Le
     long Required = FirstPathLength + 1 + SecondPathLength + 1;
     if (Required > Length)
     {
-        ErrorOut_VfsJoinPath(-Limits);
+        ErrorOut_VFS_JoinPath(-Limits);
         return Error->ErrorCode;
     }
 
@@ -122,14 +122,14 @@ VfsJoinPath(const char* FirstPath, const char* SecondPath, char* Output, long Le
 }
 
 int
-VfsSetMaxName(long Length, SYSTEM_ERROR* Error)
+VFS_SetMaxName(long Length, SYSTEM_ERROR* Error)
 {
-    #define ErrorOut_VfsSetMaxName(Code) \
-        ErrorOut(Error, Code, FUNC_VfsSetMaxName)
+    #define ErrorOut_VFS_SetMaxName(Code) \
+        ErrorOut(Error, Code, FUNC_VFS_SetMaxName)
 
     if (Length < 1)
     {
-        ErrorOut_VfsSetMaxName(-Limits);
+        ErrorOut_VFS_SetMaxName(-Limits);
         return Error->ErrorCode;
     }
 
@@ -139,20 +139,20 @@ VfsSetMaxName(long Length, SYSTEM_ERROR* Error)
 }
 
 long
-VfsGetMaxName(SYSTEM_ERROR* Error __UNUSED)
+VFS_GetMaxName(SYSTEM_ERROR* Error __UNUSED)
 {
     return MaxName;
 }
 
 int
-VfsSetMaxPath(long Length, SYSTEM_ERROR* Error)
+VFS_SetMaxPath(long Length, SYSTEM_ERROR* Error)
 {
-    #define ErrorOut_VfsSetMaxPath(Code) \
-        ErrorOut(Error, Code, FUNC_VfsSetMaxPath)
+    #define ErrorOut_VFS_SetMaxPath(Code) \
+        ErrorOut(Error, Code, FUNC_VFS_SetMaxPath)
 
     if (Length < 1)
     {
-        ErrorOut_VfsSetMaxPath(-Limits);
+        ErrorOut_VFS_SetMaxPath(-Limits);
         return Error->ErrorCode;
     }
 
@@ -162,7 +162,7 @@ VfsSetMaxPath(long Length, SYSTEM_ERROR* Error)
 }
 
 long
-VfsGetMaxPath(SYSTEM_ERROR* Error __UNUSED)
+VFS_GetMaxPath(SYSTEM_ERROR* Error __UNUSED)
 {
     return MaxPath;
 }

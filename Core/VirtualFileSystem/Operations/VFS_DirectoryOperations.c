@@ -4,27 +4,27 @@
 #include <DirtyHeap.h>
 
 long
-VfsReaddir(const char* Path, void* Buffer, long BufferLength, SYSTEM_ERROR* Error)
+VFS_ReadDirectory(const char* Path, void* Buffer, long BufferLength, SYSTEM_ERROR* Error)
 {
-    #define ErrorOut_VfsReaddir(Code) \
-        ErrorOut(Error, Code, FUNC_VfsReaddir)
+    #define ErrorOut_VFS_ReadDirectory(Code) \
+        ErrorOut(Error, Code, FUNC_VFS_ReadDirectory)
     
     if (Probe4Error(Path) || !Path || Probe4Error(Buffer) || !Buffer || BufferLength <= 0)
     {
-        ErrorOut_VfsReaddir(-EINVAL);
+        ErrorOut_VFS_ReadDirectory(-EINVAL);
         return Error->ErrorCode;
     }
 
-    DIRECTORY_ENTRY* DirectoryEntry = VfsResolve(Path, Error);
+    DIRECTORY_ENTRY* DirectoryEntry = VFS_Resolve(Path, Error);
     if (Probe4Error(DirectoryEntry) || !DirectoryEntry || Probe4Error(DirectoryEntry->Node) || !DirectoryEntry->Node)
     {
-        ErrorOut_VfsReaddir(-ENOENT);
+        ErrorOut_VFS_ReadDirectory(-ENOENT);
         return Error->ErrorCode;
     }
 
     if (Probe4Error(DirectoryEntry->Node->Operations) || !DirectoryEntry->Node->Operations || Probe4Error(DirectoryEntry->Node->Operations->Readdir) || !DirectoryEntry->Node->Operations->Readdir)
     {
-        ErrorOut_VfsReaddir(-ENOSYS);
+        ErrorOut_VFS_ReadDirectory(-ENOSYS);
         return Error->ErrorCode;
     }
     
@@ -32,20 +32,20 @@ VfsReaddir(const char* Path, void* Buffer, long BufferLength, SYSTEM_ERROR* Erro
 }
 
 long
-VfsReaddirF(FILE* FileHandle, void* Buffer, long BufferLength, SYSTEM_ERROR* Error)
+VFS_ReadDirectoryF(FILE* FileHandle, void* Buffer, long BufferLength, SYSTEM_ERROR* Error)
 {
-    #define ErrorOut_VfsReaddirF(Code) \
-        ErrorOut(Error, Code, FUNC_VfsReaddirF)
+    #define ErrorOut_VFS_ReadDirectoryF(Code) \
+        ErrorOut(Error, Code, FUNC_VFS_ReadDirectoryF)
     
     if (Probe4Error(FileHandle) || !FileHandle || Probe4Error(Buffer) || !Buffer || BufferLength <= 0)
     {
-        ErrorOut_VfsReaddirF(-EINVAL);
+        ErrorOut_VFS_ReadDirectoryF(-EINVAL);
         return Error->ErrorCode;
     }
 
     if (Probe4Error(FileHandle->Node) || !FileHandle->Node || Probe4Error(FileHandle->Node->Operations) || !FileHandle->Node->Operations || Probe4Error(FileHandle->Node->Operations->Readdir) || !FileHandle->Node->Operations->Readdir)
     {
-        ErrorOut_VfsReaddirF(-ENOSYS);
+        ErrorOut_VFS_ReadDirectoryF(-ENOSYS);
         return Error->ErrorCode;
     }
 
@@ -54,17 +54,17 @@ VfsReaddirF(FILE* FileHandle, void* Buffer, long BufferLength, SYSTEM_ERROR* Err
 
 
 int
-VfsMkdir(const char* Path, VFS_PERMISSIONS Permission, SYSTEM_ERROR* Error)
+VFS_MakeDirectory(const char* Path, VFS_PERMISSIONS Permission, SYSTEM_ERROR* Error)
 {
-    #define ErrorOut_VfsMkdir(Code) \
-        ErrorOut(Error, Code, FUNC_VfsMkdir)
+    #define ErrorOut_VFS_MakeDirectory(Code) \
+        ErrorOut(Error, Code, FUNC_VFS_MakeDirectory)
 
     DIRECTORY_ENTRY* Base = 0;
     char    Name[256];
 
     if (Probe4Error(Path) || !Path)
     {
-        ErrorOut_VfsMkdir(-EINVAL);
+        ErrorOut_VFS_MakeDirectory(-EINVAL);
         return Error->ErrorCode;
     }
 
@@ -98,21 +98,21 @@ VfsMkdir(const char* Path, VFS_PERMISSIONS Permission, SYSTEM_ERROR* Error)
 
         if (Probe4Error(Current) || !Current || Probe4Error(Current->Operations) || !Current->Operations || Probe4Error(Current->Operations->Lookup) || !Current->Operations->Lookup)
         {
-            ErrorOut_VfsMkdir(-ENOSYS);
+            ErrorOut_VFS_MakeDirectory(-ENOSYS);
             return Error->ErrorCode;
         }
 
         VFS_NODE* Next = Current->Operations->Lookup(Current, Name, Error);
         if (Probe4Error(Next) || !Next)
         {
-            ErrorOut_VfsMkdir(-ENOENT);
+            ErrorOut_VFS_MakeDirectory(-ENOENT);
             return Error->ErrorCode;
         }
 
         char* Dublicate = (char*)KMalloc((size_t)(Index + 1), Error);
         if (Probe4Error(Dublicate) || !Dublicate)
         {
-            ErrorOut_VfsMkdir(-ENOMEM);
+            ErrorOut_VFS_MakeDirectory(-ENOMEM);
             return Error->ErrorCode;
         }
 
@@ -120,7 +120,7 @@ VfsMkdir(const char* Path, VFS_PERMISSIONS Permission, SYSTEM_ERROR* Error)
         DirectoryEntry = AllocateDirectoryEntry(Dublicate, DirectoryEntry, Next, Error);
         if (Probe4Error(DirectoryEntry) || !DirectoryEntry)
         {
-            ErrorOut_VfsMkdir(Error->ErrorCode);
+            ErrorOut_VFS_MakeDirectory(Error->ErrorCode);
             return Error->ErrorCode;
         }
 
@@ -128,7 +128,7 @@ VfsMkdir(const char* Path, VFS_PERMISSIONS Permission, SYSTEM_ERROR* Error)
     }
     if (Probe4Error(Base) || !Base || Probe4Error(Base->Node) || !Base->Node || Probe4Error(Base->Node->Operations) || !Base->Node->Operations || Probe4Error(Base->Node->Operations->Mkdir) || !Base->Node->Operations->Mkdir)
     {
-        ErrorOut_VfsMkdir(-ENOSYS);
+        ErrorOut_VFS_MakeDirectory(-ENOSYS);
         return Error->ErrorCode;
     }
     
@@ -136,16 +136,16 @@ VfsMkdir(const char* Path, VFS_PERMISSIONS Permission, SYSTEM_ERROR* Error)
 }
 
 int
-VfsRmdir(const char* Path, SYSTEM_ERROR* Error)
+VFS_RemoveDirectory(const char* Path, SYSTEM_ERROR* Error)
 {
-    #define ErrorOut_VfsRmdir(Code) \
-        ErrorOut(Error, Code, FUNC_VfsRmdir)
+    #define ErrorOut_VFS_RemoveDirectory(Code) \
+        ErrorOut(Error, Code, FUNC_VFS_RemoveDirectory)
 
     DIRECTORY_ENTRY* Base = 0;
     char Name[256];
     if (Probe4Error(Path) || !Path)
     {
-        ErrorOut_VfsRmdir(-EINVAL);
+        ErrorOut_VFS_RemoveDirectory(-EINVAL);
         return Error->ErrorCode;
     }
     
@@ -179,14 +179,14 @@ VfsRmdir(const char* Path, SYSTEM_ERROR* Error)
 
         if (Probe4Error(Current) || !Current || Probe4Error(Current->Operations) || !Current->Operations || Probe4Error(Current->Operations->Lookup) || !Current->Operations->Lookup)
         {
-            ErrorOut_VfsRmdir(-ENOSYS);
+            ErrorOut_VFS_RemoveDirectory(-ENOSYS);
             return Error->ErrorCode;
         }
 
         VFS_NODE* Next = Current->Operations->Lookup(Current, Name, Error);
         if (Probe4Error(Next) || !Next)
         {
-            ErrorOut_VfsRmdir(-ENOENT);
+            ErrorOut_VFS_RemoveDirectory(-ENOENT);
             return Error->ErrorCode;
         }
 
@@ -197,7 +197,7 @@ VfsRmdir(const char* Path, SYSTEM_ERROR* Error)
     }
     if (Probe4Error(Base) || !Base || Probe4Error(Base->Node) || !Base->Node || Probe4Error(Base->Node->Operations) || !Base->Node->Operations || Probe4Error(Base->Node->Operations->Rmdir) || !Base->Node->Operations->Rmdir)
     {
-        ErrorOut_VfsRmdir(-ENOSYS);
+        ErrorOut_VFS_RemoveDirectory(-ENOSYS);
         return Error->ErrorCode;
     }
     

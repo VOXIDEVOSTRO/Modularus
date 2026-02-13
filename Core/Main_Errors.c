@@ -2,7 +2,7 @@
 #include <Errors.h>
 #include <KExports.h>
 
-ERROR_KEYS_REGISTRY ErrorKeysRegistry=
+ERROR_KEYS_REGISTRY ErrorKeysRegistry =
 {
     .Head = NULL,
     .Tail = NULL,

@@ -4,10 +4,10 @@
 #include <DirtyHeap.h>
 
 int
-VfsRename(const char* OldPath, const char* NewPath, long Flags, SYSTEM_ERROR* Error)
+VFS_ReName(const char* OldPath, const char* NewPath, long Flags, SYSTEM_ERROR* Error)
 {
-    #define ErrorOut_VfsRename(Code) \
-        ErrorOut(Error, Code, FUNC_VfsRename)
+    #define ErrorOut_VFS_ReName(Code) \
+        ErrorOut(Error, Code, FUNC_VFS_ReName)
 
     DIRECTORY_ENTRY* OldBase = 0;
     DIRECTORY_ENTRY* NewBase = 0;
@@ -16,7 +16,7 @@ VfsRename(const char* OldPath, const char* NewPath, long Flags, SYSTEM_ERROR* Er
 
     if (Probe4Error(OldPath) || !OldPath || Probe4Error(NewPath) || !NewPath)
     {
-        ErrorOut_VfsRename(-EINVAL);
+        ErrorOut_VFS_ReName(-EINVAL);
         return Error->ErrorCode;
     }
 
@@ -52,21 +52,21 @@ VfsRename(const char* OldPath, const char* NewPath, long Flags, SYSTEM_ERROR* Er
 
         if (Probe4Error(CurrentOldNode) || !CurrentOldNode || Probe4Error(CurrentOldNode->Operations) || !CurrentOldNode->Operations || Probe4Error(CurrentOldNode->Operations->Lookup) || !CurrentOldNode->Operations->Lookup)
         {
-            ErrorOut_VfsRename(-ENOSYS);
+            ErrorOut_VFS_ReName(-ENOSYS);
             return Error->ErrorCode;
         }
 
         VFS_NODE* Next = CurrentOldNode->Operations->Lookup(CurrentOldNode, OldName, Error);
         if (Probe4Error(Next) || !Next)
         {
-            ErrorOut_VfsRename(-ENOENT);
+            ErrorOut_VFS_ReName(-ENOENT);
             return Error->ErrorCode;
         }
 
         char* Dublicate = (char*)KMalloc((size_t)(Index + 1), Error);
         if (Probe4Error(Dublicate) || !Dublicate)
         {
-            ErrorOut_VfsRename(-ENOMEM);
+            ErrorOut_VFS_ReName(-ENOMEM);
             return Error->ErrorCode;
         }
 
@@ -74,7 +74,7 @@ VfsRename(const char* OldPath, const char* NewPath, long Flags, SYSTEM_ERROR* Er
         OldDirectoryEntry = AllocateDirectoryEntry(Dublicate, OldDirectoryEntry, Next, Error);
         if (Probe4Error(OldDirectoryEntry) || !OldDirectoryEntry)
         {
-            ErrorOut_VfsRename(Error->ErrorCode);
+            ErrorOut_VFS_ReName(Error->ErrorCode);
             return Error->ErrorCode;
         }
 
@@ -113,21 +113,21 @@ VfsRename(const char* OldPath, const char* NewPath, long Flags, SYSTEM_ERROR* Er
 
         if (Probe4Error(CurrentNewNode) || !CurrentNewNode || Probe4Error(CurrentNewNode->Operations) || !CurrentNewNode->Operations || Probe4Error(CurrentNewNode->Operations->Lookup) || !CurrentNewNode->Operations->Lookup)
         {
-            ErrorOut_VfsRename(-ENOSYS);
+            ErrorOut_VFS_ReName(-ENOSYS);
             return Error->ErrorCode;
         }
 
         VFS_NODE* Next = CurrentNewNode->Operations->Lookup(CurrentNewNode, NewName, Error);
         if (Probe4Error(Next) || !Next)
         {
-            ErrorOut_VfsRename(-ENOENT);
+            ErrorOut_VFS_ReName(-ENOENT);
             return Error->ErrorCode;
         }
 
         char* Dublicate = (char*)KMalloc((size_t)(Index + 1), Error);
         if (Probe4Error(Dublicate) || !Dublicate)
         {
-            ErrorOut_VfsRename(-ENOMEM);
+            ErrorOut_VFS_ReName(-ENOMEM);
             return Error->ErrorCode;
         }
 
@@ -135,7 +135,7 @@ VfsRename(const char* OldPath, const char* NewPath, long Flags, SYSTEM_ERROR* Er
         NewDirectoryEntry = AllocateDirectoryEntry(Dublicate, NewDirectoryEntry, Next, Error);
         if (Probe4Error(NewDirectoryEntry) || !NewDirectoryEntry)
         {
-            ErrorOut_VfsRename(Error->ErrorCode);
+            ErrorOut_VFS_ReName(Error->ErrorCode);
             return Error->ErrorCode;
         }
 
@@ -144,19 +144,19 @@ VfsRename(const char* OldPath, const char* NewPath, long Flags, SYSTEM_ERROR* Er
 
     if (Probe4Error(OldBase) || !OldBase || Probe4Error(NewBase) || !NewBase)
     {
-        ErrorOut_VfsRename(-ENOENT);
+        ErrorOut_VFS_ReName(-ENOENT);
         return Error->ErrorCode;
     }
 
     if (Probe4Error(OldBase->Node) || !OldBase->Node || Probe4Error(NewBase->Node) || !NewBase->Node)
     {
-        ErrorOut_VfsRename(-ENOENT);
+        ErrorOut_VFS_ReName(-ENOENT);
         return Error->ErrorCode;
     }
 
     if (Probe4Error(OldBase->Node->Operations) || !OldBase->Node->Operations || Probe4Error(OldBase->Node->Operations->Rename) || !OldBase->Node->Operations->Rename)
     {
-        ErrorOut_VfsRename(-ENOSYS);
+        ErrorOut_VFS_ReName(-ENOSYS);
         return Error->ErrorCode;
     }
     
@@ -164,21 +164,21 @@ VfsRename(const char* OldPath, const char* NewPath, long Flags, SYSTEM_ERROR* Er
 }
 
 int
-VfsTruncate(const char* Path, long Length, SYSTEM_ERROR* Error)
+VFS_Truncate(const char* Path, long Length, SYSTEM_ERROR* Error)
 {
-    #define ErrorOut_VfsTruncate(Code) \
-        ErrorOut(Error, Code, FUNC_VfsTruncate)
+    #define ErrorOut_VFS_Truncate(Code) \
+        ErrorOut(Error, Code, FUNC_VFS_Truncate)
 
-    DIRECTORY_ENTRY* DirectoryEntry = VfsResolve(Path, Error);
+    DIRECTORY_ENTRY* DirectoryEntry = VFS_Resolve(Path, Error);
     if (Probe4Error(DirectoryEntry) || !DirectoryEntry || Probe4Error(DirectoryEntry->Node) || !DirectoryEntry->Node)
     {
-        ErrorOut_VfsTruncate(-ENOENT);
+        ErrorOut_VFS_Truncate(-ENOENT);
         return Error->ErrorCode;
     }
 
     if (Probe4Error(DirectoryEntry->Node->Operations) || !DirectoryEntry->Node->Operations || Probe4Error(DirectoryEntry->Node->Operations->Truncate) || !DirectoryEntry->Node->Operations->Truncate)
     {
-        ErrorOut_VfsTruncate(-ENOSYS);
+        ErrorOut_VFS_Truncate(-ENOSYS);
         return Error->ErrorCode;
     }
     
@@ -186,37 +186,37 @@ VfsTruncate(const char* Path, long Length, SYSTEM_ERROR* Error)
 }
 
 int
-VfsCopy(const char* Source, const char* Destination, long Flags __UNUSED, SYSTEM_ERROR* Error)
+VFS_Copy(const char* Source, const char* Destination, long Flags __UNUSED, SYSTEM_ERROR* Error)
 {
-    #define ErrorOut_VfsCopy(Code) \
-        ErrorOut(Error, Code, FUNC_VfsCopy)
+    #define ErrorOut_VFS_Copy(Code) \
+        ErrorOut(Error, Code, FUNC_VFS_Copy)
 
-    FILE* SourceFileHandle = VfsOpen(Source, VfsOpenFlag_READONLY, Error);
+    FILE* SourceFileHandle = VFS_Open(Source, VFS_OpenFlag_READONLY, Error);
     if (Probe4Error(SourceFileHandle) || !SourceFileHandle)
     {
-        ErrorOut_VfsCopy(-ENOENT);
+        ErrorOut_VFS_Copy(-ENOENT);
         return Error->ErrorCode;
     }
 
-    FILE* DestinationFileHandle = VfsOpen(Destination, VfsOpenFlag_CREATE | VfsOpenFlag_WRITEONLY | VfsOpenFlag_TRUNCATE, Error);
+    FILE* DestinationFileHandle = VFS_Open(Destination, VFS_OpenFlag_CREATE | VFS_OpenFlag_WRITEONLY | VFS_OpenFlag_TRUNCATE, Error);
     if (Probe4Error(DestinationFileHandle) || !DestinationFileHandle)
     {
-        VfsClose(SourceFileHandle, Error);
+        VFS_Close(SourceFileHandle, Error);
 
-        ErrorOut_VfsCopy(-ENOENT);
+        ErrorOut_VFS_Copy(-ENOENT);
         return Error->ErrorCode;
     }
 
     char Buffer[4096];
     for (;;)
     {
-        long ReadIndex = VfsRead(SourceFileHandle, Buffer, sizeof(Buffer), Error);
+        long ReadIndex = VFS_Read(SourceFileHandle, Buffer, sizeof(Buffer), Error);
         if (ReadIndex < 0)
         {
-            VfsClose(SourceFileHandle, Error);
-            VfsClose(DestinationFileHandle, Error);
+            VFS_Close(SourceFileHandle, Error);
+            VFS_Close(DestinationFileHandle, Error);
 
-            ErrorOut_VfsCopy(-Limits);
+            ErrorOut_VFS_Copy(-Limits);
             return Error->ErrorCode;
         }
 
@@ -225,41 +225,41 @@ VfsCopy(const char* Source, const char* Destination, long Flags __UNUSED, SYSTEM
             break;
         }
 
-        long WriteIndex = VfsWrite(DestinationFileHandle, Buffer, ReadIndex, Error);
+        long WriteIndex = VFS_Write(DestinationFileHandle, Buffer, ReadIndex, Error);
         if (WriteIndex != ReadIndex)
         {
-            VfsClose(SourceFileHandle, Error);
-            VfsClose(DestinationFileHandle, Error);
+            VFS_Close(SourceFileHandle, Error);
+            VFS_Close(DestinationFileHandle, Error);
             
-            ErrorOut_VfsCopy(-Limits);
+            ErrorOut_VFS_Copy(-Limits);
             return Error->ErrorCode;
         }
     }
 
-    VfsClose(SourceFileHandle, Error);
-    VfsClose(DestinationFileHandle, Error);
+    VFS_Close(SourceFileHandle, Error);
+    VFS_Close(DestinationFileHandle, Error);
     
     return GeneralOK;
 }
 
 int
-VfsMove(const char* Source, const char* Destination, long Flags, SYSTEM_ERROR* Error)
+VFS_Move(const char* Source, const char* Destination, long Flags, SYSTEM_ERROR* Error)
 {
-    #define ErrorOut_VfsMove(Code) \
-        ErrorOut(Error, Code, FUNC_VfsMove)
+    #define ErrorOut_VFS_Move(Code) \
+        ErrorOut(Error, Code, FUNC_VFS_Move)
 
-    int Return = VfsRename(Source, Destination, Flags, Error);
+    int Return = VFS_ReName(Source, Destination, Flags, Error);
     if (Return == GeneralOK)
     {
         return GeneralOK;
     }
 
-    Return = VfsCopy(Source, Destination, Flags, Error);
+    Return = VFS_Copy(Source, Destination, Flags, Error);
     if (Return != GeneralOK)
     {
-        ErrorOut_VfsMove(Error->ErrorCode);
+        ErrorOut_VFS_Move(Error->ErrorCode);
         return Error->ErrorCode;
     }
     
-    return VfsUnlink(Source, Error);
+    return VFS_UnLink(Source, Error);
 }

@@ -4,14 +4,14 @@
 #include <DirtyHeap.h>
 
 int
-VnodeRefInc(VFS_NODE* Node, SYSTEM_ERROR* Error)
+VFS_NodeReferenceIncrement(VFS_NODE* Node, SYSTEM_ERROR* Error)
 {
-    #define ErrorOut_VnodeRefInc(Code) \
-        ErrorOut(Error, Code, FUNC_VnodeRefInc)
+    #define ErrorOut_VFS_NodeReferenceIncrement(Code) \
+        ErrorOut(Error, Code, FUNC_VFS_NodeReferenceIncrement)
 
     if (Probe4Error(Node) || !Node)
     {
-        ErrorOut_VnodeRefInc(-EINVAL);
+        ErrorOut_VFS_NodeReferenceIncrement(-EINVAL);
         return Error->ErrorCode;
     }
 
@@ -21,14 +21,14 @@ VnodeRefInc(VFS_NODE* Node, SYSTEM_ERROR* Error)
 }
 
 int
-VnodeRefDec(VFS_NODE* Node, SYSTEM_ERROR* Error)
+VFS_NodeReferenceDecrement(VFS_NODE* Node, SYSTEM_ERROR* Error)
 {
-    #define ErrorOut_VnodeRefDec(Code) \
-        ErrorOut(Error, Code, FUNC_VnodeRefDec)
+    #define ErrorOut_VFS_NodeReferenceDecrement(Code) \
+        ErrorOut(Error, Code, FUNC_VFS_NodeReferenceDecrement)
     
     if (Probe4Error(Node) || !Node)
     {
-        ErrorOut_VnodeRefDec(-EINVAL);
+        ErrorOut_VFS_NodeReferenceDecrement(-EINVAL);
         return Error->ErrorCode;
     }
 
@@ -41,20 +41,20 @@ VnodeRefDec(VFS_NODE* Node, SYSTEM_ERROR* Error)
 }
 
 int
-VnodeGetAttr(VFS_NODE* Node, VFS_STAT* Buffer, SYSTEM_ERROR* Error)
+VFS_NodeGetAttribute(VFS_NODE* Node, VFS_STAT* Buffer, SYSTEM_ERROR* Error)
 {
-    #define ErrorOut_VnodeGetAttr(Code) \
-        ErrorOut(Error, Code, FUNC_VnodeGetAttr)
+    #define ErrorOut_VFS_NodeGetAttribute(Code) \
+        ErrorOut(Error, Code, FUNC_VFS_NodeGetAttribute)
 
     if (Probe4Error(Node) || !Node || Probe4Error(Buffer) || !Buffer)
     {
-        ErrorOut_VnodeGetAttr(-EINVAL);
+        ErrorOut_VFS_NodeGetAttribute(-EINVAL);
         return Error->ErrorCode;
     }
 
     if (Probe4Error(Node->Operations) || !Node->Operations || Probe4Error(Node->Operations->Stat) || !Node->Operations->Stat)
     {
-        ErrorOut_VnodeGetAttr(-ENOSYS);
+        ErrorOut_VFS_NodeGetAttribute(-ENOSYS);
         return Error->ErrorCode;
     }
     
@@ -62,11 +62,11 @@ VnodeGetAttr(VFS_NODE* Node, VFS_STAT* Buffer, SYSTEM_ERROR* Error)
 }
 
 int
-VnodeSetAttr(VFS_NODE* Node __UNUSED, const VFS_STAT* Buffer __UNUSED, SYSTEM_ERROR* Error)
+VFS_NodeSetAttribute(VFS_NODE* Node __UNUSED, const VFS_STAT* Buffer __UNUSED, SYSTEM_ERROR* Error)
 {
-    #define ErrorOut_VnodeSetAttr(Code) \
-        ErrorOut(Error, Code, FUNC_VnodeSetAttr)
+    #define ErrorOut_VFS_NodeSetAttribute(Code) \
+        ErrorOut(Error, Code, FUNC_VFS_NodeSetAttribute)
 
-    ErrorOut_VnodeSetAttr(-ENOSYS);
+    ErrorOut_VFS_NodeSetAttribute(-ENOSYS);
     return Error->ErrorCode;
 }

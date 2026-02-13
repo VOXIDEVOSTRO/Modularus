@@ -36,16 +36,16 @@ typedef enum VFS_NODE_TYPE
 /*Open Flags*/
 typedef enum VFS_OPEN_FLAGS
 {
-    VfsOpenFlag_NONE      = 0,
-    VfsOpenFlag_READONLY = 1 << 0,
-    VfsOpenFlag_WRITEONLY= 1 << 1,
-    VfsOpenFlag_READWRITE= 1 << 2,
-    VfsOpenFlag_CREATE   = 1 << 3,
-    VfsOpenFlag_TRUNCATE = 1 << 4,
-    VfsOpenFlag_APPEND   = 1 << 5,
-    VfsOpenFlag_EXCLUDE  = 1 << 6,
-    VfsOpenFlag_SYNC     = 1 << 7,
-    VfsOpenFlag_DIRECT   = 1 << 8
+    VFS_OpenFlag_NONE      = 0,
+    VFS_OpenFlag_READONLY = 1 << 0,
+    VFS_OpenFlag_WRITEONLY= 1 << 1,
+    VFS_OpenFlag_READWRITE= 1 << 2,
+    VFS_OpenFlag_CREATE   = 1 << 3,
+    VFS_OpenFlag_TRUNCATE = 1 << 4,
+    VFS_OpenFlag_APPEND   = 1 << 5,
+    VFS_OpenFlag_EXCLUDE  = 1 << 6,
+    VFS_OpenFlag_SYNC     = 1 << 7,
+    VFS_OpenFlag_DIRECT   = 1 << 8
 } VFS_OPEN_FLAGS;
 
 /*Seek Wheel*/
@@ -89,22 +89,22 @@ typedef enum VFS_IO_FLAGS
 /*Mount*/
 typedef enum VFS_MOUNT_OPTION
 {
-    VFSMount_NONE      = 0,
-    VFSMount_READONLY  = 1 << 0,
-    VFSMount_NOEXECUTE = 1 << 1,
-    VFSMount_NODEVICE  = 1 << 2,
-    VFSMount_NOSUID    = 1 << 3,
-    VFSMount_SYNC      = 1 << 4,
-    VFSMount_NOATIME   = 1 << 5
+    VFS_Mount_NONE      = 0,
+    VFS_Mount_READONLY  = 1 << 0,
+    VFS_Mount_NOEXECUTE = 1 << 1,
+    VFS_Mount_NODEVICE  = 1 << 2,
+    VFS_Mount_NOSUID    = 1 << 3,
+    VFS_Mount_SYNC      = 1 << 4,
+    VFS_Mount_NOATIME   = 1 << 5
 } VFS_MOUNT_OPTION;
 
 /*Name*/
 typedef enum VFS_RENAME_FLAGS
 {
-    VFSRename_NONE      = 0,
-    VFSRename_NOREPLACE = 1 << 0,
-    VFSRename_EXCHANGE  = 1 << 1,
-    VFSRename_WHITEOUT  = 1 << 2
+    VFS_ReName_NONE      = 0,
+    VFS_ReName_NOREPLACE = 1 << 0,
+    VFS_ReName_EXCHANGE  = 1 << 1,
+    VFS_ReName_WHITEOUT  = 1 << 2
 } VFS_RENAME_FLAGS;
 
 /*Notify*/
@@ -286,220 +286,220 @@ extern long  FileCacheLimit;
 extern long  IOBlockSize;
 extern char  DefaultFileSystem[64];
 
-int VfsInit(SYSTEM_ERROR*);
-int VfsShutdown(SYSTEM_ERROR*);
+int VFS_KickStart(SYSTEM_ERROR*);
+int VFS_PowerOff(SYSTEM_ERROR*);
 
-int           VfsRegisterFs(const FILESYSTEM_TYPE*, SYSTEM_ERROR*);
-int           VfsUnregisterFs(const char*, SYSTEM_ERROR*);
-const FILESYSTEM_TYPE* VfsFindFs(const char*, SYSTEM_ERROR*);
-long          VfsListFs(const char**, long, SYSTEM_ERROR*);
+int VFS_RegisterFileSystem(const FILESYSTEM_TYPE*, SYSTEM_ERROR*);
+int VFS_UnRegisterFileSystem(const char*, SYSTEM_ERROR*);
+const FILESYSTEM_TYPE* VFS_FindFileSystem(const char*, SYSTEM_ERROR*);
+long VfsListFs(const char**, long, SYSTEM_ERROR*);
 
-SUPER_BLOCK* VfsMount(const char*, const char*, const char*, long, const char*, SYSTEM_ERROR*);
-int         VfsUnmount(const char*, SYSTEM_ERROR*);
-int         VfsSwitchRoot(const char*, SYSTEM_ERROR*);
+SUPER_BLOCK* VFS_Mount(const char*, const char*, const char*, long, const char*, SYSTEM_ERROR*);
+int VFS_UnMount(const char*, SYSTEM_ERROR*);
+int VFS_ChangeRoot(const char*, SYSTEM_ERROR*);
 
-int VfsBindMount(const char*, const char*, SYSTEM_ERROR*);
-int VfsMoveMount(const char*, const char*, SYSTEM_ERROR*);
-int VfsRemount(const char*, long, const char*, SYSTEM_ERROR*);
+int VFS_BindMount(const char*, const char*, SYSTEM_ERROR*);
+int VFS_MoveMount(const char*, const char*, SYSTEM_ERROR*);
+int VFS_ReMount(const char*, long, const char*, SYSTEM_ERROR*);
 
-DIRECTORY_ENTRY* VfsResolve(const char*, SYSTEM_ERROR*);
-DIRECTORY_ENTRY* VfsResolveAt(DIRECTORY_ENTRY*, const char*, SYSTEM_ERROR*);
-VFS_NODE*  VfsLookup(DIRECTORY_ENTRY*, const char*, SYSTEM_ERROR*);
-int     VfsMkpath(const char*, long, SYSTEM_ERROR*);
-int     VfsRealpath(const char*, char*, long, SYSTEM_ERROR*);
+DIRECTORY_ENTRY* VFS_Resolve(const char*, SYSTEM_ERROR*);
+DIRECTORY_ENTRY* VFS_ResolveAt(DIRECTORY_ENTRY*, const char*, SYSTEM_ERROR*);
+VFS_NODE* VFS_LookUp(DIRECTORY_ENTRY*, const char*, SYSTEM_ERROR*);
+int VFS_MakePath(const char*, long, SYSTEM_ERROR*);
+int VFS_RealPath(const char*, char*, long, SYSTEM_ERROR*);
 
-FILE* VfsOpen(const char*, long, SYSTEM_ERROR*);
-FILE* VfsOpenAt(DIRECTORY_ENTRY*, const char*, long, SYSTEM_ERROR*);
-int   VfsClose(FILE*, SYSTEM_ERROR*);
-long  VfsRead(FILE*, void*, long, SYSTEM_ERROR*);
-long  VfsWrite(FILE*, const void*, long, SYSTEM_ERROR*);
-long  VfsLseek(FILE*, long, int, SYSTEM_ERROR*);
-int   VfsIoctl(FILE*, uint64_t, void*, SYSTEM_ERROR*);
-int   VfsFsync(FILE*, SYSTEM_ERROR*);
-int   VfsFstats(FILE*, VFS_STAT*, SYSTEM_ERROR*);
-int   VfsStats(const char*, VFS_STAT*, SYSTEM_ERROR*);
+FILE* VFS_Open(const char*, long, SYSTEM_ERROR*);
+FILE* VFS_OpenAt(DIRECTORY_ENTRY*, const char*, long, SYSTEM_ERROR*);
+int VFS_Close(FILE*, SYSTEM_ERROR*);
+long VFS_Read(FILE*, void*, long, SYSTEM_ERROR*);
+long VFS_Write(FILE*, const void*, long, SYSTEM_ERROR*);
+long VFS_LSeek(FILE*, long, int, SYSTEM_ERROR*);
+int VFS_IOControl(FILE*, uint64_t, void*, SYSTEM_ERROR*);
+int VFS_FSync(FILE*, SYSTEM_ERROR*);
+int VFS_FStats(FILE*, VFS_STAT*, SYSTEM_ERROR*);
+int VFS_Stats(const char*, VFS_STAT*, SYSTEM_ERROR*);
 
-long VfsReaddir(const char*, void*, long, SYSTEM_ERROR*);
-long VfsReaddirF(FILE*, void*, long, SYSTEM_ERROR*);
+long VFS_ReadDirectory(const char*, void*, long, SYSTEM_ERROR*);
+long VFS_ReadDirectoryF(FILE*, void*, long, SYSTEM_ERROR*);
 
-int VfsCreate(const char*, long, VFS_PERMISSIONS, SYSTEM_ERROR*);
-int VfsUnlink(const char*, SYSTEM_ERROR*);
-int VfsMkdir(const char*, VFS_PERMISSIONS, SYSTEM_ERROR*);
-int VfsRmdir(const char*, SYSTEM_ERROR*);
-int VfsSymlink(const char*, const char*, VFS_PERMISSIONS, SYSTEM_ERROR*);
-int VfsReadlink(const char*, char*, long, SYSTEM_ERROR*);
-int VfsLink(const char*, const char*, SYSTEM_ERROR*);
-int VfsRename(const char*, const char*, long, SYSTEM_ERROR*);
-int VfsChmod(const char*, long, SYSTEM_ERROR*);
-int VfsChown(const char*, long, long, SYSTEM_ERROR*);
-int VfsTruncate(const char*, long, SYSTEM_ERROR*);
+int VFS_Create(const char*, long, VFS_PERMISSIONS, SYSTEM_ERROR*);
+int VFS_UnLink(const char*, SYSTEM_ERROR*);
+int VFS_MakeDirectory(const char*, VFS_PERMISSIONS, SYSTEM_ERROR*);
+int VFS_RemoveDirectory(const char*, SYSTEM_ERROR*);
+int VFS_SymbolLink(const char*, const char*, VFS_PERMISSIONS, SYSTEM_ERROR*);
+int VFS_ReadLink(const char*, char*, long, SYSTEM_ERROR*);
+int VFS_Link(const char*, const char*, SYSTEM_ERROR*);
+int VFS_ReName(const char*, const char*, long, SYSTEM_ERROR*);
+int VFS_ChangeMode(const char*, long, SYSTEM_ERROR*);
+int VFS_ChangeOwner(const char*, long, long, SYSTEM_ERROR*);
+int VFS_Truncate(const char*, long, SYSTEM_ERROR*);
 
-int VnodeRefInc(VFS_NODE*, SYSTEM_ERROR*);
-int VnodeRefDec(VFS_NODE*, SYSTEM_ERROR*);
-int VnodeGetAttr(VFS_NODE*, VFS_STAT*, SYSTEM_ERROR*);
-int VnodeSetAttr(VFS_NODE*, const VFS_STAT*, SYSTEM_ERROR*);
-int DentryInvalidate(DIRECTORY_ENTRY*, SYSTEM_ERROR*);
-int DentryRevalidate(DIRECTORY_ENTRY*, SYSTEM_ERROR*);
-int DentryAttach(DIRECTORY_ENTRY*, VFS_NODE*, SYSTEM_ERROR*);
-int DentryDetach(DIRECTORY_ENTRY*, SYSTEM_ERROR*);
-int DentryName(DIRECTORY_ENTRY*, char*, long, SYSTEM_ERROR*);
+int VFS_NodeReferenceIncrement(VFS_NODE*, SYSTEM_ERROR*);
+int VFS_NodeReferenceDecrement(VFS_NODE*, SYSTEM_ERROR*);
+int VFS_NodeGetAttribute(VFS_NODE*, VFS_STAT*, SYSTEM_ERROR*);
+int VFS_NodeSetAttribute(VFS_NODE*, const VFS_STAT*, SYSTEM_ERROR*);
+int VFS_DentryInvalidate(DIRECTORY_ENTRY*, SYSTEM_ERROR*);
+int VFS_DentryRevalidate(DIRECTORY_ENTRY*, SYSTEM_ERROR*);
+int VFS_DentryAttach(DIRECTORY_ENTRY*, VFS_NODE*, SYSTEM_ERROR*);
+int VFS_DentryDetach(DIRECTORY_ENTRY*, SYSTEM_ERROR*);
+int VFS_DentryName(DIRECTORY_ENTRY*, char*, long, SYSTEM_ERROR*);
 
-int VfsSetCwd(const char*, SYSTEM_ERROR*);
-int VfsGetCwd(char*, long, SYSTEM_ERROR*);
-int VfsSetRoot(const char*, SYSTEM_ERROR*);
-int VfsGetRoot(char*, long, SYSTEM_ERROR*);
+int VFS_SetWorkingDirectory(const char*, SYSTEM_ERROR*);
+int VFS_GetWorkingDirectory(char*, long, SYSTEM_ERROR*);
+int VFS_SetRoot(const char*, SYSTEM_ERROR*);
+int VFS_GetRoot(char*, long, SYSTEM_ERROR*);
 
-int  VfsSetUmask(long, SYSTEM_ERROR*);
-long VfsGetUmask(SYSTEM_ERROR*);
+int  VFS_SetUnMask(long, SYSTEM_ERROR*);
+long VFS_GetUnMask(SYSTEM_ERROR*);
 
-int VfsNotifySubscribe(const char*, long, SYSTEM_ERROR*);
-int VfsNotifyUnsubscribe(const char*, SYSTEM_ERROR*);
-int VfsNotifyPoll(const char*, long*, SYSTEM_ERROR*);
+int VFS_NotifySubscribe(const char*, long, SYSTEM_ERROR*);
+int VFS_NotifyUnSubscribe(const char*, SYSTEM_ERROR*);
+int VFS_NotifyPoll(const char*, long*, SYSTEM_ERROR*);
 
-int VfsAccess(const char*, long, SYSTEM_ERROR*);
-int VfsExists(const char*, SYSTEM_ERROR*);
-int VfsIsDir(const char*, SYSTEM_ERROR*);
-int VfsIsFile(const char*, SYSTEM_ERROR*);
-int VfsIsSymlink(const char*, SYSTEM_ERROR*);
+int VFS_Access(const char*, long, SYSTEM_ERROR*);
+int VFS_Exists(const char*, SYSTEM_ERROR*);
+int VFS_IsDirectory(const char*, SYSTEM_ERROR*);
+int VFS_IsFile(const char*, SYSTEM_ERROR*);
+int VFS_IsSymbolLink(const char*, SYSTEM_ERROR*);
 
-int VfsCopy(const char*, const char*, long, SYSTEM_ERROR*);
-int VfsMove(const char*, const char*, long, SYSTEM_ERROR*);
+int VFS_Copy(const char*, const char*, long, SYSTEM_ERROR*);
+int VFS_Move(const char*, const char*, long, SYSTEM_ERROR*);
 
-int VfsReadAll(const char*, void*, long, long*, SYSTEM_ERROR*);
-int VfsWriteAll(const char*, const void*, long, SYSTEM_ERROR*);
+int VFS_ReadAll(const char*, void*, long, long*, SYSTEM_ERROR*);
+int VFS_WriteAll(const char*, const void*, long, SYSTEM_ERROR*);
 
-int VfsMountTableEnumerate(char*, long, SYSTEM_ERROR*);
-int VfsMountTableFind(const char*, char*, long, SYSTEM_ERROR*);
+int VFS_MountTableEnumerate(char*, long, SYSTEM_ERROR*);
+int VFS_MountTableFind(const char*, char*, long, SYSTEM_ERROR*);
 
-int VfsNodePath(VFS_NODE*, char*, long, SYSTEM_ERROR*);
-int VfsNodeName(VFS_NODE*, char*, long, SYSTEM_ERROR*);
+int VFS_NodePath(VFS_NODE*, char*, long, SYSTEM_ERROR*);
+int VFS_NodeName(VFS_NODE*, char*, long, SYSTEM_ERROR*);
 
-int VfsAllocName(char**, long, SYSTEM_ERROR*);
-int VfsFreeName(char*, SYSTEM_ERROR*);
-int VfsJoinPath(const char*, const char*, char*, long, SYSTEM_ERROR*);
+int VFS_AllocateName(char**, long, SYSTEM_ERROR*);
+int VFS_FreeName(char*, SYSTEM_ERROR*);
+int VFS_JoinPath(const char*, const char*, char*, long, SYSTEM_ERROR*);
 
-int  VfsSetFlag(const char*, long, SYSTEM_ERROR*);
-int  VfsClearFlag(const char*, long, SYSTEM_ERROR*);
-long VfsGetFlags(const char*, SYSTEM_ERROR*);
+int  VFS_SetFlag(const char*, long, SYSTEM_ERROR*);
+int  VFS_ClearFlag(const char*, long, SYSTEM_ERROR*);
+long VFS_GetFlags(const char*, SYSTEM_ERROR*);
 
-int VfsSyncAll(SYSTEM_ERROR*);
-int VfsPruneCaches(SYSTEM_ERROR*);
+int VFS_SyncAll(SYSTEM_ERROR*);
+int VFS_PruneCaches(SYSTEM_ERROR*);
 
-int VfsRegisterDevNode(const char*, void*, long, SYSTEM_ERROR*);
-int VfsUnregisterDevNode(const char*, SYSTEM_ERROR*);
-int VfsRegisterPseudoFs(const char*, SUPER_BLOCK*, SYSTEM_ERROR*);
-int VfsUnregisterPseudoFs(const char*, SYSTEM_ERROR*);
+int VFS_RegisterDeviceNode(const char*, void*, long, SYSTEM_ERROR*);
+int VFS_UnRegisterDeviceNode(const char*, SYSTEM_ERROR*);
+int VFS_RegisterPseudoFileSystem(const char*, SUPER_BLOCK*, SYSTEM_ERROR*);
+int VFS_UnRegisterPseudoFileSystem(const char*, SYSTEM_ERROR*);
 
-int         VfsSetDefaultFs(const char*, SYSTEM_ERROR*);
-const char* VfsGetDefaultFs(SYSTEM_ERROR*);
+int VFS_SetDefaultFileSystem(const char*, SYSTEM_ERROR*);
+const char* VFS_GetDefaultFileSystem(SYSTEM_ERROR*);
 
-int  VfsSetMaxName(long, SYSTEM_ERROR*);
-long VfsGetMaxName(SYSTEM_ERROR*);
+int  VFS_SetMaxName(long, SYSTEM_ERROR*);
+long VFS_GetMaxName(SYSTEM_ERROR*);
 
-int  VfsSetMaxPath(long, SYSTEM_ERROR*);
-long VfsGetMaxPath(SYSTEM_ERROR*);
+int  VFS_SetMaxPath(long, SYSTEM_ERROR*);
+long VFS_GetMaxPath(SYSTEM_ERROR*);
 
-int  VfsSetDirCacheLimit(long, SYSTEM_ERROR*);
-long VfsGetDirCacheLimit(SYSTEM_ERROR*);
+int  VFS_SetDirectoryCacheLimit(long, SYSTEM_ERROR*);
+long VFS_GetDirectoryCacheLimit(SYSTEM_ERROR*);
 
-int  VfsSetFileCacheLimit(long, SYSTEM_ERROR*);
-long VfsGetFileCacheLimit(SYSTEM_ERROR*);
+int  VFS_SetFileCacheLimit(long, SYSTEM_ERROR*);
+long VFS_GetFileCacheLimit(SYSTEM_ERROR*);
 
-int  VfsSetIoBlockSize(long, SYSTEM_ERROR*);
-long VfsGetIoBlockSize(SYSTEM_ERROR*);
+int  VFS_SetIOBlockSize(long, SYSTEM_ERROR*);
+long VFS_GetIOBlockSize(SYSTEM_ERROR*);
 
-/*StringHelpers.c*/
+/*VFS_StringHelpers.c*/
 int IsSeperator(char, SYSTEM_ERROR*);
 const char* SkipSeperator(const char*, SYSTEM_ERROR*);
 long NextCompare(const char* Path, char* Output, long Capacity, SYSTEM_ERROR* Error);
 
-/*CoreHelpers.c*/
+/*VFS_CoreHelpers.c*/
 DIRECTORY_ENTRY* AllocateDirectoryEntry(const char*, DIRECTORY_ENTRY*, VFS_NODE*, SYSTEM_ERROR*);
 DIRECTORY_ENTRY* Walk(VFS_NODE*, DIRECTORY_ENTRY*, const char*, SYSTEM_ERROR*);
 MOUNT_ENTRY* FindMount(const char*, SYSTEM_ERROR*);
 
-KEXPORT(VfsInit)
-KEXPORT(VfsShutdown)
-KEXPORT(VfsRegisterFs)
-KEXPORT(VfsUnregisterFs)
-KEXPORT(VfsFindFs)
+KEXPORT(VFS_KickStart)
+KEXPORT(VFS_PowerOff)
+KEXPORT(VFS_RegisterFileSystem)
+KEXPORT(VFS_UnRegisterFileSystem)
+KEXPORT(VFS_FindFileSystem)
 KEXPORT(VfsListFs)
-KEXPORT(VfsMount)
-KEXPORT(VfsUnmount)
-KEXPORT(VfsSwitchRoot)
-KEXPORT(VfsBindMount)
-KEXPORT(VfsMoveMount)
-KEXPORT(VfsRemount)
-KEXPORT(VfsResolve)
-KEXPORT(VfsResolveAt)
-KEXPORT(VfsLookup)
-KEXPORT(VfsMkpath)
-KEXPORT(VfsRealpath)
-KEXPORT(VfsOpen)
-KEXPORT(VfsOpenAt)
-KEXPORT(VfsClose)
-KEXPORT(VfsRead)
-KEXPORT(VfsWrite)
-KEXPORT(VfsLseek)
-KEXPORT(VfsIoctl)
-KEXPORT(VfsFsync)
-KEXPORT(VfsFstats)
-KEXPORT(VfsStats)
-KEXPORT(VfsReaddir)
-KEXPORT(VfsReaddirF)
-KEXPORT(VfsCreate)
-KEXPORT(VfsUnlink)
-KEXPORT(VfsMkdir)
-KEXPORT(VfsRmdir)
-KEXPORT(VfsSymlink)
-KEXPORT(VfsReadlink)
-KEXPORT(VfsLink)
-KEXPORT(VfsRename)
-KEXPORT(VfsChmod)
-KEXPORT(VfsChown)
-KEXPORT(VfsTruncate)
-KEXPORT(VnodeRefInc)
-KEXPORT(VnodeRefDec)
-KEXPORT(VnodeGetAttr)
-KEXPORT(VnodeSetAttr)
-KEXPORT(DentryInvalidate)
-KEXPORT(DentryRevalidate)
-KEXPORT(DentryAttach)
-KEXPORT(DentryDetach)
-KEXPORT(DentryName)
-KEXPORT(VfsSetCwd)
-KEXPORT(VfsGetCwd)
-KEXPORT(VfsSetRoot)
-KEXPORT(VfsGetRoot)
-KEXPORT(VfsSetUmask)
-KEXPORT(VfsGetUmask)
-KEXPORT(VfsNotifySubscribe)
-KEXPORT(VfsNotifyUnsubscribe)
-KEXPORT(VfsNotifyPoll)
-KEXPORT(VfsAccess)
-KEXPORT(VfsExists)
-KEXPORT(VfsIsDir)
-KEXPORT(VfsIsFile)
-KEXPORT(VfsIsSymlink)
-KEXPORT(VfsCopy)
-KEXPORT(VfsMove)
-KEXPORT(VfsReadAll)
-KEXPORT(VfsWriteAll)
-KEXPORT(VfsJoinPath)
-KEXPORT(VfsSetFlag)
-KEXPORT(VfsClearFlag)
-KEXPORT(VfsGetFlags)
-KEXPORT(VfsSyncAll)
-KEXPORT(VfsPruneCaches)
-KEXPORT(VfsSetDefaultFs)
-KEXPORT(VfsGetDefaultFs)
-KEXPORT(VfsSetMaxName)
-KEXPORT(VfsGetMaxName)
-KEXPORT(VfsSetMaxPath)
-KEXPORT(VfsGetMaxPath)
-KEXPORT(VfsSetDirCacheLimit)
-KEXPORT(VfsGetDirCacheLimit)
-KEXPORT(VfsSetFileCacheLimit)
-KEXPORT(VfsGetFileCacheLimit)
-KEXPORT(VfsSetIoBlockSize)
-KEXPORT(VfsGetIoBlockSize)
+KEXPORT(VFS_Mount)
+KEXPORT(VFS_UnMount)
+KEXPORT(VFS_ChangeRoot)
+KEXPORT(VFS_BindMount)
+KEXPORT(VFS_MoveMount)
+KEXPORT(VFS_ReMount)
+KEXPORT(VFS_Resolve)
+KEXPORT(VFS_ResolveAt)
+KEXPORT(VFS_LookUp)
+KEXPORT(VFS_MakePath)
+KEXPORT(VFS_RealPath)
+KEXPORT(VFS_Open)
+KEXPORT(VFS_OpenAt)
+KEXPORT(VFS_Close)
+KEXPORT(VFS_Read)
+KEXPORT(VFS_Write)
+KEXPORT(VFS_LSeek)
+KEXPORT(VFS_IOControl)
+KEXPORT(VFS_FSync)
+KEXPORT(VFS_FStats)
+KEXPORT(VFS_Stats)
+KEXPORT(VFS_ReadDirectory)
+KEXPORT(VFS_ReadDirectoryF)
+KEXPORT(VFS_Create)
+KEXPORT(VFS_UnLink)
+KEXPORT(VFS_MakeDirectory)
+KEXPORT(VFS_RemoveDirectory)
+KEXPORT(VFS_SymbolLink)
+KEXPORT(VFS_ReadLink)
+KEXPORT(VFS_Link)
+KEXPORT(VFS_ReName)
+KEXPORT(VFS_ChangeMode)
+KEXPORT(VFS_ChangeOwner)
+KEXPORT(VFS_Truncate)
+KEXPORT(VFS_NodeReferenceIncrement)
+KEXPORT(VFS_NodeReferenceDecrement)
+KEXPORT(VFS_NodeGetAttribute)
+KEXPORT(VFS_NodeSetAttribute)
+KEXPORT(VFS_DentryInvalidate)
+KEXPORT(VFS_DentryRevalidate)
+KEXPORT(VFS_DentryAttach)
+KEXPORT(VFS_DentryDetach)
+KEXPORT(VFS_DentryName)
+KEXPORT(VFS_SetWorkingDirectory)
+KEXPORT(VFS_GetWorkingDirectory)
+KEXPORT(VFS_SetRoot)
+KEXPORT(VFS_GetRoot)
+KEXPORT(VFS_SetUnMask)
+KEXPORT(VFS_GetUnMask)
+KEXPORT(VFS_NotifySubscribe)
+KEXPORT(VFS_NotifyUnSubscribe)
+KEXPORT(VFS_NotifyPoll)
+KEXPORT(VFS_Access)
+KEXPORT(VFS_Exists)
+KEXPORT(VFS_IsDirectory)
+KEXPORT(VFS_IsFile)
+KEXPORT(VFS_IsSymbolLink)
+KEXPORT(VFS_Copy)
+KEXPORT(VFS_Move)
+KEXPORT(VFS_ReadAll)
+KEXPORT(VFS_WriteAll)
+KEXPORT(VFS_JoinPath)
+KEXPORT(VFS_SetFlag)
+KEXPORT(VFS_ClearFlag)
+KEXPORT(VFS_GetFlags)
+KEXPORT(VFS_SyncAll)
+KEXPORT(VFS_PruneCaches)
+KEXPORT(VFS_SetDefaultFileSystem)
+KEXPORT(VFS_GetDefaultFileSystem)
+KEXPORT(VFS_SetMaxName)
+KEXPORT(VFS_GetMaxName)
+KEXPORT(VFS_SetMaxPath)
+KEXPORT(VFS_GetMaxPath)
+KEXPORT(VFS_SetDirectoryCacheLimit)
+KEXPORT(VFS_GetDirectoryCacheLimit)
+KEXPORT(VFS_SetFileCacheLimit)
+KEXPORT(VFS_GetFileCacheLimit)
+KEXPORT(VFS_SetIOBlockSize)
+KEXPORT(VFS_GetIOBlockSize)

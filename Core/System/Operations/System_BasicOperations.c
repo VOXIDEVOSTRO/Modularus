@@ -5,14 +5,14 @@
 #include <KernelCLibrary.h>
 
 int
-SystemVfsOpen(VFS_NODE* VFSNode, FILE* File, SYSTEM_ERROR* Error)
+System_Open(VFS_NODE* VFSNode, FILE* File, SYSTEM_ERROR* Error)
 {
-    #define ErrorOut_SystemVfsOpen(Code) \
-        ErrorOut(Error, Code, FUNC_SystemVfsOpen)
+    #define ErrorOut_System_Open(Code) \
+        ErrorOut(Error, Code, FUNC_System_Open)
 
     if (Probe4Error(VFSNode) || !VFSNode || Probe4Error(File) || !File)
     {
-        ErrorOut_SystemVfsOpen(-EINVAL);
+        ErrorOut_System_Open(-EINVAL);
         return Error->ErrorCode;
     }
     
@@ -20,13 +20,13 @@ SystemVfsOpen(VFS_NODE* VFSNode, FILE* File, SYSTEM_ERROR* Error)
     
     if (Probe4Error(Node) || !Node)
     {
-        ErrorOut_SystemVfsOpen(-ENOENT);
+        ErrorOut_System_Open(-ENOENT);
         return Error->ErrorCode;
     }
     
     if (FileAllocatedCount >= MaxSystemFiles)
     {
-        ErrorOut_SystemVfsOpen(-ENFILE);
+        ErrorOut_System_Open(-ENFILE);
         return Error->ErrorCode;
     }
     
@@ -49,14 +49,14 @@ SystemVfsOpen(VFS_NODE* VFSNode, FILE* File, SYSTEM_ERROR* Error)
 }
 
 int
-SystemVfsClose(FILE* File, SYSTEM_ERROR* Error)
+System_Close(FILE* File, SYSTEM_ERROR* Error)
 {
-    #define ErrorOut_SystemVfsClose(Code) \
-        ErrorOut(Error, Code, FUNC_SystemVfsClose)
+    #define ErrorOut_System_Close(Code) \
+        ErrorOut(Error, Code, FUNC_System_Close)
 
     if (Probe4Error(File) || !File)
     {
-        ErrorOut_SystemVfsClose(-EINVAL);
+        ErrorOut_System_Close(-EINVAL);
         return Error->ErrorCode;
     }
     
@@ -64,7 +64,7 @@ SystemVfsClose(FILE* File, SYSTEM_ERROR* Error)
     
     if (Probe4Error(SystemFile) || !SystemFile)
     {
-        ErrorOut_SystemVfsClose(-EBADF);
+        ErrorOut_System_Close(-EBADF);
         return Error->ErrorCode;
     }
     
@@ -75,14 +75,14 @@ SystemVfsClose(FILE* File, SYSTEM_ERROR* Error)
 }
 
 long
-SystemVfsRead(FILE* File, void* Buffer, uint64_t Size, SYSTEM_ERROR* Error)
+System_Read(FILE* File, void* Buffer, long Size, SYSTEM_ERROR* Error)
 {
-    #define ErrorOut_SystemVfsRead(Code) \
-        ErrorOut(Error, Code, FUNC_SystemVfsRead)
+    #define ErrorOut_System_Read(Code) \
+        ErrorOut(Error, Code, FUNC_System_Read)
 
     if (Probe4Error(File) || !File || Probe4Error(Buffer) || !Buffer)
     {
-        ErrorOut_SystemVfsRead(-EINVAL);
+        ErrorOut_System_Read(-EINVAL);
         return Error->ErrorCode;
     }
     
@@ -90,7 +90,7 @@ SystemVfsRead(FILE* File, void* Buffer, uint64_t Size, SYSTEM_ERROR* Error)
     
     if (Probe4Error(SystemFile) || !SystemFile || Probe4Error(SystemFile->Node) || !SystemFile->Node)
     {
-        ErrorOut_SystemVfsRead(-EBADF);
+        ErrorOut_System_Read(-EBADF);
         return Error->ErrorCode;
     }
     
@@ -103,11 +103,11 @@ SystemVfsRead(FILE* File, void* Buffer, uint64_t Size, SYSTEM_ERROR* Error)
     
     if (Probe4Error(Node->Context) || !Node->Context)
     {
-        ErrorOut_SystemVfsRead(-ENOENT);
+        ErrorOut_System_Read(-ENOENT);
         return Error->ErrorCode;
     }
     
-    uint64_t Available = Node->ContextSize - SystemFile->Offset;
+    long Available = Node->ContextSize - SystemFile->Offset;
     
     if (Size > Available)
     {
@@ -124,14 +124,14 @@ SystemVfsRead(FILE* File, void* Buffer, uint64_t Size, SYSTEM_ERROR* Error)
 }
 
 long
-SystemVfsWrite(FILE* File, const void* Buffer, uint64_t Size, SYSTEM_ERROR* Error)
+System_Write(FILE* File, const void* Buffer, long Size, SYSTEM_ERROR* Error)
 {
-    #define ErrorOut_SystemVfsWrite(Code) \
-        ErrorOut(Error, Code, FUNC_SystemVfsWrite)
+    #define ErrorOut_System_Write(Code) \
+        ErrorOut(Error, Code, FUNC_System_Write)
 
     if (Probe4Error(File) || !File || Probe4Error(Buffer) || !Buffer)
     {
-        ErrorOut_SystemVfsWrite(-EINVAL);
+        ErrorOut_System_Write(-EINVAL);
         return Error->ErrorCode;
     }
     
@@ -139,7 +139,7 @@ SystemVfsWrite(FILE* File, const void* Buffer, uint64_t Size, SYSTEM_ERROR* Erro
     
     if (Probe4Error(SystemFile) || !SystemFile || Probe4Error(SystemFile->Node) || !SystemFile->Node)
     {
-        ErrorOut_SystemVfsWrite(-EBADF);
+        ErrorOut_System_Write(-EBADF);
         return Error->ErrorCode;
     }
     
@@ -150,6 +150,6 @@ SystemVfsWrite(FILE* File, const void* Buffer, uint64_t Size, SYSTEM_ERROR* Erro
         return Node->Operations->Write(SystemFile, Buffer, Size, Error);
     }
     
-    ErrorOut_SystemVfsWrite(-EROFS);
+    ErrorOut_System_Write(-EROFS);
     return Error->ErrorCode;
 }

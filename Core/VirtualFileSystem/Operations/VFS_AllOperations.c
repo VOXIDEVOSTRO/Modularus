@@ -4,27 +4,27 @@
 #include <DirtyHeap.h>
 
 int
-VfsReadAll(const char* Path, void* Buffer, long BufferLength, long* OutLength, SYSTEM_ERROR* Error)
+VFS_ReadAll(const char* Path, void* Buffer, long BufferLength, long* OutLength, SYSTEM_ERROR* Error)
 {
-    #define ErrorOut_VfsReadAll(Code) \
-        ErrorOut(Error, Code, FUNC_VfsReadAll)
+    #define ErrorOut_VFS_ReadAll(Code) \
+        ErrorOut(Error, Code, FUNC_VFS_ReadAll)
     
-    FILE* FileHandle = VfsOpen(Path, VfsOpenFlag_READONLY, Error);
+    FILE* FileHandle = VFS_Open(Path, VFS_OpenFlag_READONLY, Error);
     if (Probe4Error(FileHandle) || !FileHandle)
     {
-        ErrorOut_VfsReadAll(-ENOENT);
+        ErrorOut_VFS_ReadAll(-ENOENT);
         return Error->ErrorCode;
     }
     
     long Total = 0;
     while (Total < BufferLength)
     {
-        long ReadIndex = VfsRead(FileHandle, (char*)Buffer + Total, BufferLength - Total, Error);
+        long ReadIndex = VFS_Read(FileHandle, (char*)Buffer + Total, BufferLength - Total, Error);
         if (ReadIndex < 0)
         {
-            VfsClose(FileHandle, Error);
+            VFS_Close(FileHandle, Error);
             
-            ErrorOut_VfsReadAll(-Limits);
+            ErrorOut_VFS_ReadAll(-Limits);
             return Error->ErrorCode;
         }
 
@@ -41,46 +41,46 @@ VfsReadAll(const char* Path, void* Buffer, long BufferLength, long* OutLength, S
         *OutLength = Total;
     }
 
-    VfsClose(FileHandle, Error);
+    VFS_Close(FileHandle, Error);
     
     return GeneralOK;
 }
 
 int
-VfsWriteAll(const char* Path, const void* Buffer, long Length, SYSTEM_ERROR* Error)
+VFS_WriteAll(const char* Path, const void* Buffer, long Length, SYSTEM_ERROR* Error)
 {
-    #define ErrorOut_VfsWriteAll(Code) \
-        ErrorOut(Error, Code, FUNC_VfsWriteAll)
+    #define ErrorOut_VFS_WriteAll(Code) \
+        ErrorOut(Error, Code, FUNC_VFS_WriteAll)
 
-    FILE* FileHandle = VfsOpen(Path, VfsOpenFlag_CREATE | VfsOpenFlag_WRITEONLY | VfsOpenFlag_TRUNCATE, Error);
+    FILE* FileHandle = VFS_Open(Path, VFS_OpenFlag_CREATE | VFS_OpenFlag_WRITEONLY | VFS_OpenFlag_TRUNCATE, Error);
     if (Probe4Error(FileHandle) || !FileHandle)
     {
-        ErrorOut_VfsWriteAll(-ENOENT);
+        ErrorOut_VFS_WriteAll(-ENOENT);
         return Error->ErrorCode;
     }
 
     long Total = 0;
     while (Total < Length)
     {
-        long WriteIndex = VfsWrite(FileHandle, (const char*)Buffer + Total, Length - Total, Error);
+        long WriteIndex = VFS_Write(FileHandle, (const char*)Buffer + Total, Length - Total, Error);
         if (WriteIndex <= 0)
         {
-            VfsClose(FileHandle, Error);
+            VFS_Close(FileHandle, Error);
             
-            ErrorOut_VfsWriteAll(-Limits);
+            ErrorOut_VFS_WriteAll(-Limits);
             return Error->ErrorCode;
         }
 
         Total += WriteIndex;
     }
 
-    VfsClose(FileHandle, Error);
+    VFS_Close(FileHandle, Error);
     
     return GeneralOK;
 }
 
 int
-VfsSyncAll(SYSTEM_ERROR* Error)
+VFS_SyncAll(SYSTEM_ERROR* Error)
 {
     for (long Iteration = 0; Iteration < MountsCount; Iteration++)
     {

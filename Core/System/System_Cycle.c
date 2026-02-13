@@ -13,10 +13,10 @@ const uint64_t MaxSystemNodes = 1024;
 const uint64_t MaxSystemFiles = 256;
 
 int
-SystemInit(SYSTEM_ERROR* Error)
+System_KickStart(SYSTEM_ERROR* Error)
 {
-    #define ErrorOut_SystemInit(Code) \
-        ErrorOut(Error, Code, FUNC_SystemInit)
+    #define ErrorOut_System_KickStart(Code) \
+        ErrorOut(Error, Code, FUNC_System_KickStart)
 
     NodeAllocatedCount = 0;
     FileAllocatedCount = 0;
@@ -24,7 +24,7 @@ SystemInit(SYSTEM_ERROR* Error)
     NodePool = KMalloc(MaxSystemNodes * sizeof(SYSTEM_NODE), Error);
     if (Probe4Error(NodePool) || !NodePool)
     {
-        ErrorOut_SystemInit(-ENOMEM);
+        ErrorOut_System_KickStart(-ENOMEM);
         return Error->ErrorCode;
     }
     
@@ -33,7 +33,7 @@ SystemInit(SYSTEM_ERROR* Error)
     {
         KFree(NodePool, Error);
 
-        ErrorOut_SystemInit(-ENOMEM);
+        ErrorOut_System_KickStart(-ENOMEM);
         return Error->ErrorCode;
     }
     
@@ -46,7 +46,7 @@ SystemInit(SYSTEM_ERROR* Error)
         KFree(NodePool, Error);
         KFree(FilePool, Error);
 
-        ErrorOut_SystemInit(-ENOMEM);
+        ErrorOut_System_KickStart(-ENOMEM);
         return Error->ErrorCode;
     }
     
@@ -55,12 +55,28 @@ SystemInit(SYSTEM_ERROR* Error)
     SystemInstance->NodeCount = 0;
     SystemInstance->FileCount = 0;
     
+    SystemRoot = System_CreateDirectory("/", Error);
+    if (Probe4Error(SystemRoot) || !SystemRoot)
+    {
+        ErrorOut_System_KickStart(Error->ErrorCode);
+        return Error->ErrorCode;
+    }
+    
+    int Result = System_RegisterFileSystem(Error);
+    if (Result != GeneralOK)
+    {
+        ErrorOut_System_KickStart(Result);
+        return Result;
+    }
+    
     return GeneralOK;
 }
 
 int
-SystemShutdown(SYSTEM_ERROR* Error)
+System_PowerOff(SYSTEM_ERROR* Error)
 {
+    System_UnRegisterFileSystem(Error);
+    
     if (SystemInstance)
     {
         KFree(SystemInstance, Error);

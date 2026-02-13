@@ -4,14 +4,14 @@
 #include <KernelCLibrary.h>
 
 int
-SystemSetContext(SYSTEM_NODE* Node, void* Context, uint64_t Size, SYSTEM_ERROR* Error)
+System_SetContext(SYSTEM_NODE* Node, void* Context, uint64_t Size, SYSTEM_ERROR* Error)
 {
-    #define ErrorOut_SystemSetContext(Code) \
-        ErrorOut(Error, Code, FUNC_SystemSetContext)
+    #define ErrorOut_System_SetContext(Code) \
+        ErrorOut(Error, Code, FUNC_System_SetContext)
 
     if (Probe4Error(Node) || !Node)
     {
-        ErrorOut_SystemSetContext(-EINVAL);
+        ErrorOut_System_SetContext(-EINVAL);
         return Error->ErrorCode;
     }
     
@@ -22,14 +22,14 @@ SystemSetContext(SYSTEM_NODE* Node, void* Context, uint64_t Size, SYSTEM_ERROR* 
 }
 
 void*
-SystemGetContext(SYSTEM_NODE* Node, SYSTEM_ERROR* Error)
+System_GetContext(SYSTEM_NODE* Node, SYSTEM_ERROR* Error)
 {
-    #define ErrorOut_SystemGetContext(Code) \
-        ErrorOut(Error, Code, FUNC_SystemGetContext)
+    #define ErrorOut_System_GetContext(Code) \
+        ErrorOut(Error, Code, FUNC_System_GetContext)
 
     if (Probe4Error(Node) || !Node)
     {
-        ErrorOut_SystemGetContext(-EINVAL);
+        ErrorOut_System_GetContext(-EINVAL);
         return Error2Pointer(Error->ErrorCode);
     }
     
@@ -37,14 +37,14 @@ SystemGetContext(SYSTEM_NODE* Node, SYSTEM_ERROR* Error)
 }
 
 uint64_t
-SystemGetContextSize(SYSTEM_NODE* Node, SYSTEM_ERROR* Error)
+System_GetContextSize(SYSTEM_NODE* Node, SYSTEM_ERROR* Error)
 {
-    #define ErrorOut_SystemGetContextSize(Code) \
-        ErrorOut(Error, Code, FUNC_SystemGetContextSize)
+    #define ErrorOut_System_GetContextSize(Code) \
+        ErrorOut(Error, Code, FUNC_System_GetContextSize)
 
     if (Probe4Error(Node) || !Node)
     {
-        ErrorOut_SystemGetContextSize(-EINVAL);
+        ErrorOut_System_GetContextSize(-EINVAL);
         return 0; /*this is indeed a error*/
     }
     

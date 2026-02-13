@@ -4,24 +4,24 @@
 #include <DirtyHeap.h>
 
 int
-VfsRegisterDevNode(const char* Path, void* Private, long Flags __UNUSED, SYSTEM_ERROR* Error)
+VFS_RegisterDeviceNode(const char* Path, void* Private, long Flags __UNUSED, SYSTEM_ERROR* Error)
 {
-    #define ErrorOut_VfsRegisterDevNode(Code) \
-        ErrorOut(Error, Code, FUNC_VfsRegisterDevNode)
+    #define ErrorOut_VFS_RegisterDeviceNode(Code) \
+        ErrorOut(Error, Code, FUNC_VFS_RegisterDeviceNode)
 
     if (Probe4Error(Path) || !Path || Probe4Error(Private) || !Private)
     {
-        ErrorOut_VfsRegisterDevNode(-EINVAL);
+        ErrorOut_VFS_RegisterDeviceNode(-EINVAL);
         return Error->ErrorCode;
     }
 
     /*Parent must exist*/
     char Buffer[1024];
-    VfsRealpath(Path, Buffer, sizeof(Buffer), Error);
+    VFS_RealPath(Path, Buffer, sizeof(Buffer), Error);
     const char* Name = strrchr(Buffer, '/');
     if (Probe4Error(Name) || !Name)
     {
-        ErrorOut_VfsRegisterDevNode(-EINVAL);
+        ErrorOut_VFS_RegisterDeviceNode(-EINVAL);
         return Error->ErrorCode;
     }
 
@@ -30,12 +30,12 @@ VfsRegisterDevNode(const char* Path, void* Private, long Flags __UNUSED, SYSTEM_
     long ParentLength = (long)(Name - Buffer);
     memcpy(Parent, Buffer, ParentLength);
     Parent[ParentLength] = 0;
-    VfsMkpath(Parent, 0, Error);
+    VFS_MakePath(Parent, 0, Error);
 
     VFS_NODE* Node = (VFS_NODE*)KMalloc(sizeof(VFS_NODE), Error);
     if (Probe4Error(Node) || !Node)
     {
-        ErrorOut_VfsRegisterDevNode(-ENOMEM);
+        ErrorOut_VFS_RegisterDeviceNode(-ENOMEM);
         return Error->ErrorCode;
     }
 
@@ -52,7 +52,7 @@ VfsRegisterDevNode(const char* Path, void* Private, long Flags __UNUSED, SYSTEM_
     {
         KFree(Node, Error);
         
-        ErrorOut_VfsRegisterDevNode(Error->ErrorCode);
+        ErrorOut_VFS_RegisterDeviceNode(Error->ErrorCode);
         return Error->ErrorCode;
     }
     
@@ -60,26 +60,26 @@ VfsRegisterDevNode(const char* Path, void* Private, long Flags __UNUSED, SYSTEM_
 }
 
 int
-VfsUnregisterDevNode(const char* Path __UNUSED, SYSTEM_ERROR* Error __UNUSED)
+VFS_UnRegisterDeviceNode(const char* Path __UNUSED, SYSTEM_ERROR* Error __UNUSED)
 {
     return GeneralOK;
 }
 
 int
-VfsRegisterPseudoFs(const char* Path, SUPER_BLOCK* SuperBlock, SYSTEM_ERROR* Error)
+VFS_RegisterPseudoFileSystem(const char* Path, SUPER_BLOCK* SuperBlock, SYSTEM_ERROR* Error)
 {
-    #define ErrorOut_VfsRegisterPseudoFs(Code) \
-        ErrorOut(Error, Code, FUNC_VfsRegisterPseudoFs)
+    #define ErrorOut_VFS_RegisterPseudoFileSystem(Code) \
+        ErrorOut(Error, Code, FUNC_VFS_RegisterPseudoFileSystem)
 
     if (Probe4Error(Path) || !Path || Probe4Error(SuperBlock) || !SuperBlock)
     {
-        ErrorOut_VfsRegisterPseudoFs(-EINVAL);
+        ErrorOut_VFS_RegisterPseudoFileSystem(-EINVAL);
         return Error->ErrorCode;
     }
 
     if (MountsCount >= MaxMounts)
     {
-        ErrorOut_VfsRegisterPseudoFs(-Limits);
+        ErrorOut_VFS_RegisterPseudoFileSystem(-Limits);
         return Error->ErrorCode;
     }
 
@@ -92,27 +92,27 @@ VfsRegisterPseudoFs(const char* Path, SUPER_BLOCK* SuperBlock, SYSTEM_ERROR* Err
 }
 
 int
-VfsUnregisterPseudoFs(const char* Path, SYSTEM_ERROR* Error)
+VFS_UnRegisterPseudoFileSystem(const char* Path, SYSTEM_ERROR* Error)
 {
-    return VfsUnmount(Path, Error);
+    return VFS_UnMount(Path, Error);
 }
 
 int
-VfsSetDefaultFs(const char* Name, SYSTEM_ERROR* Error)
+VFS_SetDefaultFileSystem(const char* Name, SYSTEM_ERROR* Error)
 {
-    #define ErrorOut_VfsSetDefaultFs(Code) \
-        ErrorOut(Error, Code, FUNC_VfsSetDefaultFs)
+    #define ErrorOut_VFS_SetDefaultFileSystem(Code) \
+        ErrorOut(Error, Code, FUNC_VFS_SetDefaultFileSystem)
 
     if (Probe4Error(Name) || !Name)
     {
-        ErrorOut_VfsSetDefaultFs(-EINVAL);
+        ErrorOut_VFS_SetDefaultFileSystem(-EINVAL);
         return Error->ErrorCode;
     }
 
     long Index = (long)strlen(Name);
     if (Index >= (long)sizeof(DefaultFileSystem))
     {
-        ErrorOut_VfsSetDefaultFs(-Limits);
+        ErrorOut_VFS_SetDefaultFileSystem(-Limits);
         return Error->ErrorCode;
     }
 
@@ -122,7 +122,7 @@ VfsSetDefaultFs(const char* Name, SYSTEM_ERROR* Error)
 }
 
 const char*
-VfsGetDefaultFs(SYSTEM_ERROR* Error __UNUSED)
+VFS_GetDefaultFileSystem(SYSTEM_ERROR* Error __UNUSED)
 {
     return DefaultFileSystem;
 }

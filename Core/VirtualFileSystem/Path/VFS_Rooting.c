@@ -4,7 +4,7 @@
 #include <DirtyHeap.h>
 
 int
-VfsSetCwd(const char* Path __UNUSED, SYSTEM_ERROR* Error __UNUSED)
+VFS_SetWorkingDirectory(const char* Path __UNUSED, SYSTEM_ERROR* Error __UNUSED)
 {
     /*Defaulted to ROOT (/)*/
     /*TODO: Make it actually do something at least :sob:*/
@@ -12,14 +12,14 @@ VfsSetCwd(const char* Path __UNUSED, SYSTEM_ERROR* Error __UNUSED)
 }
 
 int
-VfsGetCwd(char* Buffer, long Length, SYSTEM_ERROR* Error)
+VFS_GetWorkingDirectory(char* Buffer, long Length, SYSTEM_ERROR* Error)
 {
-    #define ErrorOut_VfsGetCwd(Code) \
-        ErrorOut(Error, Code, FUNC_VfsGetCwd)
+    #define ErrorOut_VFS_GetWorkingDirectory(Code) \
+        ErrorOut(Error, Code, FUNC_VFS_GetWorkingDirectory)
 
     if (Probe4Error(Buffer) || !Buffer || Length <= 0)
     {
-        ErrorOut_VfsGetCwd(-EINVAL);
+        ErrorOut_VFS_GetWorkingDirectory(-EINVAL);
         return Error->ErrorCode;
     }
 
@@ -27,7 +27,7 @@ VfsGetCwd(char* Buffer, long Length, SYSTEM_ERROR* Error)
     long Index = (long)strlen(Path);
     if (Index >= Length)
     {
-        ErrorOut_VfsGetCwd(-Limits);
+        ErrorOut_VFS_GetWorkingDirectory(-Limits);
         return Error->ErrorCode;
     }
 
@@ -37,20 +37,20 @@ VfsGetCwd(char* Buffer, long Length, SYSTEM_ERROR* Error)
 }
 
 int
-VfsSetRoot(const char* Path, SYSTEM_ERROR* Error)
+VFS_SetRoot(const char* Path, SYSTEM_ERROR* Error)
 {
-    return VfsSwitchRoot(Path, Error);
+    return VFS_ChangeRoot(Path, Error);
 }
 
 int
-VfsGetRoot(char* Buffer, long Length, SYSTEM_ERROR* Error)
+VFS_GetRoot(char* Buffer, long Length, SYSTEM_ERROR* Error)
 {
-    #define ErrorOut_VfsGetRoot(Code) \
-        ErrorOut(Error, Code, FUNC_VfsGetRoot)
+    #define ErrorOut_VFS_GetRoot(Code) \
+        ErrorOut(Error, Code, FUNC_VFS_GetRoot)
 
     if (Probe4Error(Buffer) || !Buffer || Length <= 0)
     {
-        ErrorOut_VfsGetRoot(-EINVAL);
+        ErrorOut_VFS_GetRoot(-EINVAL);
         return Error->ErrorCode;
     }
 
@@ -58,7 +58,7 @@ VfsGetRoot(char* Buffer, long Length, SYSTEM_ERROR* Error)
     long Index = (long)strlen(Path);
     if (Index >= Length)
     {
-        ErrorOut_VfsGetRoot(-Limits);
+        ErrorOut_VFS_GetRoot(-Limits);
         return Error->ErrorCode;
     }
 

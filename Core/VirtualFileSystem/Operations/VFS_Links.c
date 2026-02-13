@@ -4,16 +4,16 @@
 #include <DirtyHeap.h>
 
 int
-VfsSymlink(const char* TargetPath, const char* LinkPath, VFS_PERMISSIONS Permission, SYSTEM_ERROR* Error)
+VFS_SymbolLink(const char* TargetPath, const char* LinkPath, VFS_PERMISSIONS Permission, SYSTEM_ERROR* Error)
 {
-    #define ErrorOut_VfsSymlink(Code) \
-        ErrorOut(Error, Code, FUNC_VfsSymlink)
+    #define ErrorOut_VFS_SymbolLink(Code) \
+        ErrorOut(Error, Code, FUNC_VFS_SymbolLink)
 
     DIRECTORY_ENTRY* Base = NULL;
     char Name[256];
     if (Probe4Error(LinkPath) || !LinkPath || Probe4Error(TargetPath) || !TargetPath)
     {
-        ErrorOut_VfsSymlink(-EINVAL);
+        ErrorOut_VFS_SymbolLink(-EINVAL);
         return Error->ErrorCode;
     }
 
@@ -47,21 +47,21 @@ VfsSymlink(const char* TargetPath, const char* LinkPath, VFS_PERMISSIONS Permiss
 
         if (Probe4Error(Current) || !Current || Probe4Error(Current->Operations) || !Current->Operations || Probe4Error(Current->Operations->Lookup) || !Current->Operations->Lookup)
         {
-            ErrorOut_VfsSymlink(-ENOSYS);
+            ErrorOut_VFS_SymbolLink(-ENOSYS);
             return Error->ErrorCode;
         }
 
         VFS_NODE* Next = Current->Operations->Lookup(Current, Name, Error);
         if (Probe4Error(Next) || !Next)
         {
-            ErrorOut_VfsSymlink(-ENOENT);
+            ErrorOut_VFS_SymbolLink(-ENOENT);
             return Error->ErrorCode;
         }
 
         char* Dublicate = (char*)KMalloc((size_t)(Index + 1), Error);
         if (Probe4Error(Dublicate) || !Dublicate)
         {
-            ErrorOut_VfsSymlink(-ENOMEM);
+            ErrorOut_VFS_SymbolLink(-ENOMEM);
             return Error->ErrorCode;
         }
 
@@ -69,7 +69,7 @@ VfsSymlink(const char* TargetPath, const char* LinkPath, VFS_PERMISSIONS Permiss
         DirectoryEntry = AllocateDirectoryEntry(Dublicate, DirectoryEntry, Next, Error);
         if (Probe4Error(DirectoryEntry) || !DirectoryEntry)
         {
-            ErrorOut_VfsSymlink(Error->ErrorCode);
+            ErrorOut_VFS_SymbolLink(Error->ErrorCode);
             return Error->ErrorCode;
         }
 
@@ -78,7 +78,7 @@ VfsSymlink(const char* TargetPath, const char* LinkPath, VFS_PERMISSIONS Permiss
 
     if (Probe4Error(Base) || !Base || Probe4Error(Base->Node) || !Base->Node || Probe4Error(Base->Node->Operations) || !Base->Node->Operations || Probe4Error(Base->Node->Operations->Symlink) || !Base->Node->Operations->Symlink)
     {
-        ErrorOut_VfsSymlink(-ENOSYS);
+        ErrorOut_VFS_SymbolLink(-ENOSYS);
         return Error->ErrorCode;
     }
     
@@ -86,27 +86,27 @@ VfsSymlink(const char* TargetPath, const char* LinkPath, VFS_PERMISSIONS Permiss
 }
 
 int
-VfsReadlink(const char* Path, char* Buffer, long Length, SYSTEM_ERROR* Error)
+VFS_ReadLink(const char* Path, char* Buffer, long Length, SYSTEM_ERROR* Error)
 {
-    #define ErrorOut_VfsReadlink(Code) \
-        ErrorOut(Error, Code, FUNC_VfsReadlink)
+    #define ErrorOut_VFS_ReadLink(Code) \
+        ErrorOut(Error, Code, FUNC_VFS_ReadLink)
 
     if (Probe4Error(Path) || !Path || Probe4Error(Buffer) || !Buffer || Length <= 0)
     {
-        ErrorOut_VfsReadlink(-EINVAL);
+        ErrorOut_VFS_ReadLink(-EINVAL);
         return Error->ErrorCode;
     }
 
-    DIRECTORY_ENTRY* DirectoryEntry = VfsResolve(Path, Error);
+    DIRECTORY_ENTRY* DirectoryEntry = VFS_Resolve(Path, Error);
     if (Probe4Error(DirectoryEntry) || !DirectoryEntry || Probe4Error(DirectoryEntry->Node) || !DirectoryEntry->Node)
     {
-        ErrorOut_VfsReadlink(-ENOENT);
+        ErrorOut_VFS_ReadLink(-ENOENT);
         return Error->ErrorCode;
     }
 
     if (Probe4Error(DirectoryEntry->Node->Operations) || !DirectoryEntry->Node->Operations || Probe4Error(DirectoryEntry->Node->Operations->Readlink) || !DirectoryEntry->Node->Operations->Readlink)
     {
-        ErrorOut_VfsReadlink(-ENOSYS);
+        ErrorOut_VFS_ReadLink(-ENOSYS);
         return Error->ErrorCode;
     }
 
@@ -118,24 +118,24 @@ VfsReadlink(const char* Path, char* Buffer, long Length, SYSTEM_ERROR* Error)
 }
 
 int
-VfsLink(const char* OldPath, const char* NewPath, SYSTEM_ERROR* Error)
+VFS_Link(const char* OldPath, const char* NewPath, SYSTEM_ERROR* Error)
 {
-    #define ErrorOut_VfsLink(Code) \
-        ErrorOut(Error, Code, FUNC_VfsLink)
+    #define ErrorOut_VFS_Link(Code) \
+        ErrorOut(Error, Code, FUNC_VFS_Link)
 
     if (Probe4Error(OldPath) || !OldPath || Probe4Error(NewPath) || !NewPath)
     {
-        ErrorOut_VfsLink(-EINVAL);
+        ErrorOut_VFS_Link(-EINVAL);
         return Error->ErrorCode;
     }
 
-    DIRECTORY_ENTRY* OldDirectoryEntry = VfsResolve(OldPath, Error);
+    DIRECTORY_ENTRY* OldDirectoryEntry = VFS_Resolve(OldPath, Error);
     DIRECTORY_ENTRY* NewBase = 0;
     char Name[256];
 
     if (Probe4Error(OldDirectoryEntry) || !OldDirectoryEntry || Probe4Error(OldDirectoryEntry->Node) || !OldDirectoryEntry->Node)
     {
-        ErrorOut_VfsLink(-ENOENT);
+        ErrorOut_VFS_Link(-ENOENT);
         return Error->ErrorCode;
     }
 
@@ -169,21 +169,21 @@ VfsLink(const char* OldPath, const char* NewPath, SYSTEM_ERROR* Error)
 
         if (Probe4Error(Current) || !Current || Probe4Error(Current->Operations) || !Current->Operations || Probe4Error(Current->Operations->Lookup) || !Current->Operations->Lookup)
         {
-            ErrorOut_VfsLink(-ENOSYS);
+            ErrorOut_VFS_Link(-ENOSYS);
             return Error->ErrorCode;
         }
 
         VFS_NODE* Next = Current->Operations->Lookup(Current, Name, Error);
         if (Probe4Error(Next) || !Next)
         {
-            ErrorOut_VfsLink(-ENOENT);
+            ErrorOut_VFS_Link(-ENOENT);
             return Error->ErrorCode;
         }
 
         char* Dublicate = (char*)KMalloc((size_t)(Index + 1), Error);
         if (Probe4Error(Dublicate) || !Dublicate)
         {
-            ErrorOut_VfsLink(-ENOMEM);
+            ErrorOut_VFS_Link(-ENOMEM);
             return Error->ErrorCode;
         }
 
@@ -191,7 +191,7 @@ VfsLink(const char* OldPath, const char* NewPath, SYSTEM_ERROR* Error)
         DirectoryEntry = AllocateDirectoryEntry(Dublicate, DirectoryEntry, Next, Error);
         if (Probe4Error(DirectoryEntry) || !DirectoryEntry)
         {
-            ErrorOut_VfsLink(Error->ErrorCode);
+            ErrorOut_VFS_Link(Error->ErrorCode);
             return Error->ErrorCode;
         }
         Current = Next;
@@ -199,7 +199,7 @@ VfsLink(const char* OldPath, const char* NewPath, SYSTEM_ERROR* Error)
 
     if (Probe4Error(NewBase) || !NewBase || Probe4Error(NewBase->Node) || !NewBase->Node || Probe4Error(NewBase->Node->Operations) || !NewBase->Node->Operations || Probe4Error(NewBase->Node->Operations->Link) || !NewBase->Node->Operations->Link)
     {
-        ErrorOut_VfsLink(-ENOSYS);
+        ErrorOut_VFS_Link(-ENOSYS);
         return Error->ErrorCode;
     }
     

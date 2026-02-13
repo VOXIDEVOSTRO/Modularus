@@ -23,7 +23,7 @@ long  IOBlockSize = 0;
 char  DefaultFileSystem[64] = {0};
 
 int
-VfsInit(SYSTEM_ERROR* Error)
+VFS_KickStart(SYSTEM_ERROR* Error)
 {
     FileSystemCount = 0;
     MountsCount = 0;
@@ -44,7 +44,7 @@ VfsInit(SYSTEM_ERROR* Error)
 }
 
 int
-VfsShutdown(SYSTEM_ERROR* Error)
+VFS_PowerOff(SYSTEM_ERROR* Error)
 {
     for (long Iteration = 0; Iteration < MountsCount; Iteration++)
     {

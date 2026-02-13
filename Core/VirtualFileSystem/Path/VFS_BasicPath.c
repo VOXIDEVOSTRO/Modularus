@@ -4,14 +4,14 @@
 #include <DirtyHeap.h>
 
 int
-VfsMkpath(const char* Path, long Permission, SYSTEM_ERROR* Error)
+VFS_MakePath(const char* Path, long Permission, SYSTEM_ERROR* Error)
 {
-    #define ErrorOut_VfsMkpath(Code) \
-        ErrorOut(Error, Code, FUNC_VfsMkpath)
+    #define ErrorOut_VFS_MakePath(Code) \
+        ErrorOut(Error, Code, FUNC_VFS_MakePath)
 
     if (Probe4Error(Path) || !Path)
     {
-        ErrorOut_VfsMkpath(-EINVAL);
+        ErrorOut_VFS_MakePath(-EINVAL);
         return Error->ErrorCode;
     }
 
@@ -45,7 +45,7 @@ VfsMkpath(const char* Path, long Permission, SYSTEM_ERROR* Error)
         {
             if (Probe4Error(Current->Operations) || !Current->Operations || Probe4Error(Current->Operations->Mkdir) || !Current->Operations->Mkdir)
             {
-                ErrorOut_VfsMkpath(-ENOSYS);
+                ErrorOut_VFS_MakePath(-ENOSYS);
                 return Error->ErrorCode;
             }
 
@@ -56,14 +56,14 @@ VfsMkpath(const char* Path, long Permission, SYSTEM_ERROR* Error)
 
             if (Current->Operations->Mkdir(Current, Compare, Permissions, Error) != GeneralOK)
             {
-                ErrorOut_VfsMkpath(Error->ErrorCode);
+                ErrorOut_VFS_MakePath(Error->ErrorCode);
                 return Error->ErrorCode;
             }
 
             Next = Current->Operations->Lookup(Current, Compare, Error);
             if (Probe4Error(Next) || !Next)
             {
-                ErrorOut_VfsMkpath(Error->ErrorCode);
+                ErrorOut_VFS_MakePath(Error->ErrorCode);
                 return Error->ErrorCode;
             }
         }
@@ -78,21 +78,21 @@ VfsMkpath(const char* Path, long Permission, SYSTEM_ERROR* Error)
 }
 
 int
-VfsRealpath(const char* Path, char* Buffer, long Length, SYSTEM_ERROR* Error)
+VFS_RealPath(const char* Path, char* Buffer, long Length, SYSTEM_ERROR* Error)
 {
-    #define ErrorOut_VfsRealpath(Code) \
-        ErrorOut(Error, Code, FUNC_VfsRealpath)
+    #define ErrorOut_VFS_RealPath(Code) \
+        ErrorOut(Error, Code, FUNC_VFS_RealPath)
 
     if (Probe4Error(Path) || !Path || Probe4Error(Buffer) || !Buffer || Length <= 0)
     {
-        ErrorOut_VfsRealpath(-EINVAL);
+        ErrorOut_VFS_RealPath(-EINVAL);
         return Error->ErrorCode;
     }
 
     long LengthComponent = (long)strlen(Path);
     if (LengthComponent >= Length)
     {
-        ErrorOut_VfsRealpath(-Limits);
+        ErrorOut_VFS_RealPath(-Limits);
         return Error->ErrorCode;
     }
 

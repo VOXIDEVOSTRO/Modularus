@@ -4,41 +4,41 @@
 #include <DirtyHeap.h>
 
 SUPER_BLOCK*
-VfsMount(const char* Device, const char* Path, const char* Type, long Flags __UNUSED, const char* Options, SYSTEM_ERROR* Error)
+VFS_Mount(const char* Device, const char* Path, const char* Type, long Flags __UNUSED, const char* Options, SYSTEM_ERROR* Error)
 {
-    #define ErrorOut_VfsMount(Code) \
-        ErrorOut(Error, Code, FUNC_VfsMount)
+    #define ErrorOut_VFS_Mount(Code) \
+        ErrorOut(Error, Code, FUNC_VFS_Mount)
 
-    const FILESYSTEM_TYPE* FileSystem = VfsFindFs(Type, Error);
+    const FILESYSTEM_TYPE* FileSystem = VFS_FindFileSystem(Type, Error);
     if (Probe4Error(FileSystem) || !FileSystem)
     {
-        ErrorOut_VfsMount(-ENOENT);
+        ErrorOut_VFS_Mount(-ENOENT);
         return Error2Pointer(-ENOENT);
     }
 
     if (Probe4Error(Path) || !Path || !*Path)
     {
-        ErrorOut_VfsMount(-ENOENT);
+        ErrorOut_VFS_Mount(-ENOENT);
         return Error2Pointer(-ENOENT);
     }
 
     long PathLength = (long)strlen(Path);
     if (PathLength <= 0 || PathLength >= MaxPath)
     {
-        ErrorOut_VfsMount(-Limits);
+        ErrorOut_VFS_Mount(-Limits);
         return Error2Pointer(-Limits);
     }
 
     if (MountsCount >= MaxMounts)
     {
-        ErrorOut_VfsMount(-Limits);
+        ErrorOut_VFS_Mount(-Limits);
         return Error2Pointer(-Limits);
     }
 
     SUPER_BLOCK* SuperBlock = FileSystem->Mount(Device, Options, Error);
     if (Probe4Error(SuperBlock) || !SuperBlock || Probe4Error(SuperBlock->Root) || !SuperBlock->Root)
     {
-        ErrorOut_VfsMount(-ENOENT);
+        ErrorOut_VFS_Mount(-ENOENT);
         return Error2Pointer(-ENOENT);
     }
 
@@ -56,14 +56,14 @@ VfsMount(const char* Device, const char* Path, const char* Type, long Flags __UN
 }
 
 int
-VfsUnmount(const char* Path, SYSTEM_ERROR* Error)
+VFS_UnMount(const char* Path, SYSTEM_ERROR* Error)
 {
-    #define ErrorOut_VfsUnmount(Code) \
-        ErrorOut(Error, Code, FUNC_VfsUnmount)
+    #define ErrorOut_VFS_UnMount(Code) \
+        ErrorOut(Error, Code, FUNC_VFS_UnMount)
         
     if (Probe4Error(Path) || !Path)
     {
-        ErrorOut_VfsUnmount(-ENOENT);
+        ErrorOut_VFS_UnMount(-ENOENT);
         return Error->ErrorCode;
     }
 
@@ -104,21 +104,21 @@ VfsUnmount(const char* Path, SYSTEM_ERROR* Error)
 }
 
 int /*chroot???*/
-VfsSwitchRoot(const char* NewRoot, SYSTEM_ERROR* Error)
+VFS_ChangeRoot(const char* NewRoot, SYSTEM_ERROR* Error)
 {
-    #define ErrorOut_VfsSwitchRoot(Code) \
-        ErrorOut(Error, Code, FUNC_VfsSwitchRoot)
+    #define ErrorOut_VFS_ChangeRoot(Code) \
+        ErrorOut(Error, Code, FUNC_VFS_ChangeRoot)
 
     if (Probe4Error(NewRoot) || !NewRoot)
     {
-        ErrorOut_VfsSwitchRoot(-ENOENT);
+        ErrorOut_VFS_ChangeRoot(-ENOENT);
         return Error->ErrorCode;
     }
 
-    DIRECTORY_ENTRY* DirectoryEntry = VfsResolve(NewRoot, Error);
+    DIRECTORY_ENTRY* DirectoryEntry = VFS_Resolve(NewRoot, Error);
     if (Probe4Error(DirectoryEntry) || !DirectoryEntry || Probe4Error(DirectoryEntry->Node) || !DirectoryEntry->Node)
     {
-        ErrorOut_VfsSwitchRoot(-ENOENT);
+        ErrorOut_VFS_ChangeRoot(-ENOENT);
         return Error->ErrorCode;
     }
 
@@ -129,34 +129,34 @@ VfsSwitchRoot(const char* NewRoot, SYSTEM_ERROR* Error)
 }
 
 int
-VfsBindMount(const char* Source, const char* Destination, SYSTEM_ERROR* Error)
+VFS_BindMount(const char* Source, const char* Destination, SYSTEM_ERROR* Error)
 {
-    #define ErrorOut_VfsBindMount(Code) \
-        ErrorOut(Error, Code, FUNC_VfsBindMount)
+    #define ErrorOut_VFS_BindMount(Code) \
+        ErrorOut(Error, Code, FUNC_VFS_BindMount)
 
     if (Probe4Error(Source) || !Source || Probe4Error(Destination) || !Destination)
     {
-        ErrorOut_VfsBindMount(-EINVAL);
+        ErrorOut_VFS_BindMount(-EINVAL);
         return Error->ErrorCode;
     }
 
     MOUNT_ENTRY* MountEntry = FindMount(Source, Error);
     if (Probe4Error(MountEntry) || !MountEntry || Probe4Error(MountEntry->SuperBlock) || !MountEntry->SuperBlock)
     {
-        ErrorOut_VfsBindMount(-ENOENT);
+        ErrorOut_VFS_BindMount(-ENOENT);
         return Error->ErrorCode;
     }
 
     if (MountsCount >= MaxMounts)
     {
-        ErrorOut_VfsBindMount(-Limits);
+        ErrorOut_VFS_BindMount(-Limits);
         return Error->ErrorCode;
     }
 
     long Index = (long)strlen(Destination);
     if (Index <= 0 || Index >= MaxPath)
     {
-        ErrorOut_VfsBindMount(-Limits);
+        ErrorOut_VFS_BindMount(-Limits);
         return Error->ErrorCode;
     }
 
@@ -168,28 +168,28 @@ VfsBindMount(const char* Source, const char* Destination, SYSTEM_ERROR* Error)
 }
 
 int
-VfsMoveMount(const char* Source, const char* Destination, SYSTEM_ERROR* Error)
+VFS_MoveMount(const char* Source, const char* Destination, SYSTEM_ERROR* Error)
 {
-    #define ErrorOut_VfsMoveMount(Code) \
-        ErrorOut(Error, Code, FUNC_VfsMoveMount)
+    #define ErrorOut_VFS_MoveMount(Code) \
+        ErrorOut(Error, Code, FUNC_VFS_MoveMount)
 
     if (Probe4Error(Source) || !Source || Probe4Error(Destination) || !Destination)
     {
-        ErrorOut_VfsMoveMount(-EINVAL);
+        ErrorOut_VFS_MoveMount(-EINVAL);
         return Error->ErrorCode;
     }
 
     MOUNT_ENTRY* MountEntry = FindMount(Source, Error);
     if (Probe4Error(MountEntry) || !MountEntry || Probe4Error(MountEntry->SuperBlock) || !MountEntry->SuperBlock)
     {
-        ErrorOut_VfsMoveMount(-ENOENT);
+        ErrorOut_VFS_MoveMount(-ENOENT);
         return Error->ErrorCode;
     }
 
     long Index = (long)strlen(Destination);
     if (Index <= 0 || Index >= MaxPath)
     {
-        ErrorOut_VfsMoveMount(-Limits);
+        ErrorOut_VFS_MoveMount(-Limits);
         return Error->ErrorCode;
     }
 
@@ -199,15 +199,15 @@ VfsMoveMount(const char* Source, const char* Destination, SYSTEM_ERROR* Error)
 }
 
 int
-VfsRemount(const char* Path, long Flags __UNUSED, const char* Options __UNUSED, SYSTEM_ERROR* Error)
+VFS_ReMount(const char* Path, long Flags __UNUSED, const char* Options __UNUSED, SYSTEM_ERROR* Error)
 {
-    #define ErrorOut_VfsRemount(Code) \
-        ErrorOut(Error, Code, FUNC_VfsRemount)
+    #define ErrorOut_VFS_ReMount(Code) \
+        ErrorOut(Error, Code, FUNC_VFS_ReMount)
 
     MOUNT_ENTRY* MountEntry = FindMount(Path, Error);
     if (Probe4Error(MountEntry) || !MountEntry || Probe4Error(MountEntry->SuperBlock) || !MountEntry->SuperBlock)
     {
-        ErrorOut_VfsRemount(-ENOENT);
+        ErrorOut_VFS_ReMount(-ENOENT);
         return Error->ErrorCode;
     }
 

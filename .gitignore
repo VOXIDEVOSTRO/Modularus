@@ -1,6 +1,5 @@
 .vscode/
 .Build/
-qemu.log
 Repo.sh
 *.o
 *.obj

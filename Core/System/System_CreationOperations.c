@@ -4,13 +4,13 @@
 #include <KernelCLibrary.h>
 
 SYSTEM_NODE*
-SystemCreateFile(const char* Name, const SYSTEM_OPERATIONS* Operations, void* Context, uint64_t ContextSize, SYSTEM_ERROR* Error)
+System_CreateFile(const char* Name, const SYSTEM_OPERATIONS* Operations, void* Context, uint64_t ContextSize, SYSTEM_ERROR* Error)
 {
-    return SystemCreateNode(Name, SYSTEM_NODE_TYPE_ENUMERATION_FILE, Operations, Context, ContextSize, Error);
+    return System_CreateNode(Name, SYSTEM_NODE_TYPE_ENUMERATION_FILE, Operations, Context, ContextSize, Error);
 }
 
 SYSTEM_NODE*
-SystemCreateDirectory(const char* Name, SYSTEM_ERROR* Error)
+System_CreateDirectory(const char* Name, SYSTEM_ERROR* Error)
 {
-    return SystemCreateNode(Name, SYSTEM_NODE_TYPE_ENUMERATION_DIRECTORY, 0, 0, 0, Error);
+    return System_CreateNode(Name, SYSTEM_NODE_TYPE_ENUMERATION_DIRECTORY, 0, 0, 0, Error);
 }

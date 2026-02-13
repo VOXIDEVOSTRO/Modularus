@@ -16,7 +16,7 @@ endif
 
 export PROJ_ROOT := $(CURDIR)
 export BUILD_DIR := $(PROJ_ROOT)/.Build
-ISO_ROOT 		 := $(BUILD_DIR)/iso_root
+ISO_ROOT 		 := $(BUILD_DIR)/sysroot
 IMAGE_NAME 		 := modularus
 
 ISO_IMG  := $(BUILD_DIR)/modularus.iso

@@ -4,14 +4,14 @@
 #include <KernelCLibrary.h>
 
 int
-SystemGetattr(SYSTEM_NODE* Node, VFS_STAT* Stat, SYSTEM_ERROR* Error)
+System_GetAttribute(SYSTEM_NODE* Node, VFS_STAT* Stat, SYSTEM_ERROR* Error)
 {
-    #define ErrorOut_SystemGetattr(Code) \
-        ErrorOut(Error, Code, FUNC_SystemGetattr)
+    #define ErrorOut_System_GetAttribute(Code) \
+        ErrorOut(Error, Code, FUNC_System_GetAttribute)
 
     if (Probe4Error(Node) || !Node || Probe4Error(Stat) || !Stat)
     {
-        ErrorOut_SystemGetattr(-EINVAL);
+        ErrorOut_System_GetAttribute(-EINVAL);
         return Error->ErrorCode;
     }
     
@@ -32,17 +32,17 @@ SystemGetattr(SYSTEM_NODE* Node, VFS_STAT* Stat, SYSTEM_ERROR* Error)
 }
 
 int
-SystemSetattr(SYSTEM_NODE* Node, const VFS_STAT* Stat, SYSTEM_ERROR* Error)
+System_SetAttribute(SYSTEM_NODE* Node, const VFS_STAT* Stat, SYSTEM_ERROR* Error)
 {
-    #define ErrorOut_SystemSetattr(Code) \
-        ErrorOut(Error, Code, FUNC_SystemSetattr)
+    #define ErrorOut_System_SetAttribute(Code) \
+        ErrorOut(Error, Code, FUNC_System_SetAttribute)
 
     if (Probe4Error(Node) || !Node || Probe4Error(Stat) || !Stat)
     {
-        ErrorOut_SystemSetattr(-EINVAL);
+        ErrorOut_System_SetAttribute(-EINVAL);
         return Error->ErrorCode;
     }
     
-    ErrorOut_SystemSetattr(-EROFS);
+    ErrorOut_System_SetAttribute(-EROFS);
     return Error->ErrorCode;
 }

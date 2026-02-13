@@ -4,21 +4,20 @@
 #include <DirtyHeap.h>
 
 int
-VfsRegisterFs(const FILESYSTEM_TYPE* FileSystemType, SYSTEM_ERROR* Error)
+VFS_RegisterFileSystem(const FILESYSTEM_TYPE* FileSystemType, SYSTEM_ERROR* Error)
 {
-    #define ErrorOut_VfsRegisterFs(Code) \
-        ErrorOut(Error, Code, FUNC_VfsRegisterFs)
+    #define ErrorOut_VFS_RegisterFileSystem(Code) \
+        ErrorOut(Error, Code, FUNC_VFS_RegisterFileSystem)
 
-    if (Probe4Error(FileSystemType) || !FileSystemType || Probe4Error(FileSystemType->Name) ||
-        !FileSystemType->Name || Probe4Error(FileSystemType->Mount) || !FileSystemType->Mount)
+    if (Probe4Error(FileSystemType) || !FileSystemType || Probe4Error(FileSystemType->Name) || !FileSystemType->Name || Probe4Error(FileSystemType->Mount) || !FileSystemType->Mount)
     {
-        ErrorOut_VfsRegisterFs(-EINVAL);
+        ErrorOut_VFS_RegisterFileSystem(-EINVAL);
         return Error->ErrorCode;
     }
 
     if (FileSystemCount >= MaxFileSystemTypes)
     {
-        ErrorOut_VfsRegisterFs(-Limits);
+        ErrorOut_VFS_RegisterFileSystem(-Limits);
         return Error->ErrorCode;
     }
 
@@ -26,7 +25,8 @@ VfsRegisterFs(const FILESYSTEM_TYPE* FileSystemType, SYSTEM_ERROR* Error)
     {
         if (strcmp(FileSystemRegistry[Iteration]->Name, FileSystemType->Name) == 0)
         {
-            return -EEXIST;
+            ErrorOut_VFS_RegisterFileSystem(-EEXIST);
+            return Error->ErrorCode;
         }
     }
 
@@ -36,14 +36,14 @@ VfsRegisterFs(const FILESYSTEM_TYPE* FileSystemType, SYSTEM_ERROR* Error)
 }
 
 int
-VfsUnregisterFs(const char* Name, SYSTEM_ERROR* Error)
+VFS_UnRegisterFileSystem(const char* Name, SYSTEM_ERROR* Error)
 {
-    #define ErrorOut_VfsUnregisterFs(Code) \
-        ErrorOut(Error, Code, FUNC_VfsUnregisterFs)
+    #define ErrorOut_VFS_UnRegisterFileSystem(Code) \
+        ErrorOut(Error, Code, FUNC_VFS_UnRegisterFileSystem)
 
     if (Probe4Error(Name) || !Name)
     {
-        ErrorOut_VfsUnregisterFs(-EINVAL);
+        ErrorOut_VFS_UnRegisterFileSystem(-EINVAL);
         return Error->ErrorCode;
     }
 
@@ -60,19 +60,19 @@ VfsUnregisterFs(const char* Name, SYSTEM_ERROR* Error)
         }
     }
 
-    ErrorOut_VfsUnregisterFs(-ENOENT);
+    ErrorOut_VFS_UnRegisterFileSystem(-ENOENT);
     return Error->ErrorCode;
 }
 
 const FILESYSTEM_TYPE*
-VfsFindFs(const char* Name, SYSTEM_ERROR* Error)
+VFS_FindFileSystem(const char* Name, SYSTEM_ERROR* Error)
 {
-    #define ErrorOut_VfsFindFs(Code) \
-        ErrorOut(Error, Code, FUNC_VfsFindFs)
+    #define ErrorOut_VFS_FindFileSystem(Code) \
+        ErrorOut(Error, Code, FUNC_VFS_FindFileSystem)
 
     if (Probe4Error(Name) || !Name)
     {
-        ErrorOut_VfsFindFs(-EINVAL);
+        ErrorOut_VFS_FindFileSystem(-EINVAL);
         return Error2Pointer(-EINVAL);
     }
 
@@ -84,7 +84,7 @@ VfsFindFs(const char* Name, SYSTEM_ERROR* Error)
         }
     }
 
-    ErrorOut_VfsFindFs(-ENOENT);
+    ErrorOut_VFS_FindFileSystem(-ENOENT);
     return Error2Pointer(-ENOENT);
 }
 

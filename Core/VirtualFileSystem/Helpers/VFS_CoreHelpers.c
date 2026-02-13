@@ -6,10 +6,14 @@
 DIRECTORY_ENTRY*
 AllocateDirectoryEntry(const char* Name, DIRECTORY_ENTRY* Parent, VFS_NODE* Node, SYSTEM_ERROR* Error)
 {
+    #define ErrorOut_AllocateDirectoryEntry(Code) \
+        ErrorOut(Error, Code, FUNC_AllocateDirectoryEntry)
+
     DIRECTORY_ENTRY* DirectoryEntry = (DIRECTORY_ENTRY*)KMalloc(sizeof(DIRECTORY_ENTRY), Error);
     if (Probe4Error(DirectoryEntry) || !DirectoryEntry)
     {
-        return Error2Pointer(-ENOMEM);
+        ErrorOut_AllocateDirectoryEntry(-ENOMEM);
+        return Error2Pointer(Error->ErrorCode);
     }
 
     DirectoryEntry->Name   = Name;
@@ -22,6 +26,9 @@ AllocateDirectoryEntry(const char* Name, DIRECTORY_ENTRY* Parent, VFS_NODE* Node
 DIRECTORY_ENTRY*
 Walk(VFS_NODE* StartingNode, DIRECTORY_ENTRY* StartingDirectoryEntry, const char* Path, SYSTEM_ERROR* Error)
 {
+    #define ErrorOut_Walk(Code) \
+        ErrorOut(Error, Code, FUNC_Walk)
+
     if (Probe4Error(StartingNode) || !StartingNode || Probe4Error(Path) || !Path)
     {
         return Error2Pointer(-EINVAL);
@@ -31,6 +38,7 @@ Walk(VFS_NODE* StartingNode, DIRECTORY_ENTRY* StartingDirectoryEntry, const char
     {
         PathComponent = SkipSeperator(PathComponent, Error);
     }
+    
     VFS_NODE* Current = StartingNode;
     DIRECTORY_ENTRY* Parent = StartingDirectoryEntry;
     char Compare[256];

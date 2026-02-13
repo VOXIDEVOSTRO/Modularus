@@ -4,21 +4,21 @@
 #include <DirtyHeap.h>
 
 int
-VfsChmod(const char* Path, long Mode, SYSTEM_ERROR* Error)
+VFS_ChangeMode(const char* Path, long Mode, SYSTEM_ERROR* Error)
 {
-    #define ErrorOut_VfsChmod(Code) \
-        ErrorOut(Error, Code, FUNC_VfsChmod)
+    #define ErrorOut_VFS_ChangeMode(Code) \
+        ErrorOut(Error, Code, FUNC_VFS_ChangeMode)
 
-    DIRECTORY_ENTRY* DirectoryEntry = VfsResolve(Path, Error);
+    DIRECTORY_ENTRY* DirectoryEntry = VFS_Resolve(Path, Error);
     if (Probe4Error(DirectoryEntry) || !DirectoryEntry || Probe4Error(DirectoryEntry->Node) || !DirectoryEntry->Node)
     {
-        ErrorOut_VfsChmod(-ENOENT);
+        ErrorOut_VFS_ChangeMode(-ENOENT);
         return Error->ErrorCode;
     }
 
     if (Probe4Error(DirectoryEntry->Node->Operations) || !DirectoryEntry->Node->Operations || Probe4Error(DirectoryEntry->Node->Operations->Chmod) || !DirectoryEntry->Node->Operations->Chmod)
     {
-        ErrorOut_VfsChmod(-ENOSYS);
+        ErrorOut_VFS_ChangeMode(-ENOSYS);
         return Error->ErrorCode;
     }
     
@@ -26,21 +26,21 @@ VfsChmod(const char* Path, long Mode, SYSTEM_ERROR* Error)
 }
 
 int
-VfsChown(const char* Path, long UserID, long GroupID, SYSTEM_ERROR* Error)
+VFS_ChangeOwner(const char* Path, long UserID, long GroupID, SYSTEM_ERROR* Error)
 {
-    #define ErrorOut_VfsChown(Code) \
-        ErrorOut(Error, Code, FUNC_VfsChown)
+    #define ErrorOut_VFS_ChangeOwner(Code) \
+        ErrorOut(Error, Code, FUNC_VFS_ChangeOwner)
     
-    DIRECTORY_ENTRY* DirectoryEntry = VfsResolve(Path, Error);
+    DIRECTORY_ENTRY* DirectoryEntry = VFS_Resolve(Path, Error);
     if (Probe4Error(DirectoryEntry) || !DirectoryEntry || Probe4Error(DirectoryEntry->Node) || !DirectoryEntry->Node)
     {
-        ErrorOut_VfsChown(-ENOENT);
+        ErrorOut_VFS_ChangeOwner(-ENOENT);
         return Error->ErrorCode;
     }
 
     if (Probe4Error(DirectoryEntry->Node->Operations) || !DirectoryEntry->Node->Operations || Probe4Error(DirectoryEntry->Node->Operations->Chown) || !DirectoryEntry->Node->Operations->Chown)
     {
-        ErrorOut_VfsChown(-ENOSYS);
+        ErrorOut_VFS_ChangeOwner(-ENOSYS);
         return Error->ErrorCode;
     }
     

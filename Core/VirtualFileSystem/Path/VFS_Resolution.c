@@ -4,20 +4,20 @@
 #include <DirtyHeap.h>
 
 DIRECTORY_ENTRY*
-VfsResolve(const char* Path, SYSTEM_ERROR* Error)
+VFS_Resolve(const char* Path, SYSTEM_ERROR* Error)
 {
-    #define ErrorOut_VfsResolve(Code) \
-        ErrorOut(Error, Code, FUNC_VfsResolve)
+    #define ErrorOut_VFS_Resolve(Code) \
+        ErrorOut(Error, Code, FUNC_VFS_Resolve)
 
     if (Probe4Error(Path) || !Path)
     {
-        ErrorOut_VfsResolve(-EINVAL);
+        ErrorOut_VFS_Resolve(-EINVAL);
         return Error2Pointer(Error->ErrorCode);
     }
 
     if (Probe4Error(RootNode) || !RootNode)
     {
-        ErrorOut_VfsResolve(-ENOENT);
+        ErrorOut_VFS_Resolve(-ENOENT);
         return Error2Pointer(Error->ErrorCode);
     }
 
@@ -40,7 +40,7 @@ VfsResolve(const char* Path, SYSTEM_ERROR* Error)
         DIRECTORY_ENTRY* DirectoryEntry = AllocateDirectoryEntry(MountPoint, RootDirectoryEntry, MountEntry->SuperBlock->Root, Error);
         if(Probe4Error(DirectoryEntry) || !DirectoryEntry)
         {
-            ErrorOut_VfsResolve(-ENOENT);
+            ErrorOut_VFS_Resolve(-ENOENT);
             return Error2Pointer(Error->ErrorCode);
         }
         else
@@ -60,7 +60,7 @@ VfsResolve(const char* Path, SYSTEM_ERROR* Error)
         DIRECTORY_ENTRY* DirectoryEntry = AllocateDirectoryEntry(MountPoint, RootDirectoryEntry, MountEntry->SuperBlock->Root, Error);
         if(Probe4Error(DirectoryEntry) || !DirectoryEntry)
         {
-            ErrorOut_VfsResolve(-ENOENT);
+            ErrorOut_VFS_Resolve(-ENOENT);
             return Error2Pointer(Error->ErrorCode);
         }
         else
@@ -73,14 +73,14 @@ VfsResolve(const char* Path, SYSTEM_ERROR* Error)
 }
 
 DIRECTORY_ENTRY*
-VfsResolveAt(DIRECTORY_ENTRY* Base, const char* ResolvePath, SYSTEM_ERROR* Error)
+VFS_ResolveAt(DIRECTORY_ENTRY* Base, const char* ResolvePath, SYSTEM_ERROR* Error)
 {
-    #define ErrorOut_VfsResolveAt(Code) \
-        ErrorOut(Error, Code, FUNC_VfsResolveAt)
+    #define ErrorOut_VFS_ResolveAt(Code) \
+        ErrorOut(Error, Code, FUNC_VFS_ResolveAt)
 
     if (Probe4Error(Base) || !Base || Probe4Error(Base->Node) || !Base->Node || Probe4Error(ResolvePath) || !ResolvePath)
     {
-        ErrorOut_VfsResolveAt(-EINVAL);
+        ErrorOut_VFS_ResolveAt(-EINVAL);
         return Error2Pointer(Error->ErrorCode);
     }
 
@@ -91,27 +91,27 @@ VfsResolveAt(DIRECTORY_ENTRY* Base, const char* ResolvePath, SYSTEM_ERROR* Error
 
     if (IsSeperator(*ResolvePath, Error))
     {
-        return VfsResolve(ResolvePath, Error);
+        return VFS_Resolve(ResolvePath, Error);
     }
 
     return Walk(Base->Node, Base, ResolvePath, Error);
 }
 
 VFS_NODE*
-VfsLookup(DIRECTORY_ENTRY* Base, const char* Name, SYSTEM_ERROR* Error)
+VFS_LookUp(DIRECTORY_ENTRY* Base, const char* Name, SYSTEM_ERROR* Error)
 {
-    #define ErrorOut_VfsLookup(Code) \
-        ErrorOut(Error, Code, FUNC_VfsLookup)
+    #define ErrorOut_VFS_LookUp(Code) \
+        ErrorOut(Error, Code, FUNC_VFS_LookUp)
 
     if (Probe4Error(Base) || !Base || Probe4Error(Base->Node) || !Base->Node || Probe4Error(Name) || !Name)
     {
-        ErrorOut_VfsLookup(-EINVAL);
+        ErrorOut_VFS_LookUp(-EINVAL);
         return Error2Pointer(Error->ErrorCode);
     }
 
     if (Probe4Error(Base->Node->Operations) || !Base->Node->Operations || Probe4Error(Base->Node->Operations->Lookup) || !Base->Node->Operations->Lookup)
     {
-        ErrorOut_VfsLookup(-ENOSYS);
+        ErrorOut_VFS_LookUp(-ENOSYS);
         return Error2Pointer(Error->ErrorCode);
     }
 

@@ -28,17 +28,18 @@ NextCompare(const char* Path, char* Output, long Capacity, SYSTEM_ERROR* Error)
     }
 
     const char* PathComponent = Path;
-    long        Index = 0;
-
+    long Index = 0;
     while (*PathComponent && !IsSeperator(*PathComponent, Error))
     {
         if (Index + 1 < Capacity)
         {
             Output[Index++] = *PathComponent;
         }
+
         PathComponent++;
     }
 
     Output[Index] = 0;
+
     return Index;
 }

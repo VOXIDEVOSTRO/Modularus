@@ -4,15 +4,15 @@
 #include <DirtyHeap.h>
 
 int
-VfsAccess(const char* Path, long Mode __UNUSED, SYSTEM_ERROR* Error)
+VFS_Access(const char* Path, long Mode __UNUSED, SYSTEM_ERROR* Error)
 {
-    #define ErrorOut_VfsAccess(Code) \
-        ErrorOut(Error, Code, FUNC_VfsAccess)
+    #define ErrorOut_VFS_Access(Code) \
+        ErrorOut(Error, Code, FUNC_VFS_Access)
 
-    DIRECTORY_ENTRY* DirectoryEntry = VfsResolve(Path, Error);
+    DIRECTORY_ENTRY* DirectoryEntry = VFS_Resolve(Path, Error);
     if (Probe4Error(DirectoryEntry) || !DirectoryEntry)
     {
-        ErrorOut_VfsAccess(-ENOENT);
+        ErrorOut_VFS_Access(-ENOENT);
         return Error->ErrorCode;
     }
 
@@ -20,15 +20,15 @@ VfsAccess(const char* Path, long Mode __UNUSED, SYSTEM_ERROR* Error)
 }
 
 int
-VfsExists(const char* Path, SYSTEM_ERROR* Error)
+VFS_Exists(const char* Path, SYSTEM_ERROR* Error)
 {
-    #define ErrorOut_VfsExists(Code) \
-        ErrorOut(Error, Code, FUNC_VfsExists)
+    #define ErrorOut_VFS_Exists(Code) \
+        ErrorOut(Error, Code, FUNC_VFS_Exists)
 
-    DIRECTORY_ENTRY* DirectoryEntry = VfsResolve(Path, Error);
+    DIRECTORY_ENTRY* DirectoryEntry = VFS_Resolve(Path, Error);
     if (Probe4Error(DirectoryEntry) || !DirectoryEntry)
     {
-        ErrorOut_VfsExists(-ENOENT);
+        ErrorOut_VFS_Exists(-ENOENT);
         return Error->ErrorCode;
     }
 
@@ -36,15 +36,15 @@ VfsExists(const char* Path, SYSTEM_ERROR* Error)
 }
 
 int
-VfsIsDir(const char* Path, SYSTEM_ERROR* Error)
+VFS_IsDirectory(const char* Path, SYSTEM_ERROR* Error)
 {
-    #define ErrorOut_VfsIsDir(Code) \
-        ErrorOut(Error, Code, FUNC_VfsIsDir)
+    #define ErrorOut_VFS_IsDirectory(Code) \
+        ErrorOut(Error, Code, FUNC_VFS_IsDirectory)
 
-    DIRECTORY_ENTRY* DirectoryEntry = VfsResolve(Path, Error);
+    DIRECTORY_ENTRY* DirectoryEntry = VFS_Resolve(Path, Error);
     if (Probe4Error(DirectoryEntry) || !DirectoryEntry || Probe4Error(DirectoryEntry->Node) || !DirectoryEntry->Node)
     {
-        ErrorOut_VfsIsDir(-ENOENT);
+        ErrorOut_VFS_IsDirectory(-ENOENT);
         return Error->ErrorCode;
     }
 
@@ -54,21 +54,21 @@ VfsIsDir(const char* Path, SYSTEM_ERROR* Error)
     }
     else
     {
-        ErrorOut_VfsIsDir(-ENOENT);
+        ErrorOut_VFS_IsDirectory(-ENOENT);
         return Error->ErrorCode;
     }   
 }
 
 int
-VfsIsFile(const char* Path, SYSTEM_ERROR* Error)
+VFS_IsFile(const char* Path, SYSTEM_ERROR* Error)
 {
-    #define ErrorOut_VfsIsFile(Code) \
-        ErrorOut(Error, Code, FUNC_VfsIsFile)
+    #define ErrorOut_VFS_IsFile(Code) \
+        ErrorOut(Error, Code, FUNC_VFS_IsFile)
 
-    DIRECTORY_ENTRY* DirectoryEntry = VfsResolve(Path, Error);
+    DIRECTORY_ENTRY* DirectoryEntry = VFS_Resolve(Path, Error);
     if (Probe4Error(DirectoryEntry) || !DirectoryEntry || Probe4Error(DirectoryEntry->Node) || !DirectoryEntry->Node)
     {
-        ErrorOut_VfsIsFile(-ENOENT);
+        ErrorOut_VFS_IsFile(-ENOENT);
         return Error->ErrorCode;
     }
 
@@ -78,21 +78,21 @@ VfsIsFile(const char* Path, SYSTEM_ERROR* Error)
     }
     else
     {
-        ErrorOut_VfsIsFile(-ENOENT);
+        ErrorOut_VFS_IsFile(-ENOENT);
         return Error->ErrorCode;
     }
 }
 
 int
-VfsIsSymlink(const char* Path, SYSTEM_ERROR* Error)
+VFS_IsSymbolLink(const char* Path, SYSTEM_ERROR* Error)
 {
-    #define ErrorOut_VfsIsSymlink(Code) \
-        ErrorOut(Error, Code, FUNC_VfsIsSymlink)
+    #define ErrorOut_VFS_IsSymbolLink(Code) \
+        ErrorOut(Error, Code, FUNC_VFS_IsSymbolLink)
 
-    DIRECTORY_ENTRY* DirectoryEntry = VfsResolve(Path, Error);
+    DIRECTORY_ENTRY* DirectoryEntry = VFS_Resolve(Path, Error);
     if (Probe4Error(DirectoryEntry) || !DirectoryEntry || Probe4Error(DirectoryEntry->Node) || !DirectoryEntry->Node)
     {
-        ErrorOut_VfsIsSymlink(-ENOENT);
+        ErrorOut_VFS_IsSymbolLink(-ENOENT);
         return Error->ErrorCode;
     }
 
@@ -102,7 +102,7 @@ VfsIsSymlink(const char* Path, SYSTEM_ERROR* Error)
     }
     else
     {
-        ErrorOut_VfsIsSymlink(-ENOENT);
+        ErrorOut_VFS_IsSymbolLink(-ENOENT);
         return Error->ErrorCode;
     }
 }

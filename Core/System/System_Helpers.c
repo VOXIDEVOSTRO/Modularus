@@ -4,14 +4,14 @@
 #include <KernelCLibrary.h>
 
 VFS_NODE*
-SystemVfsLookup(VFS_NODE* VFSNode, const char* Name, SYSTEM_ERROR* Error)
+System_LookUp(VFS_NODE* VFSNode, const char* Name, SYSTEM_ERROR* Error)
 {
-    #define ErrorOut_SystemVfsLookup(Code) \
-        ErrorOut(Error, Code, FUNC_SystemVfsLookup)
+    #define ErrorOut_System_LookUp(Code) \
+        ErrorOut(Error, Code, FUNC_System_LookUp)
 
     if (Probe4Error(VFSNode) || !VFSNode || Probe4Error(Name) || !Name)
     {
-        ErrorOut_SystemVfsLookup(-EINVAL);
+        ErrorOut_System_LookUp(-EINVAL);
         return Error2Pointer(Error->ErrorCode);
     }
     
@@ -19,15 +19,15 @@ SystemVfsLookup(VFS_NODE* VFSNode, const char* Name, SYSTEM_ERROR* Error)
      
     if (Probe4Error(Node) || !Node)
     {
-        ErrorOut_SystemVfsLookup(-ENOENT);
+        ErrorOut_System_LookUp(-ENOENT);
         return Error2Pointer(Error->ErrorCode);
     }
     
-    SYSTEM_NODE* Found = SystemFindNode(Node, Name, Error);
+    SYSTEM_NODE* Found = System_FindNode(Node, Name, Error);
     
     if (Probe4Error(Found) || !Found)
     {
-        ErrorOut_SystemVfsLookup(-ENOENT);
+        ErrorOut_System_LookUp(-ENOENT);
         return Error2Pointer(Error->ErrorCode);
     }
     
@@ -35,26 +35,27 @@ SystemVfsLookup(VFS_NODE* VFSNode, const char* Name, SYSTEM_ERROR* Error)
     
     if (Probe4Error(NodeAllocationResult) || !NodeAllocationResult)
     {
-        ErrorOut_SystemVfsLookup(-ENOMEM);
+        ErrorOut_System_LookUp(-ENOMEM);
         return Error2Pointer(Error->ErrorCode);
     }
     
     NodeAllocationResult->Type = (Found->Type == SYSTEM_NODE_TYPE_ENUMERATION_DIRECTORY) ? VFSNode_DIRECTORY : VFSNode_FILE;
     NodeAllocationResult->Private = Found;
+    NodeAllocationResult->Operations = &SystemVfsOperations;
     NodeAllocationResult->ReferenceCount = 1;
     
     return NodeAllocationResult;
 }
 
 SYSTEM_NODE*
-SystemWalkPath(const char* Path, SYSTEM_ERROR* Error)
+System_Walk(const char* Path, SYSTEM_ERROR* Error)
 {
-    #define ErrorOut_SystemWalkPath(Code) \
-        ErrorOut(Error, Code, FUNC_SystemWalkPath)
+    #define ErrorOut_System_Walk(Code) \
+        ErrorOut(Error, Code, FUNC_System_Walk)
 
     if (Probe4Error(Path) || !Path)
     {
-        ErrorOut_SystemWalkPath(-EINVAL);
+        ErrorOut_System_Walk(-EINVAL);
         return Error2Pointer(Error->ErrorCode);
     }
     
@@ -80,18 +81,18 @@ SystemWalkPath(const char* Path, SYSTEM_ERROR* Error)
         
         if (Length >= sizeof(Name))
         {
-            ErrorOut_SystemWalkPath(-ENAMETOOLONG);
+            ErrorOut_System_Walk(-ENAMETOOLONG);
             return Error2Pointer(Error->ErrorCode);
         }
         
         memcpy(Name, Component, Length);
         Name[Length] = 0;
         
-        Current = SystemFindNode(Current, Name, Error);
+        Current = System_FindNode(Current, Name, Error);
         
         if (Probe4Error(Current) || !Current)
         {
-            ErrorOut_SystemWalkPath(-ENOENT);
+            ErrorOut_System_Walk(-ENOENT);
             return Error2Pointer(Error->ErrorCode);
         }
         

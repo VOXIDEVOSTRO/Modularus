@@ -189,7 +189,7 @@ typedef struct VFS_NODE_OPERATIONS
     long (*Read)(FILE*, void*, long, SYSTEM_ERROR*);
     long (*Write)(FILE*, const void*, long, SYSTEM_ERROR*);
     long (*Lseek)(FILE*, long, int, SYSTEM_ERROR*);
-    int (*Ioctl)(FILE*, unsigned long, void*, SYSTEM_ERROR*);
+    int (*Ioctl)(FILE*, uint64_t, void*, SYSTEM_ERROR*);
     int (*Stat)(VFS_NODE*, VFS_STAT*, SYSTEM_ERROR*);
     long (*Readdir)(VFS_NODE*, void*, long, SYSTEM_ERROR*);
     VFS_NODE* (*Lookup)(VFS_NODE*, const char*, SYSTEM_ERROR*);

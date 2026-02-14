@@ -10,7 +10,7 @@ static SYSTEM_NODE* SerialNode = 0;
 static long UART_Read(SYSTEM_FILE*, void*, uint64_t, SYSTEM_ERROR*);
 static long UART_Write(SYSTEM_FILE*, const void*, uint64_t, SYSTEM_ERROR*);
 
-static SYSTEM_OPERATIONS UartSysfsOps = 
+static SYSTEM_OPERATIONS UARTOperations = 
 {
     .Open = 0,      /* Default */
     .Close = 0,     /* Default */
@@ -85,7 +85,7 @@ UART_KickStart(SYSTEM_ERROR* Error)
     inb(SerialPort + UART_RegisterLineStatus);
     outb(SerialPort + UART_RegisterInterrupt, 0x00);
 
-    SerialNode = System_CreateFile("uart", &UartSysfsOps, 0, 0, Error);
+    SerialNode = System_CreateFile("uart", &UARTOperations, 0, 0, Error);
     if (Probe4Error(SerialNode) || !SerialNode)
     {
         ErrorOut_UART_KickStart(Error->ErrorCode);

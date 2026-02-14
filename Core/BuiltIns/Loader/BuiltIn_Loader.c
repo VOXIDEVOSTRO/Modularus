@@ -46,7 +46,7 @@ long Loader_Read(SYSTEM_FILE* File __UNUSED, void* Buffer, uint64_t Size, SYSTEM
     return Size;
 }
 
-long Loader_Ioctl(SYSTEM_FILE* File __UNUSED, unsigned long Request, void* Arguments, SYSTEM_ERROR* Error)
+long Loader_Ioctl(SYSTEM_FILE* File __UNUSED, uint64_t Request, void* Arguments, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_Loader_Ioctl(Code) \
         ErrorOut(Error, Code, General)

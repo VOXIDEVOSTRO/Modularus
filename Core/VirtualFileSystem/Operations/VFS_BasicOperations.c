@@ -194,7 +194,7 @@ VFS_LSeek(FILE* FileHandle, long Offset, int Whence, SYSTEM_ERROR* Error)
 }
 
 int
-VFS_IOControl(FILE* FileHandle, unsigned long Command, void* Argument, SYSTEM_ERROR* Error)
+VFS_IOControl(FILE* FileHandle, uint64_t Command, void* Argument, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_VFS_IOControl(Code) \
         ErrorOut(Error, Code, FUNC_VFS_IOControl)

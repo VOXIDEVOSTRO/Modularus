@@ -8,6 +8,104 @@
 LOADED_MODULE* LoadedModules = NULL;
 SYSTEM_NODE* LoaderNode = NULL;
 
+/*Operations*/
+
+SYSTEM_OPERATIONS LoaderOperations =
+{
+    .Open = Loader_Open,
+    .Close = Loader_Close,
+    .Read = Loader_Read,
+    .Write = NULL,
+    .Ioctl = Loader_Ioctl,
+    .Getattr = ModuleLoader_GetAttribute,
+    .Setattr = NULL
+};
+
+int Loader_Open(SYSTEM_NODE* Node __UNUSED, SYSTEM_FILE* File __UNUSED, SYSTEM_ERROR* Error __UNUSED)
+{
+    return GeneralOK;
+}
+
+int Loader_Close(SYSTEM_FILE* File __UNUSED, SYSTEM_ERROR* Error __UNUSED)
+{
+    return GeneralOK;
+}
+
+long Loader_Read(SYSTEM_FILE* File __UNUSED, void* Buffer, uint64_t Size, SYSTEM_ERROR* Error __UNUSED)
+{
+    char List[4096];
+    memset(List, 0, sizeof(List));
+    uint64_t Offset = 0;
+    
+    if (Size > Offset)
+    {
+        Size = Offset;
+    }
+
+    memcpy(Buffer, List, Size);
+    return Size;
+}
+
+long Loader_Ioctl(SYSTEM_FILE* File __UNUSED, unsigned long Request, void* Arguments, SYSTEM_ERROR* Error)
+{
+    #define ErrorOut_Loader_Ioctl(Code) \
+        ErrorOut(Error, Code, General)
+
+    switch (Request)
+    {
+        case LoaderCommand_COUNT:
+        {
+            uint64_t* Count = (uint64_t*)Arguments;
+            if (Probe4Error(Count) || !Count)
+            {
+                ErrorOut_Loader_Ioctl(-EINVAL);
+                return Error->ErrorCode;
+            }
+            
+            *Count = 0;
+            for (LOADED_MODULE* Module = LoadedModules; Module; Module = Module->Next)
+            {
+                (*Count)++;
+            }
+            
+            return GeneralOK;
+        }
+        
+        case LoaderCommand_GET:
+        {
+            LOADED_MODULE* Information = (LOADED_MODULE*)Arguments;
+            if (Probe4Error(Information) || !Information)
+            {
+                ErrorOut_Loader_Ioctl(-EINVAL);
+                return Error->ErrorCode;
+            }
+            
+            if (LoadedModules)
+            {
+                strncpy(Information->Name, LoadedModules->Name, 255);
+                Information->Address = LoadedModules->Address;
+                Information->Size = LoadedModules->Size;
+                return GeneralOK;
+            }
+            
+            ErrorOut_Loader_Ioctl(-ENOENT);
+            return Error->ErrorCode;
+        }
+        
+        default:
+        {
+            ErrorOut_Loader_Ioctl(-BadRequest);
+            return Error->ErrorCode;
+        }
+    }
+}
+
+int ModuleLoader_GetAttribute(SYSTEM_NODE* Node __UNUSED, VFS_STAT* Stat, SYSTEM_ERROR* Error __UNUSED)
+{
+    Stat->Size = 4096;
+    return GeneralOK;
+}
+
 LOADED_MODULE*
 Loader_GetModules(SYSTEM_ERROR* Error)
 {
@@ -50,10 +148,14 @@ Loader_GetModules(SYSTEM_ERROR* Error)
             const char* Basename = Name;
             for (const char* Component = Name; *Component; Component++)
             {
-                if (*Component == '/') Basename = Component + 1;
+                if (*Component == '/')
+                {
+                    Basename = Component + 1;
+                }
             }
 
-            Module->Name = Basename;
+            strncpy(Module->Name, Basename, sizeof(Module->Name) - 1);
+            Module->Name[sizeof(Module->Name) - 1] = 0;
             Module->Address = File->address;
             Module->Size = File->size;
             Module->Next = NULL;
@@ -76,7 +178,7 @@ Loader_GetModules(SYSTEM_ERROR* Error)
         if (LoadedModules && !LoaderNode)
         {
             LoaderNode = System_CreateNode("loader", SystemNodeTypeEnumeration_FILE, &LoaderOperations, NULL, 4096, Error);
-            if (!Probe4Error(LoaderNode) || LoaderNode)
+            if (!Probe4Error(LoaderNode) && LoaderNode)
             {
                 System_AttachNode(SystemRoot, LoaderNode, Error);
             }

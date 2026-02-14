@@ -8,7 +8,7 @@
 
 typedef struct LOADED_MODULE
 {
-    const char* Name;
+    char Name[256];
     void* Address;
     uint64_t Size;
     struct LOADED_MODULE* Next; /*List*/
@@ -25,3 +25,10 @@ extern SYSTEM_NODE* LoaderNode;
 LOADED_MODULE* Loader_GetModules(SYSTEM_ERROR*);
 LOADED_MODULE* Loader_FindModule(const char*, SYSTEM_ERROR*);
 uint64_t Loader_GetModuleCount(SYSTEM_ERROR*);
+
+/*Operations*/
+int Loader_Open(SYSTEM_NODE*, SYSTEM_FILE*, SYSTEM_ERROR*);
+int Loader_Close(SYSTEM_FILE*, SYSTEM_ERROR*);
+long Loader_Read(SYSTEM_FILE*, void*, uint64_t, SYSTEM_ERROR*);
+long Loader_Ioctl(SYSTEM_FILE*, unsigned long, void*, SYSTEM_ERROR*);
+int ModuleLoader_GetAttribute(SYSTEM_NODE*, VFS_STAT*, SYSTEM_ERROR*);

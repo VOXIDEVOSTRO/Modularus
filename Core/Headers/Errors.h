@@ -14,6 +14,7 @@ enum
     BadParameters,
     NotFound,
     Limits,
+    BadRange,
 
     /*VFS Related*/
     ENOENT,          /* No such file or directory */
@@ -199,6 +200,7 @@ enum
     FUNC_System_UnMount,
     FUNC_System_RegisterFileSystem,
     FUNC_System_UnRegisterFileSystem,
+    FUNC_System_Ioctl,
 
     MaxTraceback = 10000,
 } TRACEBACK_ID; /*Can also be called function IDs*/
@@ -237,6 +239,7 @@ ErrorMap[MaxErrors]=
     "Bad Request",
     "Bad Parameters",
     "Not Found",
+    "Bad Range",
 
     "No such file or directory",
     "Not a directory",
@@ -416,6 +419,7 @@ TraceBackMap[MaxTraceback]=
     "Core/System/*->System_UnMount",
     "Core/System/*->System_RegisterFileSystem",
     "Core/System/*->System_UnRegisterFileSystem",
+    "Core/System/*->System_Ioctl",
 };
 
 /*Another helper but to map the enum code to a error string map*/

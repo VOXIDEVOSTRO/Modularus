@@ -153,3 +153,27 @@ System_Write(FILE* File, const void* Buffer, long Size, SYSTEM_ERROR* Error)
     ErrorOut_System_Write(-EROFS);
     return Error->ErrorCode;
 }
+
+long
+System_Ioctl(FILE* File, unsigned long Request, void* Arguments, SYSTEM_ERROR* Error)
+{
+    #define ErrorOut_System_Ioctl(Code) \
+        ErrorOut(Error, Code, FUNC_System_Ioctl)
+
+    SYSTEM_FILE* SystemFile = (SYSTEM_FILE*)File->Private;
+    if (Probe4Error(SystemFile) || !SystemFile || Probe4Error(SystemFile->Node) || !SystemFile->Node)
+    {
+        ErrorOut_System_Ioctl(-EINVAL);
+        return Error->ErrorCode;
+    }
+
+    SYSTEM_NODE* Node = SystemFile->Node;
+    
+    if (Node->Operations && Node->Operations->Ioctl)
+    {
+        return Node->Operations->Ioctl(SystemFile, Request, Arguments, Error);
+    }
+
+    ErrorOut_System_Ioctl(-ENOENT);
+    return Error->ErrorCode;
+}

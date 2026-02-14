@@ -13,6 +13,7 @@ typedef struct SYSTEM_OPERATIONS
     int (*Close)(SYSTEM_FILE*, SYSTEM_ERROR*);
     long (*Read)(SYSTEM_FILE*, void*, uint64_t, SYSTEM_ERROR*);
     long (*Write)(SYSTEM_FILE*, const void*, uint64_t, SYSTEM_ERROR*);
+    long (*Ioctl)(SYSTEM_FILE*, unsigned long, void*, SYSTEM_ERROR*);
     int (*Getattr)(SYSTEM_NODE*, VFS_STAT*, SYSTEM_ERROR*);
     int (*Setattr)(SYSTEM_NODE*, const VFS_STAT*, SYSTEM_ERROR*);
 } SYSTEM_OPERATIONS;

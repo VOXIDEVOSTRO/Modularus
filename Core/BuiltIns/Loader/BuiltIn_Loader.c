@@ -73,6 +73,15 @@ Loader_GetModules(SYSTEM_ERROR* Error)
 
         LoadedModules = First;
 
+        if (LoadedModules && !LoaderNode)
+        {
+            LoaderNode = System_CreateNode("loader", SystemNodeTypeEnumeration_FILE, &LoaderOperations, NULL, 4096, Error);
+            if (!Probe4Error(LoaderNode) || LoaderNode)
+            {
+                System_AttachNode(SystemRoot, LoaderNode, Error);
+            }
+        }
+
         return First;
     #endif
 }
@@ -103,6 +112,6 @@ Loader_GetModuleCount(SYSTEM_ERROR* Error __UNUSED)
     {
         Count++;
     }
-    
+
     return Count; /*Not Found(SYSTEM_ERROR enum btw) if 0*/
 }

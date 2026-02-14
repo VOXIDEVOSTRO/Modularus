@@ -3,8 +3,10 @@
 #include <BuiltIns/Loader/Loader.h>
 #include <DirtyHeap.h>
 #include <KernelCLibrary.h>
+#include <System.h>
 
 LOADED_MODULE* LoadedModules = NULL;
+SYSTEM_NODE* LoaderNode = NULL;
 
 LOADED_MODULE*
 Loader_GetModules(SYSTEM_ERROR* Error)
@@ -56,7 +58,7 @@ Loader_GetModules(SYSTEM_ERROR* Error)
             Module->Size = File->size;
             Module->Next = NULL;
 
-            if (!First)
+            if (Probe4Error(First) || !First)
             {
                 First = Module;
             }
@@ -70,6 +72,7 @@ Loader_GetModules(SYSTEM_ERROR* Error)
         }
 
         LoadedModules = First;
+
         return First;
     #endif
 }
@@ -100,5 +103,6 @@ Loader_GetModuleCount(SYSTEM_ERROR* Error __UNUSED)
     {
         Count++;
     }
+    
     return Count; /*Not Found(SYSTEM_ERROR enum btw) if 0*/
 }

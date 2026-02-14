@@ -1,0 +1,101 @@
+#include <__KCONF.h>
+#include <Errors.h>
+#include <BuiltIns/Loader/Loader.h>
+#include <DirtyHeap.h>
+#include <KernelCLibrary.h>
+#include <System.h>
+
+static int Loader_Open(SYSTEM_NODE* Node __UNUSED, SYSTEM_FILE* File __UNUSED, SYSTEM_ERROR* Error __UNUSED)
+{
+    return GeneralOK;
+}
+
+static int Loader_Close(SYSTEM_FILE* File __UNUSED, SYSTEM_ERROR* Error __UNUSED)
+{
+    return GeneralOK;
+}
+
+static long Loader_Read(SYSTEM_FILE* File, void* Buffer, uint64_t Size, SYSTEM_ERROR* Error __UNUSED)
+{
+    char List[4096];
+    int Offset = 0;
+    
+    if (Size > Offset)
+    {
+        Size = Offset;
+    }
+
+    memcpy(Buffer, List, Size);
+    return Size;
+}
+
+static long Loader_Ioctl(SYSTEM_FILE* File __UNUSED, unsigned long Request, void* Arguments, SYSTEM_ERROR* Error)
+{
+    #define ErrorOut_Loader_Ioctl(Code) \
+        ErrorOut(Error, Code, General)
+
+    switch (Request)
+    {
+        case LoaderCommand_COUNT:
+        {
+            uint64_t* Count = (uint64_t*)Arguments;
+            if (Probe4Error(Count) || !Count)
+            {
+                ErrorOut_Loader_Ioctl(-EINVAL);
+                return Error->ErrorCode;
+            }
+            
+            *Count = 0;
+            for (LOADED_MODULE* Module = LoadedModules; Module; Module = Module->Next)
+            {
+                (*Count)++;
+            }
+            
+            return GeneralOK;
+        }
+        
+        case LoaderCommand_GET:
+        {
+            LOADED_MODULE* Information = (LOADED_MODULE*)Arguments;
+            if (Probe4Error(Information) || !Information)
+            {
+                ErrorOut_Loader_Ioctl(-EINVAL);
+                return Error->ErrorCode;
+            }
+            
+            if (LoadedModules)
+            {
+                strncpy(Information->Name, LoadedModules->Name, 255);
+                Information->Address = LoadedModules->Address;
+                Information->Size = LoadedModules->Size;
+                return GeneralOK;
+            }
+            
+            ErrorOut_Loader_Ioctl(-ENOENT);
+            return Error->ErrorCode;
+        }
+        
+        default:
+        {
+            ErrorOut_Loader_Ioctl(-BadRequest);
+            return Error->ErrorCode;
+        }
+    }
+}
+
+static int ModuleLoader_GetAttribute(SYSTEM_NODE* Node __UNUSED, VFS_STAT* Stat, SYSTEM_ERROR* Error __UNUSED)
+{
+    Stat->Size = 4096;
+    return GeneralOK;
+}
+
+SYSTEM_OPERATIONS LoaderOperations =
+{
+    .Open = Loader_Open,
+    .Close = Loader_Close,
+    .Read = Loader_Read,
+    .Write = NULL,
+    .Ioctl = Loader_Ioctl,
+    .Getattr = ModuleLoader_GetAttribute,
+    .Setattr = NULL
+};

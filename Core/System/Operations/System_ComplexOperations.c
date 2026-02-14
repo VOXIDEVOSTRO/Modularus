@@ -18,7 +18,7 @@ System_ReadDirectory(VFS_NODE* VFSNode, void* Buffer, long Size, SYSTEM_ERROR* E
     
     SYSTEM_NODE* Node = (SYSTEM_NODE*)VFSNode->Private;
     
-    if (Probe4Error(Node) || !Node || Node->Type != SYSTEM_NODE_TYPE_ENUMERATION_DIRECTORY)
+    if (Probe4Error(Node) || !Node || Node->Type != SystemNodeTypeEnumeration_DIRECTORY)
     {
         ErrorOut_System_ReadDirectory(-ENOTDIR);
         return Error->ErrorCode;

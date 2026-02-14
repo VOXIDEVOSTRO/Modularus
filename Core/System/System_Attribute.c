@@ -23,7 +23,7 @@ System_GetAttribute(SYSTEM_NODE* Node, VFS_STAT* Stat, SYSTEM_ERROR* Error)
     Stat->RawDevice = 0;
     Stat->Device = 0;
     Stat->Flags = 0;
-    Stat->Type = (Node->Type == SYSTEM_NODE_TYPE_ENUMERATION_DIRECTORY) ? VFSNode_DIRECTORY : VFSNode_FILE;
+    Stat->Type = (Node->Type == SystemNodeTypeEnumeration_DIRECTORY) ? VFSNode_DIRECTORY : VFSNode_FILE;
     Stat->Permission.Mode = Node->Mode;
     Stat->Permission.UserID = Node->UserID;
     Stat->Permission.GroupID = Node->GroupID;

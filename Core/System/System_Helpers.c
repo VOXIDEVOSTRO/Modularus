@@ -39,7 +39,7 @@ System_LookUp(VFS_NODE* VFSNode, const char* Name, SYSTEM_ERROR* Error)
         return Error2Pointer(Error->ErrorCode);
     }
     
-    NodeAllocationResult->Type = (Found->Type == SYSTEM_NODE_TYPE_ENUMERATION_DIRECTORY) ? VFSNode_DIRECTORY : VFSNode_FILE;
+    NodeAllocationResult->Type = (Found->Type == SystemNodeTypeEnumeration_DIRECTORY) ? VFSNode_DIRECTORY : VFSNode_FILE;
     NodeAllocationResult->Private = Found;
     NodeAllocationResult->Operations = &SystemVfsOperations;
     NodeAllocationResult->ReferenceCount = 1;

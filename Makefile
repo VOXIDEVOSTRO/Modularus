@@ -105,6 +105,11 @@ $(ISO_IMG): core $(DEPS_DIR)/limine/limine
 	@mkdir -p $(ISO_ROOT)/boot/limine
 	@mkdir -p $(ISO_ROOT)/EFI/BOOT
 	@cp $(KERNEL) $(ISO_ROOT)/boot/
+	@mkdir -p $(ISO_ROOT)/modules
+
+# call the modules make
+	@$(MAKE) \
+		-C Modules
 
 	@cp Boot/limine.conf \
 		$(ISO_ROOT)/boot/limine/
@@ -176,6 +181,7 @@ $(DISK_IMG): core $(DEPS_DIR)/limine/limine
 
 clean:
 	@$(MAKE) -C Core clean
+	@$(MAKE) -C Modules clean
 	@rm -rf $(BUILD_DIR)
 
 distclean: clean

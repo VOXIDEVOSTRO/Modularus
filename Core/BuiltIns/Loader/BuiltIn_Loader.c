@@ -123,9 +123,15 @@ Loader_GetModules(SYSTEM_ERROR* Error)
     /*LIMINE*/
 
     #ifdef BOOTVENDOR_Limine
-        struct limine_module_response* Response = (struct limine_module_response*)Request.Pointer;
+        struct limine_module_request* LimineRequest = (struct limine_module_request*)Request.Pointer;
+        struct limine_module_response* Response = LimineRequest->response;
+        if (!Response || !Response->modules)
+        {
+            ErrorOut_Loader_GetModules(-BadRequest);
+            return Error2Pointer(Error->ErrorCode);
+        }
 
-        if (!Response->modules || Response->module_count == 0)
+        if (Response->module_count > 1024 || Response->module_count == 0)
         {
             ErrorOut_Loader_GetModules(-BadRange);
             return Error2Pointer(Error->ErrorCode);
@@ -174,7 +180,7 @@ Loader_GetModules(SYSTEM_ERROR* Error)
         }
 
         LoadedModules = First;
-
+        
         if (LoadedModules && !LoaderNode)
         {
             LoaderNode = System_CreateNode("loader", SystemNodeTypeEnumeration_FILE, &LoaderOperations, NULL, 4096, Error);

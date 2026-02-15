@@ -70,7 +70,7 @@ extern const uint64_t MaxSystemFiles;
 
 extern FILESYSTEM_TYPE SystemFileSystemType;
 extern SUPER_OPERATIONS SystemSuperOperations;
-extern VFS_NODE_OPERATIONS SystemVfsOperations;
+extern VFS_NODE_OPERATIONS SystemBasicOperations;
 
 int System_KickStart(SYSTEM_ERROR*);
 int System_PowerOff(SYSTEM_ERROR*);
@@ -89,6 +89,7 @@ int System_Open(VFS_NODE*, FILE*, SYSTEM_ERROR*);
 int System_Close(FILE*, SYSTEM_ERROR*);
 long System_Read(FILE*, void*, long, SYSTEM_ERROR*);
 long System_Write(FILE*, const void*, long, SYSTEM_ERROR*);
+int System_Ioctl(FILE*, uint64_t, void*, SYSTEM_ERROR*);
 
 long System_ReadDirectory(VFS_NODE*, void*, long, SYSTEM_ERROR*);
 VFS_NODE* System_LookUp(VFS_NODE*, const char*, SYSTEM_ERROR*);

@@ -18,14 +18,14 @@ SUPER_OPERATIONS SystemSuperOperations =
     .Umount = System_UnMount
 };
 
-VFS_NODE_OPERATIONS SystemVfsOperations =
+VFS_NODE_OPERATIONS SystemBasicOperations =
 {
     .Open = System_Open,
     .Close = System_Close,
     .Read = System_Read,
     .Write = System_Write,
     .Lseek = 0,
-    .Ioctl = 0,
+    .Ioctl = System_Ioctl,
     .Stat = System_Stat,
     .Readdir = System_ReadDirectory,
     .Lookup = System_LookUp,
@@ -76,7 +76,7 @@ System_Mount(const char* Device __unused, const char* Options __unused, SYSTEM_E
 
     memset(RootNode, 0, sizeof(VFS_NODE));
     RootNode->Type = VFSNode_DIRECTORY;
-    RootNode->Operations = &SystemVfsOperations;
+    RootNode->Operations = &SystemBasicOperations;
     RootNode->SuperBlock = SuperBlock;
     RootNode->Private = SystemRoot;  /* SYSTEM_NODE* */
     RootNode->ReferenceCount = 1;

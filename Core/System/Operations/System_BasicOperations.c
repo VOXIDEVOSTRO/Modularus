@@ -154,8 +154,8 @@ System_Write(FILE* File, const void* Buffer, long Size, SYSTEM_ERROR* Error)
     return Error->ErrorCode;
 }
 
-long
-System_Ioctl(FILE* File, unsigned long Request, void* Arguments, SYSTEM_ERROR* Error)
+int
+System_Ioctl(FILE* File, uint64_t Request, void* Arguments, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_System_Ioctl(Code) \
         ErrorOut(Error, Code, FUNC_System_Ioctl)

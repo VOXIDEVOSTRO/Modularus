@@ -8,6 +8,8 @@
     #include <BuiltIns/Device/UART.h>
     #include <BuiltIns/Logger/Emitter.h>
     #include <BuiltIns/Logger/Formatter.h>
+    #include <BuiltIns/Linker/LinkerELF.h>
+    #include <BuiltIns/Loader/Loader.h>
 #endif
 
 SYSTEM_ERROR Err;
@@ -26,10 +28,21 @@ void KernelMain(void)
     #ifdef BUILTINS
         UART_KickStart(Error);
         Emitter_KickStart(Error);
+        Loader_GetModules(Error); /*So the /loader can register itself*/
     #endif
 
     #ifdef TESTING
-        KrnPrintf("\nHello World! But from the BuiltIn formatter!\n");
+        KrnPrintf("\nHello World!\n");
+        FILE* LoaderFile = VFS_Open("/loader", VFS_OpenFlag_WRITEONLY, Error);
+        LOADED_MODULE Test;
+        if (VFS_IOControl(LoaderFile, LoaderCommand_GET, &Test, Error) == GeneralOK)
+        {
+            KrnPrintf("Module: %s @ %p size %lu\n", Test.Name, Test.Address, Test.Size);
+        }
+        else
+        {
+            KrnPrintf("IoCtl failed, Errno %d, traceback: %d", Error->ErrorCode, Error->TraceBack);
+        }
     #endif
 
     for(;;)

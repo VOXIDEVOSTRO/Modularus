@@ -60,8 +60,4 @@
  *
  * Always prefer container_of_const() instead of container_of() in new code.
  */
-#define container_of_const(ptr, type, member)                \
-    _Generic(ptr,                            \
-        const typeof(*(ptr)) *: ((const type *)container_of(ptr, type, member)),\
-        default: ((type *)container_of(ptr, type, member))    \
-    )
+#define container_of_const(ptr, type, member) _Generic(ptr, const typeof(*(ptr)) *: ((const type *)container_of(ptr, type, member)), default: ((type *)container_of(ptr, type, member)))

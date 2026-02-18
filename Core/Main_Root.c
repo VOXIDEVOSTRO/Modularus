@@ -48,6 +48,10 @@ void KernelMain(void)
         #ifdef BUILTIN_Loader
             Loader_GetModules(Error); /*So the /loader can register itself*/
         #endif
+
+        #ifdef BUILTIN_Linker
+            Linker_Init(Error); /*/linker*/
+        #endif
     #endif
 
     #ifdef TESTING
@@ -61,12 +65,12 @@ void KernelMain(void)
             VFS_IOControl(LoaderFile, LoaderCommand_GET, &TestModule, Error);
         #endif
 
-        /*Should run Test.ko*/
         #ifdef BUILTIN_Linker
             #ifdef BUILTIN_Loader
-                Module_Link(TestModule.Address, Error);
+                FILE* LinkerFile = VFS_Open("/linker", VFS_OpenFlag_WRITEONLY, Error);
+                VFS_IOControl(LinkerFile, LinkerCommand_LINK, TestModule.Address, Error);
             #endif
-            Module_Run(Error);
+            VFS_IOControl(LinkerFile, LinkerCommand_RUN, NULL, Error);
         #endif
     #endif
 

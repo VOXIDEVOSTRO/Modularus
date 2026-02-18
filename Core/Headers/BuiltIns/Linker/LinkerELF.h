@@ -95,5 +95,11 @@ typedef struct ELF64_PROGRAM_HEADER
 #define R_X86_64_PLT32 4
 #define R_X86_64_32 10
 
+#define LinkerCommand_LINK 1
+#define LinkerCommand_RUN 2
+
+
+void Linker_Init(SYSTEM_ERROR*);
+
 void* Module_Link(void*, SYSTEM_ERROR*);
 void Module_Run(SYSTEM_ERROR*);

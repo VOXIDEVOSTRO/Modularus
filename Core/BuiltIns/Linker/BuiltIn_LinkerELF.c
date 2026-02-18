@@ -2,6 +2,7 @@
 #include <KExports.h>
 #include <Errors.h>
 #include <BuiltIns/Logger/Formatter.h>
+#include <System.h>
 
 /*.ko*/
 
@@ -11,7 +12,85 @@ typedef int (*MODULE_EXIT)(void);
 static MODULE_ENTRY ModuleStart = 0;
 static MODULE_EXIT ModuleExit = 0;
 
-static uint64_t SectionToVirtualAddress(void* ImageBase, ELF64_HEADER* Header, ELF64_SECTION_HEADER* Sections, uint16_t SectionIndex)
+SYSTEM_NODE* LinkerNode = NULL;
+
+int Linker_Open(SYSTEM_NODE* Node __unused, SYSTEM_FILE* File __unused, SYSTEM_ERROR* Error __unused)
+{
+    return GeneralOK;
+}
+
+int Linker_Close(SYSTEM_FILE* File __unused, SYSTEM_ERROR* Error __unused)
+{
+    return GeneralOK;
+}
+
+long Linker_Ioctl(SYSTEM_FILE* File __unused, uint64_t Request, void* Arguments, SYSTEM_ERROR* Error)
+{
+    #define ErrorOut_Linker_Ioctl(Code) \
+        ErrorOut(Error, Code, General)
+
+    switch(Request)
+    {
+        case LinkerCommand_LINK:
+        {
+            void* ModuleImage = Arguments;
+            if (!ModuleImage || Probe4Error(ModuleImage))
+            {
+                ErrorOut_Linker_Ioctl(-EINVAL);
+                return Error->ErrorCode;
+            }
+
+            if (!Module_Link(ModuleImage, Error))
+            {
+                return Error->ErrorCode;
+            }
+            return GeneralOK;
+        }
+
+        case LinkerCommand_RUN:
+        {
+            Module_Run(Error);
+            return GeneralOK;
+        }
+
+        default:
+        {
+            ErrorOut_Linker_Ioctl(-BadRequest);
+            return Error->ErrorCode;
+        }
+    }
+}
+
+int Linker_GetAttribute(SYSTEM_NODE* Node __unused, VFS_STAT* Stat, SYSTEM_ERROR* Error __unused)
+{
+    Stat->Size = 4096;
+    return GeneralOK;
+}
+
+SYSTEM_OPERATIONS LinkerOperations =
+{
+    .Open   = Linker_Open,
+    .Close  = Linker_Close,
+    .Read   = NULL,
+    .Write  = NULL,
+    .Ioctl  = Linker_Ioctl,
+    .Getattr= Linker_GetAttribute,
+    .Setattr= NULL
+};
+
+void Linker_Init(SYSTEM_ERROR* Error)
+{
+    if (!LinkerNode)
+    {
+        LinkerNode = System_CreateNode("linker", SystemNodeTypeEnumeration_FILE, &LinkerOperations, NULL, 4096, Error);
+        if (!Probe4Error(LinkerNode) && LinkerNode)
+        {
+            System_AttachNode(SystemRoot, LinkerNode, Error);
+        }
+    }
+}
+
+static uint64_t Module_SectionToVirtualAddress(void* ImageBase, ELF64_HEADER* Header, ELF64_SECTION_HEADER* Sections, uint16_t SectionIndex)
 {
     if (SectionIndex >= Header->e_shnum)
     {
@@ -102,7 +181,7 @@ void* Module_Link(void* ImageBase, SYSTEM_ERROR* Error)
             uint64_t Type = ELF64_R_TYPE(Relocation->r_info);
             uint64_t SymbolIndex = ELF64_R_SYM(Relocation->r_info);
 
-            uint64_t TargetAddress = SectionToVirtualAddress(ImageBase, ELFHeader, SectionHeaders, RelocSection->sh_info) + Relocation->r_offset;
+            uint64_t TargetAddress = Module_SectionToVirtualAddress(ImageBase, ELFHeader, SectionHeaders, RelocSection->sh_info) + Relocation->r_offset;
 
             uint64_t SymbolValue;
 
@@ -112,7 +191,7 @@ void* Module_Link(void* ImageBase, SYSTEM_ERROR* Error)
             }
             else
             {
-                SymbolValue = SectionToVirtualAddress(ImageBase, ELFHeader, SectionHeaders, SymbolTable[SymbolIndex].st_shndx) + SymbolTable[SymbolIndex].st_value;
+                SymbolValue = Module_SectionToVirtualAddress(ImageBase, ELFHeader, SectionHeaders, SymbolTable[SymbolIndex].st_shndx) + SymbolTable[SymbolIndex].st_value;
             }
 
             uint64_t Addend = Relocation->r_addend;
@@ -165,12 +244,12 @@ void* Module_Link(void* ImageBase, SYSTEM_ERROR* Error)
 
         if (!strcmp(Name, "_start"))
         {
-            ModuleStart = (MODULE_ENTRY)(SectionToVirtualAddress(ImageBase, ELFHeader, SectionHeaders, SymbolTable[Index].st_shndx) + SymbolTable[Index].st_value);
+            ModuleStart = (MODULE_ENTRY)(Module_SectionToVirtualAddress(ImageBase, ELFHeader, SectionHeaders, SymbolTable[Index].st_shndx) + SymbolTable[Index].st_value);
         }
 
         if (!strcmp(Name, "_exit"))
         {
-            ModuleExit = (MODULE_EXIT)(SectionToVirtualAddress(ImageBase, ELFHeader, SectionHeaders, SymbolTable[Index].st_shndx) + SymbolTable[Index].st_value);
+            ModuleExit = (MODULE_EXIT)(Module_SectionToVirtualAddress(ImageBase, ELFHeader, SectionHeaders, SymbolTable[Index].st_shndx) + SymbolTable[Index].st_value);
         }
     }
 

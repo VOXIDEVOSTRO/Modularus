@@ -216,7 +216,7 @@ VFS_Copy(const char* Source, const char* Destination, long Flags __unused, SYSTE
             VFS_Close(SourceFileHandle, Error);
             VFS_Close(DestinationFileHandle, Error);
 
-            ErrorOut_VFS_Copy(-Limits);
+            ErrorOut_VFS_Copy(-ENOSPC);
             return Error->ErrorCode;
         }
 
@@ -231,7 +231,7 @@ VFS_Copy(const char* Source, const char* Destination, long Flags __unused, SYSTE
             VFS_Close(SourceFileHandle, Error);
             VFS_Close(DestinationFileHandle, Error);
             
-            ErrorOut_VFS_Copy(-Limits);
+            ErrorOut_VFS_Copy(-ENOSPC);
             return Error->ErrorCode;
         }
     }

@@ -7,53 +7,115 @@ typedef
 enum
 {
     GeneralOK,
+
+    EPERM           = 1,   /* Operation not permitted */                /* 1 */ 
+    ENOENT          = 2,   /* No such file or directory */             /* 2 */
+    ESRCH           = 3,   /* No such process */                        /* 3 */
+    EINTR           = 4,   /* Interrupted system call */               /* 4 */
+    EIO             = 5,   /* I/O error */                              /* 5 */
+    ENXIO           = 6,   /* No such device or address */             /* 6 */
+    E2BIG           = 7,   /* Argument list too long */                /* 7 */
+    ENOEXEC         = 8,   /* Exec format error */                     /* 8 */
+    EBADF           = 9,   /* Bad file descriptor */                   /* 9 */
+    ECHILD          = 10,  /* No child processes */                    /* 10 */
+    EAGAIN          = 11,  /* Resource temporarily unavailable */      /* 11 */
+    EWOULDBLOCK     = 11,  /* Same as EAGAIN: would block */           /* 11 */
+    ENOMEM          = 12,  /* Cannot allocate memory */                /* 12 */
+    EACCES          = 13,  /* Permission denied */                     /* 13 */
+    EFAULT          = 14,  /* Bad address */                            /* 14 */
+    ENOTBLK         = 15,  /* Block device required */                 /* 15 */
+    EBUSY           = 16,  /* Device or resource busy */               /* 16 */
+    EEXIST          = 17,  /* File exists */                            /* 17 */
+    EXDEV           = 18,  /* Invalid cross-device link */             /* 18 */
+    ENODEV          = 19,  /* No such device */                        /* 19 */
+    ENOTDIR         = 20,  /* Not a directory */                       /* 20 */
+    EISDIR          = 21,  /* Is a directory */                        /* 21 */
+    EINVAL          = 22,  /* Invalid argument */                      /* 22 */
+    ENFILE          = 23,  /* File table overflow */                   /* 23 */
+    EMFILE          = 24,  /* Too many open files */                   /* 24 */
+    ENOTTY          = 25,  /* Inappropriate ioctl for device */        /* 25 */
+    ETXTBSY         = 26,  /* Text file busy */                         /* 26 */
+    EFBIG           = 27,  /* File too large */                         /* 27 */
+    ENOSPC          = 28,  /* No space left on device */               /* 28 */
+    ESPIPE          = 29,  /* Illegal seek */                           /* 29 */
+    EROFS           = 30,  /* Read‑only file system */                 /* 30 */
+    EMLINK          = 31,  /* Too many links */                         /* 31 */
+    EPIPE           = 32,  /* Broken pipe */                            /* 32 */
+    EDOM            = 33,  /* Numerical argument out of domain */      /* 33 */
+    ERANGE          = 34,  /* Numerical result out of range */         /* 34 */
+    EDEADLK         = 35,  /* Resource deadlock avoided */             /* 35 */
+    ENAMETOOLONG    = 36,  /* File name too long */                    /* 36 */
+    ENOLCK          = 37,  /* No record locks available */             /* 37 */
+    ENOSYS          = 38,  /* Function not implemented */              /* 38 */
+    ENOTEMPTY       = 39,  /* Directory not empty */                    /* 39 */
+    ELOOP           = 40,  /* Too many symbolic links encountered */   /* 40 */
+    ENOMSG          = 42,  /* No message of desired type */            /* 42 */
+    EIDRM           = 43,  /* Identifier removed */                    /* 43 */
+    ECHRNG          = 44,  /* Channel number out of range */           /* 44 */
+    EL2NSYNC        = 45,  /* Level 2 not synchronized */              /* 45 */
+    EL3HLT          = 46,  /* Level 3 halted */                         /* 46 */
+    EL3RST          = 47,  /* Level 3 reset */                          /* 47 */
+    ELNRNG          = 48,  /* Link number out of range */              /* 48 */
+    EUNATCH         = 49,  /* Protocol driver not attached */          /* 49 */
+    ENOCSI          = 50,  /* No CSI structure available */            /* 50 */
+    EL2HLT          = 51,  /* Level 2 halted */                         /* 51 */
+    EBADE           = 52,  /* Invalid exchange */                       /* 52 */
+    EBADR           = 53,  /* Invalid request descriptor */           /* 53 */
+    EXFULL          = 54,  /* Exchange full */                         /* 54 */
+    ENOANO          = 55,  /* No anode */                               /* 55 */
+    EBADRQC         = 56,  /* Invalid request code */                  /* 56 */
+    EBADSLT         = 57,  /* Invalid slot */                           /* 57 */
+    EBFONT          = 59,  /* Bad font file format */                  /* 59 */
+    ENOSTR          = 60,  /* Device not a stream */                   /* 60 */
+    ENODATA         = 61,  /* No data available */                     /* 61 */
+    ETIME           = 62,  /* Timer expired */                          /* 62 */
+    ENOSR           = 63,  /* Out of streams resources */              /* 63 */
+    ENONET          = 64,  /* Machine is not on the network */         /* 64 */
+    ENOPKG          = 65,  /* Package not installed */                /* 65 */
+    EREMOTE         = 66,  /* Object is remote */                      /* 66 */
+    ENOLINK         = 67,  /* Link has been severed */                 /* 67 */
+    EADV            = 68,  /* Advertise error */                       /* 68 */
+    ESRMNT          = 69,  /* Srmount error */                         /* 69 */
+    ECOMM           = 70,  /* Communication error on send */           /* 70 */
+    EPROTO          = 71,  /* Protocol error */                        /* 71 */
+    EMULTIHOP       = 72,  /* Multihop attempted */                    /* 72 */
+    EDOTDOT         = 73,  /* RFS specific error */                    /* 73 */
+    EBADMSG         = 74,  /* Not a data message */                    /* 74 */
+    EOVERFLOW       = 75,  /* Value too large for defined data type */ /* 75 */
+    ENOTUNIQ        = 76,  /* Name not unique on network */           /* 76 */
+    EBADFD          = 77,  /* File descriptor in bad state */         /* 77 */
+    EREMCHG         = 78,  /* Remote address changed */                /* 78 */
+    ELIBACC         = 79,  /* Cannot access needed shared library */  /* 79 */
+    ELIBBAD         = 80,  /* Corrupted shared library */              /* 80 */
+    ELIBSCN         = 81,  /* .lib section in a.out corrupted */       /* 81 */
+    ELIBMAX         = 82,  /* Too many shared libraries */             /* 82 */
+    ELIBEXEC        = 83,  /* Cannot exec a shared library */         /* 83 */
+    EILSEQ          = 84,  /* Illegal byte sequence */                /* 84 */
+    ERESTART        = 85,  /* Interrupted system call should restart */ /* 85 */
+    ESTRPIPE        = 86,  /* Streams pipe error */                   /* 86 */
+    EOPNOTSUPP      = 95,  /* Operation not supported on endpoint */  /* 95 */
+    EPFNOSUPPORT    = 96,  /* Protocol family not supported */        /* 96 */
+    EAFNOSUPPORT    = 97,  /* Address family not supported */         /* 97 */
+    EADDRINUSE      = 98,  /* Address already in use */              /* 98 */
+    EADDRNOTAVAIL   = 99,  /* Cannot assign requested address */      /* 99 */
+    ENETDOWN        = 100, /* Network is down */                      /* 100 */
+    ENETUNREACH     = 101, /* Network unreachable */                /* 101 */
+    ENETRESET       = 102, /* Network dropped connection on reset */ /* 102 */
+    ECONNABORTED    = 103, /* Connection aborted */                 /* 103 */
+    ECONNRESET      = 104, /* Connection reset by peer */           /* 104 */
+    ENOBUFS         = 105, /* No buffer space available */          /* 105 */
+    EISCONN         = 106, /* Already connected */                  /* 106 */
+    ENOTCONN        = 107, /* Not connected */                      /* 107 */
+    ESHUTDOWN       = 108, /* Cannot send after shutdown */         /* 108 */
+    ETOOMANYREFS    = 109, /* Too many references */                /* 109 */
+    ETIMEDOUT       = 110, /* Connection timed out */              /* 110 */
+    ECONNREFUSED    = 111, /* Connection refused */               /* 111 */
+    EHOSTDOWN       = 112, /* Host is down */                      /* 112 */
+    EHOSTUNREACH    = 113, /* Host unreachable */                 /* 113 */
+    EALREADY        = 114, /* Operation already in progress */     /* 114 */
+    EINPROGRESS     = 115, /* Operation now in progress */        /* 115 */
+
     GeneralError,
-
-    /*Main stuff*/
-    BadRequest,
-    BadParameters,
-    NotFound,
-    Limits,
-    BadRange,
-    BadType,
-
-    /*VFS Related*/
-    ENOENT,          /* No such file or directory */
-    ENOTDIR,         /* Not a directory */
-    EISDIR,          /* Is a directory */
-    ENAMETOOLONG,    /* Filename too long */
-    ELOOP,           /* Too many symbolic links */
-    ENOTEMPTY,       /* Directory not empty */
-    EACCES,          /* Permission denied */
-    EPERM,           /* Operation not permitted */
-    EROFS,           /* Read-only filesystem */
-    ENOSPC,          /* No space left on device */
-    ENOMEM,          /* Out of memory */
-    EMFILE,          /* Too many open files */
-    ENFILE,          /* File table overflow */
-    EDQUOT,          /* Disk quota exceeded */
-    EEXIST,          /* File exists */
-    ENODEV,          /* No such device */
-    EXDEV,           /* Cross-device link */
-    EBUSY,           /* Device or resource busy */
-    ETXTBSY,         /* Text file busy */
-    EIO,             /* I/O error */
-    EFBIG,           /* File too large */
-    ENOSYS,          /* Function not implemented */
-    EOPNOTSUPP,      /* Operation not supported */
-    EINVAL,          /* Invalid argument */
-    EBADF,           /* Bad file descriptor */
-    ESPIPE,          /* Illegal seek */
-    EFAULT,          /* Bad address */
-    ENOTMNT,         /* Not mounted */
-    EMNTFAILED,      /* Mount failed */
-    ECORRUPTED,      /* Filesystem corrupted */
-    EFSTYPE,         /* Wrong filesystem type */
-    EMLINK,          /* Too many links */
-    ENOLINK,         /* Link has been severed */
-    EDEADLK,         /* Resource deadlock avoided */
-    EINTR,           /* Interrupted system call */
-    ESTALE,          /* Stale file handle */
 
     MaxErrors,
 } ERROR_CODES;
@@ -235,50 +297,112 @@ struct
 static const char*
 ErrorMap[MaxErrors]=
 {
-    "OK",
-    "Ordinary/Unknown Error",
-    "Bad Request",
-    "Bad Parameters",
-    "Not Found",
-    "Bad Range",
-    "Bad Type",
-
-    "No such file or directory",
-    "Not a directory",
-    "Is a directory",
-    "Filename too long",
-    "Too many symbolic links",
-    "Directory not empty",
-    "Permission denied",
-    "Operation not permitted",
-    "Read-only filesystem",
-    "No space left on device",
-    "Out of memory",
-    "Too many open files",
-    "File table overflow",
-    "Disk quota exceeded",
-    "File exists",
-    "No such device",
-    "Cross-device link",
-    "Device or resource busy",
-    "Text file busy",
-    "I/O error",
-    "File too large",
-    "Function not implemented",
-    "Operation not supported",
-    "Invalid argument",
-    "Bad file descriptor",
-    "Illegal seek",
-    "Bad address",
-    "Not mounted",
-    "Mount failed",
-    "Filesystem corrupted",
-    "Wrong filesystem type",
-    "Too many links",
-    "Link has been severed",
-    "Resource deadlock avoided",
-    "Interrupted system call",
-    "Stale file handle",
+    [0]  = "Success",
+    [1]  = "Operation not permitted",
+    [2]  = "No such file or directory",
+    [3]  = "No such process",
+    [4]  = "Interrupted system call",
+    [5]  = "I/O error",
+    [6]  = "No such device or address",
+    [7]  = "Argument list too long",
+    [8]  = "Exec format error",
+    [9]  = "Bad file descriptor",
+    [10] = "No child processes",
+    [11] = "Resource temporarily unavailable / would block",
+    [12] = "Cannot allocate memory",
+    [13] = "Permission denied",
+    [14] = "Bad address",
+    [15] = "Block device required",
+    [16] = "Device or resource busy",
+    [17] = "File exists",
+    [18] = "Invalid cross-device link",
+    [19] = "No such device",
+    [20] = "Not a directory",
+    [21] = "Is a directory",
+    [22] = "Invalid argument",
+    [23] = "File table overflow",
+    [24] = "Too many open files",
+    [25] = "Inappropriate ioctl for device",
+    [26] = "Text file busy",
+    [27] = "File too large",
+    [28] = "No space left on device",
+    [29] = "Illegal seek",
+    [30] = "Read-only file system",
+    [31] = "Too many links",
+    [32] = "Broken pipe",
+    [33] = "Numerical argument out of domain",
+    [34] = "Numerical result out of range",
+    [35] = "Resource deadlock avoided",
+    [36] = "File name too long",
+    [37] = "No record locks available",
+    [38] = "Function not implemented",
+    [39] = "Directory not empty",
+    [40] = "Too many symbolic links encountered",
+    [42] = "No message of desired type",
+    [43] = "Identifier removed",
+    [44] = "Channel number out of range",
+    [45] = "Level 2 not synchronized",
+    [46] = "Level 3 halted",
+    [47] = "Level 3 reset",
+    [48] = "Link number out of range",
+    [49] = "Protocol driver not attached",
+    [50] = "No CSI structure available",
+    [51] = "Level 2 halted",
+    [52] = "Invalid exchange",
+    [53] = "Invalid request descriptor",
+    [54] = "Exchange full",
+    [55] = "No anode",
+    [56] = "Invalid request code",
+    [57] = "Invalid slot",
+    [59] = "Bad font file format",
+    [60] = "Device not a stream",
+    [61] = "No data available",
+    [62] = "Timer expired",
+    [63] = "Out of streams resources",
+    [64] = "Machine is not on the network",
+    [65] = "Package not installed",
+    [66] = "Object is remote",
+    [67] = "Link has been severed",
+    [68] = "Advertise error",
+    [69] = "Srmount error",
+    [70] = "Communication error on send",
+    [71] = "Protocol error",
+    [72] = "Multihop attempted",
+    [73] = "RFS specific error",
+    [74] = "Not a data message",
+    [75] = "Value too large for defined data type",
+    [76] = "Name not unique on network",
+    [77] = "File descriptor in bad state",
+    [78] = "Remote address changed",
+    [79] = "Cannot access needed shared library",
+    [80] = "Corrupted shared library",
+    [81] = ".lib section in a.out corrupted",
+    [82] = "Too many shared libraries",
+    [83] = "Cannot exec a shared library",
+    [84] = "Illegal byte sequence",
+    [85] = "Interrupted system call should restart",
+    [86] = "Streams pipe error",
+    [95] = "Operation not supported on endpoint",
+    [96] = "Protocol family not supported",
+    [97] = "Address family not supported",
+    [98] = "Address already in use",
+    [99] = "Cannot assign requested address",
+    [100]= "Network is down",
+    [101]= "Network unreachable",
+    [102]= "Network dropped connection on reset",
+    [103]= "Connection aborted",
+    [104]= "Connection reset by peer",
+    [105]= "No buffer space available",
+    [106]= "Transport endpoint is already connected",
+    [107]= "Transport endpoint is not connected",
+    [108]= "Cannot send after shutdown",
+    [109]= "Too many references",
+    [110]= "Connection timed out",
+    [111]= "Connection refused",
+    [112]= "Host is down",
+    [113]= "Host unreachable",
+    [114]= "Operation already in progress",
+    [115]= "Operation now in progress",
 };
 
 /*Core Local*/

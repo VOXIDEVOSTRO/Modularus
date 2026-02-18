@@ -57,7 +57,7 @@ VFS_MountTableFind(const char* Path, char* Buffer, long Length, SYSTEM_ERROR* Er
             long Index = (long)strlen(Mounts[Iteration].Path);
             if (Index >= Length)
             {
-                ErrorOut_VFS_MountTableFind(-Limits);
+                ErrorOut_VFS_MountTableFind(-ENAMETOOLONG);
                 return Error->ErrorCode;
             }
 

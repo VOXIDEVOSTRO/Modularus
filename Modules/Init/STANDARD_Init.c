@@ -2,30 +2,20 @@
 #include <VirtualFileSystem.h>
 #include <Errors.h>
 
+/*THIS IS A MODULARUS CORE STANDARD FILE WITH A STANDARD NAME OF "STANDARD_Init"
+  The job of this file is to handle ITS own modules and init sequence.*/
+
 SYSTEM_ERROR Err;
 SYSTEM_ERROR* Error = &Err;
 
-size_t /*totally not stolen*/
-strlen(const char* __Str__)
+int _start(void) /*STANDARD NAME "_start"*/
 {
-    size_t __Size__ = 0;
-    while (__Str__[__Size__] != '\0')
-    {
-        __Size__++;
-    }
-    return __Size__;
-}
-
-int _start(void)
-{
-    FILE* Uart = VFS_Open("/uart", VFS_OpenFlag_WRITEONLY, Error);
-    char String[] = "Hello World but from Init module!\n";
-    VFS_Write(Uart, &String, strlen(String), Error);
-
+    /*Do stuff*/
     return 0;
 }
 
-int _exit(void)
+int _exit(void) /*STANDARD NAME "_exit"*/
 {
+    /*End stuff*/
     return 0;
 }

@@ -25,14 +25,14 @@ VFS_Mount(const char* Device, const char* Path, const char* Type, long Flags __u
     long PathLength = (long)strlen(Path);
     if (PathLength <= 0 || PathLength >= MaxPath)
     {
-        ErrorOut_VFS_Mount(-Limits);
-        return Error2Pointer(-Limits);
+        ErrorOut_VFS_Mount(-EINVAL);
+        return Error2Pointer(Error->ErrorCode);
     }
 
     if (MountsCount >= MaxMounts)
     {
-        ErrorOut_VFS_Mount(-Limits);
-        return Error2Pointer(-Limits);
+        ErrorOut_VFS_Mount(-EOVERFLOW);
+        return Error2Pointer(Error->ErrorCode);
     }
 
     SUPER_BLOCK* SuperBlock = FileSystem->Mount(Device, Options, Error);
@@ -149,14 +149,14 @@ VFS_BindMount(const char* Source, const char* Destination, SYSTEM_ERROR* Error)
 
     if (MountsCount >= MaxMounts)
     {
-        ErrorOut_VFS_BindMount(-Limits);
+        ErrorOut_VFS_BindMount(-EOVERFLOW);
         return Error->ErrorCode;
     }
 
     long Index = (long)strlen(Destination);
     if (Index <= 0 || Index >= MaxPath)
     {
-        ErrorOut_VFS_BindMount(-Limits);
+        ErrorOut_VFS_BindMount(-EINVAL);
         return Error->ErrorCode;
     }
 
@@ -189,7 +189,7 @@ VFS_MoveMount(const char* Source, const char* Destination, SYSTEM_ERROR* Error)
     long Index = (long)strlen(Destination);
     if (Index <= 0 || Index >= MaxPath)
     {
-        ErrorOut_VFS_MoveMount(-Limits);
+        ErrorOut_VFS_MoveMount(-EINVAL);
         return Error->ErrorCode;
     }
 

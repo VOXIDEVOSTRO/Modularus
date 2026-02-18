@@ -24,7 +24,7 @@ VFS_ReadAll(const char* Path, void* Buffer, long BufferLength, long* OutLength, 
         {
             VFS_Close(FileHandle, Error);
             
-            ErrorOut_VFS_ReadAll(-Limits);
+            ErrorOut_VFS_ReadAll(-ENOSPC);
             return Error->ErrorCode;
         }
 
@@ -67,7 +67,7 @@ VFS_WriteAll(const char* Path, const void* Buffer, long Length, SYSTEM_ERROR* Er
         {
             VFS_Close(FileHandle, Error);
             
-            ErrorOut_VFS_WriteAll(-Limits);
+            ErrorOut_VFS_WriteAll(-ENOSPC);
             return Error->ErrorCode;
         }
 

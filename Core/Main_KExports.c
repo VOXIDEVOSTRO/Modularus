@@ -11,7 +11,7 @@ LookUpKExport(const char* Symbol, SYSTEM_ERROR* Error)
 
     if (Probe4Error(Symbol) || !Symbol)
     {
-        ErrorOut_LookUpKExport(-BadParameters);
+        ErrorOut_LookUpKExport(-EINVAL);
         return Error2Pointer(Error->ErrorCode);
     }
 
@@ -30,6 +30,6 @@ LookUpKExport(const char* Symbol, SYSTEM_ERROR* Error)
     }
 
     /* Symbol not found */
-    ErrorOut_LookUpKExport(-NotFound);
+    ErrorOut_LookUpKExport(-ENOENT);
     return Error2Pointer(Error->ErrorCode);
 }

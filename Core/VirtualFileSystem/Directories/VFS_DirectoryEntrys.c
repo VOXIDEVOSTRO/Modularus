@@ -86,7 +86,7 @@ VFS_DentryName(DIRECTORY_ENTRY* DirectoryEntry, char* Buffer, long Length, SYSTE
     long Index = (long)strlen(DirectoryEntry->Name);
     if (Index >= Length)
     {
-        ErrorOut_VFS_DentryName(-Limits);
+        ErrorOut_VFS_DentryName(-ENAMETOOLONG);
         return Error->ErrorCode;
     }
 

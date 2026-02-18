@@ -17,7 +17,7 @@ VFS_RegisterFileSystem(const FILESYSTEM_TYPE* FileSystemType, SYSTEM_ERROR* Erro
 
     if (FileSystemCount >= MaxFileSystemTypes)
     {
-        ErrorOut_VFS_RegisterFileSystem(-Limits);
+        ErrorOut_VFS_RegisterFileSystem(-EOVERFLOW);
         return Error->ErrorCode;
     }
 

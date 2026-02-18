@@ -19,7 +19,7 @@ VFS_NodePath(VFS_NODE* Node __unused, char* Buffer, long Length, SYSTEM_ERROR* E
     long Index = (long)strlen(Path);
     if (Index >= Length)
     {
-        ErrorOut_VFS_NodePath(-Limits);
+        ErrorOut_VFS_NodePath(-ENAMETOOLONG);
         return Error->ErrorCode;
     }
 
@@ -44,7 +44,7 @@ VFS_NodeName(VFS_NODE* Node __unused, char* Buffer, long Length, SYSTEM_ERROR* E
     long Index = (long)strlen(Path);
     if (Index >= Length)
     {
-        ErrorOut_VFS_NodeName(-Limits);
+        ErrorOut_VFS_NodeName(-ENAMETOOLONG);
         return Error->ErrorCode;
     }
 
@@ -109,7 +109,7 @@ VFS_JoinPath(const char* FirstPath, const char* SecondPath, char* Output, long L
     long Required = FirstPathLength + 1 + SecondPathLength + 1;
     if (Required > Length)
     {
-        ErrorOut_VFS_JoinPath(-Limits);
+        ErrorOut_VFS_JoinPath(-ENAMETOOLONG);
         return Error->ErrorCode;
     }
 
@@ -129,7 +129,7 @@ VFS_SetMaxName(long Length, SYSTEM_ERROR* Error)
 
     if (Length < 1)
     {
-        ErrorOut_VFS_SetMaxName(-Limits);
+        ErrorOut_VFS_SetMaxName(-EINVAL);
         return Error->ErrorCode;
     }
 
@@ -152,7 +152,7 @@ VFS_SetMaxPath(long Length, SYSTEM_ERROR* Error)
 
     if (Length < 1)
     {
-        ErrorOut_VFS_SetMaxPath(-Limits);
+        ErrorOut_VFS_SetMaxPath(-EINVAL);
         return Error->ErrorCode;
     }
 

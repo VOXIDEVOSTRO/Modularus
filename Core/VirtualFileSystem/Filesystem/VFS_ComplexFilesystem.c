@@ -79,7 +79,7 @@ VFS_RegisterPseudoFileSystem(const char* Path, SUPER_BLOCK* SuperBlock, SYSTEM_E
 
     if (MountsCount >= MaxMounts)
     {
-        ErrorOut_VFS_RegisterPseudoFileSystem(-Limits);
+        ErrorOut_VFS_RegisterPseudoFileSystem(-EOVERFLOW);
         return Error->ErrorCode;
     }
 
@@ -112,7 +112,7 @@ VFS_SetDefaultFileSystem(const char* Name, SYSTEM_ERROR* Error)
     long Index = (long)strlen(Name);
     if (Index >= (long)sizeof(DefaultFileSystem))
     {
-        ErrorOut_VFS_SetDefaultFileSystem(-Limits);
+        ErrorOut_VFS_SetDefaultFileSystem(-ENAMETOOLONG);
         return Error->ErrorCode;
     }
 

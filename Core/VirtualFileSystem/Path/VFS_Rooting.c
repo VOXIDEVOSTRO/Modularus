@@ -27,7 +27,7 @@ VFS_GetWorkingDirectory(char* Buffer, long Length, SYSTEM_ERROR* Error)
     long Index = (long)strlen(Path);
     if (Index >= Length)
     {
-        ErrorOut_VFS_GetWorkingDirectory(-Limits);
+        ErrorOut_VFS_GetWorkingDirectory(-ENAMETOOLONG);
         return Error->ErrorCode;
     }
 
@@ -58,7 +58,7 @@ VFS_GetRoot(char* Buffer, long Length, SYSTEM_ERROR* Error)
     long Index = (long)strlen(Path);
     if (Index >= Length)
     {
-        ErrorOut_VFS_GetRoot(-Limits);
+        ErrorOut_VFS_GetRoot(-ENAMETOOLONG);
         return Error->ErrorCode;
     }
 

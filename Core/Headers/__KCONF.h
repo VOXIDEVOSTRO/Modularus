@@ -31,7 +31,7 @@
     Toggles
 */
 /*|_>*/ #define BUILTINS
-/*|_>*/ #define TESTING
+/*|_>*/ // #define TESTING
 /*|*/
 /*|_>*/ /*BuiltIns Toggles*/
 /*|_>*/ #define BUILTIN_UART

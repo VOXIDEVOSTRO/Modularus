@@ -55,7 +55,7 @@ long Linker_Ioctl(SYSTEM_FILE* File __unused, uint64_t Request, void* Arguments,
 
         default:
         {
-            ErrorOut_Linker_Ioctl(-BadRequest);
+            ErrorOut_Linker_Ioctl(-EINVAL);
             return Error->ErrorCode;
         }
     }
@@ -131,7 +131,7 @@ void* Module_Link(void* ImageBase, SYSTEM_ERROR* Error)
 
     if (!SymbolTable || !StringTable)
     {
-        ErrorOut_Module_Link(-NotFound);
+        ErrorOut_Module_Link(-ENOENT);
         return Error2Pointer(Error->ErrorCode);
     }
 
@@ -148,7 +148,7 @@ void* Module_Link(void* ImageBase, SYSTEM_ERROR* Error)
 
             if (!Address)
             {
-                ErrorOut_Module_Link(-NotFound);
+                ErrorOut_Module_Link(-ENOENT);
                 return Error2Pointer(Error->ErrorCode);
             }
 
@@ -231,7 +231,7 @@ void* Module_Link(void* ImageBase, SYSTEM_ERROR* Error)
 
                 default:
                 {
-                    ErrorOut_Module_Link(-BadType);
+                    ErrorOut_Module_Link(-EINVAL);
                     return Error2Pointer(Error->ErrorCode);
                 }
             }
@@ -255,7 +255,7 @@ void* Module_Link(void* ImageBase, SYSTEM_ERROR* Error)
 
     if (!ModuleStart)
     {
-        ErrorOut_Module_Link(-NotFound);
+        ErrorOut_Module_Link(-ENOENT);
         return Error2Pointer(Error->ErrorCode);
     }
 

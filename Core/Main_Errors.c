@@ -22,7 +22,7 @@ int RegisterErrorKeys(const char* ModuleName, const char* (*TraceMapper)(int), i
     
     if(ContextCount >= MaxModules)
     {
-        ErrorOut_RegisterErrorContext(-Limits);
+        ErrorOut_RegisterErrorContext(-EOVERFLOW);
         return Error->ErrorCode;
     }
     

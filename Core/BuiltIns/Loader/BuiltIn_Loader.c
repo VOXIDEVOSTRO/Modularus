@@ -97,7 +97,7 @@ long Loader_Ioctl(SYSTEM_FILE* File __unused, uint64_t Request, void* Arguments,
         
         default:
         {
-            ErrorOut_Loader_Ioctl(-BadRequest);
+            ErrorOut_Loader_Ioctl(-EINVAL);
             return Error->ErrorCode;
         }
     }
@@ -119,7 +119,7 @@ Loader_GetModules(SYSTEM_ERROR* Error)
     BOOT_REQUEST Request = RequestBootService(RequestMODULE, Error);
     if (Probe4Error(Request.Pointer) || !Request.Pointer)
     {
-        ErrorOut_Loader_GetModules(-BadRequest);
+        ErrorOut_Loader_GetModules(-ENOENT);
         return Error2Pointer(Error->ErrorCode);
     }
 
@@ -130,13 +130,21 @@ Loader_GetModules(SYSTEM_ERROR* Error)
         struct limine_module_response* Response = LimineRequest->response;
         if (!Response || !Response->modules)
         {
-            ErrorOut_Loader_GetModules(-BadRequest);
+            ErrorOut_Loader_GetModules(-ENOENT);
             return Error2Pointer(Error->ErrorCode);
         }
 
         if (Response->module_count > 1024 || Response->module_count == 0)
         {
-            ErrorOut_Loader_GetModules(-BadRange);
+            if (Response->module_count == 0)
+            {
+                ErrorOut_Loader_GetModules(-ENOENT); /*No modules present*/
+            }
+            else
+            {
+                ErrorOut_Loader_GetModules(-EOVERFLOW); /*Exceeded max modules*/
+            }
+
             return Error2Pointer(Error->ErrorCode);
         }
 
@@ -211,7 +219,7 @@ Loader_FindModule(const char* Name, SYSTEM_ERROR* Error)
         }
     }
 
-    ErrorOut_Loader_FindModule(-NotFound);
+    ErrorOut_Loader_FindModule(-ENOENT);
     return Error2Pointer(Error->ErrorCode);
 }
 

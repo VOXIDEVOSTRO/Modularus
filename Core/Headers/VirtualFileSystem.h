@@ -418,6 +418,10 @@ DIRECTORY_ENTRY* AllocateDirectoryEntry(const char*, DIRECTORY_ENTRY*, VFS_NODE*
 DIRECTORY_ENTRY* Walk(VFS_NODE*, DIRECTORY_ENTRY*, const char*, SYSTEM_ERROR*);
 MOUNT_ENTRY* FindMount(const char*, SYSTEM_ERROR*);
 
+/*
+    APIS!
+*/
+
 KEXPORT(VFS_KickStart)
 KEXPORT(VFS_PowerOff)
 KEXPORT(VFS_RegisterFileSystem)

@@ -92,7 +92,7 @@ VFS_RealPath(const char* Path, char* Buffer, long Length, SYSTEM_ERROR* Error)
     long LengthComponent = (long)strlen(Path);
     if (LengthComponent >= Length)
     {
-        ErrorOut_VFS_RealPath(-Limits);
+        ErrorOut_VFS_RealPath(-ENAMETOOLONG);
         return Error->ErrorCode;
     }
 

@@ -30,13 +30,13 @@
 /*
     Toggles
 */
-/*|_>*/#define BUILTINS
-/*|_>*/#define TESTING
+/*|_>*/ #define BUILTINS
+/*|_>*/ #define TESTING
 /*|*/
 /*|_>*//*BuiltIns Toggles*/
-/*|_>*/#define BUILTIN_UART
-/*|_>*/#define BUILTIN_Formatter
-/*|_>*/#define BUILTIN_Loader
-/*|_>*/#define BUILTIN_Linker
+/*|_>*/ #define BUILTIN_UART
+/*|_>*/ // #define BUILTIN_Formatter
+/*|_>*/ #define BUILTIN_Loader
+/*|_>*/ #define BUILTIN_Linker
 
 /*========================================*/

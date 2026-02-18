@@ -10,6 +10,7 @@ LOG_DIR="$BUILD_DIR/logs"
 TYPE=${1:-"iso"}
 SMP=${2:-1}
 MEM=${3:-512M}
+OUT=${4:-"stdio"}
 
 INFO="\033[0;33m[INFO]\033[0m"
 OK="\033[0;32m[OK]\033[0m"
@@ -80,31 +81,63 @@ fi
 echo -e "$OK Launching QEMU ($TYPE) with $SMP cores and $MEM memory..."
 
 if [ "$TYPE" == "iso" ]; then
-    qemu-system-x86_64 \
-        -machine q35 \
-        -m "$MEM" \
-        -smp "$SMP" \
-        -drive if=pflash,unit=0,format=raw,file="$OVMF_PATH",readonly=on \
-        -cdrom "$ISO_IMG" \
-        -gdb tcp::1234 \
-        -serial file:"$LOG_DIR/serial.log" \
-        -d guest_errors,cpu_reset,int \
-        -D "$LOG_DIR/qemu.log" \
-        -no-reboot \
-        -no-shutdown \
-        -monitor stdio
+    if [ "$OUT" == "file" ]; then
+        qemu-system-x86_64 \
+            -machine q35 \
+            -m "$MEM" \
+            -smp "$SMP" \
+            -drive if=pflash,unit=0,format=raw,file="$OVMF_PATH",readonly=on \
+            -cdrom "$ISO_IMG" \
+            -gdb tcp::1234 \
+            -serial file:"$LOG_DIR/serial.log" \
+            -d guest_errors,cpu_reset,int \
+            -D "$LOG_DIR/qemu.log" \
+            -no-reboot \
+            -no-shutdown \
+            -monitor telnet:127.0.0.1:4444,server,nowait
+    else
+        qemu-system-x86_64 \
+            -machine q35 \
+            -m "$MEM" \
+            -smp "$SMP" \
+            -drive if=pflash,unit=0,format=raw,file="$OVMF_PATH",readonly=on \
+            -cdrom "$ISO_IMG" \
+            -gdb tcp::1234 \
+            -serial stdio \
+            -d guest_errors,cpu_reset,int \
+            -D "$LOG_DIR/qemu.log" \
+            -no-reboot \
+            -no-shutdown \
+            -monitor telnet:127.0.0.1:4444,server,nowait
+    fi
 else
-    qemu-system-x86_64 \
-        -machine q35 \
-        -m "$MEM" \
-        -smp "$SMP" \
-        -drive if=pflash,unit=0,format=raw,file="$OVMF_PATH",readonly=on \
-        -drive file="$DISK_IMG",format=raw \
-        -gdb tcp::1234 \
-        -serial file:"$LOG_DIR/serial.log" \
-        -d guest_errors,cpu_reset,int \
-        -D "$LOG_DIR/qemu.log" \
-        -no-reboot \
-        -no-shutdown \
-        -monitor stdio
+    if [ "$OUT" == "file" ]; then
+        qemu-system-x86_64 \
+            -machine q35 \
+            -m "$MEM" \
+            -smp "$SMP" \
+            -drive if=pflash,unit=0,format=raw,file="$OVMF_PATH",readonly=on \
+            -drive file="$DISK_IMG",format=raw \
+            -gdb tcp::1234 \
+            -serial file:"$LOG_DIR/serial.log" \
+            -d guest_errors,cpu_reset,int \
+            -D "$LOG_DIR/qemu.log" \
+            -no-reboot \
+            -no-shutdown \
+            -monitor telnet:127.0.0.1:4444,server,nowait
+    else
+        qemu-system-x86_64 \
+            -machine q35 \
+            -m "$MEM" \
+            -smp "$SMP" \
+            -drive if=pflash,unit=0,format=raw,file="$OVMF_PATH",readonly=on \
+            -drive file="$DISK_IMG",format=raw \
+            -gdb tcp::1234 \
+            -serial stdio \
+            -d guest_errors,cpu_reset,int \
+            -D "$LOG_DIR/qemu.log" \
+            -no-reboot \
+            -no-shutdown \
+            -monitor telnet:127.0.0.1:4444,server,nowait
+    fi
 fi

@@ -7,7 +7,7 @@ int
 VFS_ReadAll(const char* Path, void* Buffer, long BufferLength, long* OutLength, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_VFS_ReadAll(Code) \
-        ErrorOut(Error, Code, FUNC_VFS_ReadAll)
+        ErrorOut(Error, NULL, Code, FUNC_VFS_ReadAll)
     
     FILE* FileHandle = VFS_Open(Path, VFS_OpenFlag_READONLY, Error);
     if (Probe4Error(FileHandle) || !FileHandle)
@@ -50,7 +50,7 @@ int
 VFS_WriteAll(const char* Path, const void* Buffer, long Length, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_VFS_WriteAll(Code) \
-        ErrorOut(Error, Code, FUNC_VFS_WriteAll)
+        ErrorOut(Error, NULL, Code, FUNC_VFS_WriteAll)
 
     FILE* FileHandle = VFS_Open(Path, VFS_OpenFlag_CREATE | VFS_OpenFlag_WRITEONLY | VFS_OpenFlag_TRUNCATE, Error);
     if (Probe4Error(FileHandle) || !FileHandle)

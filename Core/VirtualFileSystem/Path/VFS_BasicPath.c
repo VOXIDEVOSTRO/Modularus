@@ -7,7 +7,7 @@ int
 VFS_MakePath(const char* Path, long Permission, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_VFS_MakePath(Code) \
-        ErrorOut(Error, Code, FUNC_VFS_MakePath)
+        ErrorOut(Error, NULL, Code, FUNC_VFS_MakePath)
 
     if (Probe4Error(Path) || !Path)
     {
@@ -81,7 +81,7 @@ int
 VFS_RealPath(const char* Path, char* Buffer, long Length, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_VFS_RealPath(Code) \
-        ErrorOut(Error, Code, FUNC_VFS_RealPath)
+        ErrorOut(Error, NULL, Code, FUNC_VFS_RealPath)
 
     if (Probe4Error(Path) || !Path || Probe4Error(Buffer) || !Buffer || Length <= 0)
     {

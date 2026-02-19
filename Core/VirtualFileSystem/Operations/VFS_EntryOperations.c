@@ -7,7 +7,7 @@ int
 VFS_Create(const char* Path, long Flags, VFS_PERMISSIONS Permission, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_VFS_Create(Code) \
-        ErrorOut(Error, Code, FUNC_VFS_Create)
+        ErrorOut(Error, NULL, Code, FUNC_VFS_Create)
 
     DIRECTORY_ENTRY* Parent = 0;
     char Name[256];
@@ -89,7 +89,7 @@ int
 VFS_UnLink(const char* Path, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_VFS_UnLink(Code) \
-        ErrorOut(Error, Code, FUNC_VFS_UnLink)
+        ErrorOut(Error, NULL, Code, FUNC_VFS_UnLink)
 
     DIRECTORY_ENTRY* Base = NULL;
     char Name[256];

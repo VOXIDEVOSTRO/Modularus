@@ -7,7 +7,7 @@ int
 VFS_NodePath(VFS_NODE* Node __unused, char* Buffer, long Length, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_VFS_NodePath(Code) \
-        ErrorOut(Error, Code, FUNC_VFS_NodePath)
+        ErrorOut(Error, NULL, Code, FUNC_VFS_NodePath)
 
     if (Probe4Error(Buffer) || !Buffer || Length <= 0)
     {
@@ -32,7 +32,7 @@ int
 VFS_NodeName(VFS_NODE* Node __unused, char* Buffer, long Length, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_VFS_NodeName(Code) \
-        ErrorOut(Error, Code, FUNC_VFS_NodeName)
+        ErrorOut(Error, NULL, Code, FUNC_VFS_NodeName)
 
     if (Probe4Error(Buffer) || !Buffer || Length <= 0)
     {
@@ -57,7 +57,7 @@ int
 VFS_AllocateName(char** Output, long Length, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_VFS_AllocateName(Code) \
-        ErrorOut(Error, Code, FUNC_VFS_AllocateName)
+        ErrorOut(Error, NULL, Code, FUNC_VFS_AllocateName)
 
     if (Probe4Error(Output) || !Output || Length <= 0)
     {
@@ -79,7 +79,7 @@ int
 VFS_FreeName(char* Name, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_VFS_FreeName(Code) \
-        ErrorOut(Error, Code, FUNC_VFS_FreeName)
+        ErrorOut(Error, NULL, Code, FUNC_VFS_FreeName)
 
     if (Probe4Error(Name) || !Name)
     {
@@ -96,7 +96,7 @@ int
 VFS_JoinPath(const char* FirstPath, const char* SecondPath, char* Output, long Length, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_VFS_JoinPath(Code) \
-        ErrorOut(Error, Code, FUNC_VFS_JoinPath)
+        ErrorOut(Error, NULL, Code, FUNC_VFS_JoinPath)
 
     if (Probe4Error(FirstPath) || !FirstPath || Probe4Error(SecondPath) || !SecondPath || Probe4Error(Output) || !Output || Length <= 0)
     {
@@ -125,7 +125,7 @@ int
 VFS_SetMaxName(long Length, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_VFS_SetMaxName(Code) \
-        ErrorOut(Error, Code, FUNC_VFS_SetMaxName)
+        ErrorOut(Error, NULL, Code, FUNC_VFS_SetMaxName)
 
     if (Length < 1)
     {
@@ -148,7 +148,7 @@ int
 VFS_SetMaxPath(long Length, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_VFS_SetMaxPath(Code) \
-        ErrorOut(Error, Code, FUNC_VFS_SetMaxPath)
+        ErrorOut(Error, NULL, Code, FUNC_VFS_SetMaxPath)
 
     if (Length < 1)
     {

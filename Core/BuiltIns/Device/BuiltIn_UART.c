@@ -73,7 +73,7 @@ int
 UART_KickStart(SYSTEM_ERROR* Error)
 {
     #define ErrorOut_UART_KickStart(Code) \
-        ErrorOut(Error, Code, General)
+        ErrorOut(Error, NULL, Code, General)
 
     outb(SerialPort + UART_RegisterInterrupt, 0);
     outb(SerialPort + UART_RegisterLineControl, 0x80);  /* DLAB = 1 */

@@ -7,7 +7,7 @@ int
 VFS_DentryInvalidate(DIRECTORY_ENTRY* DirectoryEntry, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_VFS_DentryInvalidate(Code) \
-        ErrorOut(Error, Code, FUNC_VFS_DentryInvalidate)
+        ErrorOut(Error, NULL, Code, FUNC_VFS_DentryInvalidate)
     
     if (Probe4Error(DirectoryEntry) || !DirectoryEntry)
     {
@@ -24,7 +24,7 @@ int
 VFS_DentryRevalidate(DIRECTORY_ENTRY* DirectoryEntry, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_VFS_DentryRevalidate(Code) \
-        ErrorOut(Error, Code, FUNC_VFS_DentryRevalidate)
+        ErrorOut(Error, NULL, Code, FUNC_VFS_DentryRevalidate)
 
     if (Probe4Error(DirectoryEntry) || !DirectoryEntry)
     {
@@ -41,7 +41,7 @@ int
 VFS_DentryAttach(DIRECTORY_ENTRY* DirectoryEntry, VFS_NODE* Node, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_VFS_DentryAttach(Code) \
-        ErrorOut(Error, Code, FUNC_VFS_DentryAttach)
+        ErrorOut(Error, NULL, Code, FUNC_VFS_DentryAttach)
 
     if (Probe4Error(DirectoryEntry) || !DirectoryEntry || Probe4Error(Node) || !Node)
     {
@@ -58,7 +58,7 @@ int
 VFS_DentryDetach(DIRECTORY_ENTRY* DirectoryEntry, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_VFS_DentryDetach(Code) \
-        ErrorOut(Error, Code, FUNC_VFS_DentryDetach)
+        ErrorOut(Error, NULL, Code, FUNC_VFS_DentryDetach)
 
     if (Probe4Error(DirectoryEntry) || !DirectoryEntry)
     {
@@ -75,7 +75,7 @@ int
 VFS_DentryName(DIRECTORY_ENTRY* DirectoryEntry, char* Buffer, long Length, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_VFS_DentryName(Code) \
-        ErrorOut(Error, Code, FUNC_VFS_DentryName)
+        ErrorOut(Error, NULL, Code, FUNC_VFS_DentryName)
 
     if (Probe4Error(DirectoryEntry) || !DirectoryEntry || Probe4Error(Buffer) || !Buffer || Length <= 0)
     {

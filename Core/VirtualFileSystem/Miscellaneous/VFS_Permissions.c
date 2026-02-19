@@ -7,7 +7,7 @@ int
 VFS_ChangeMode(const char* Path, long Mode, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_VFS_ChangeMode(Code) \
-        ErrorOut(Error, Code, FUNC_VFS_ChangeMode)
+        ErrorOut(Error, NULL, Code, FUNC_VFS_ChangeMode)
 
     DIRECTORY_ENTRY* DirectoryEntry = VFS_Resolve(Path, Error);
     if (Probe4Error(DirectoryEntry) || !DirectoryEntry || Probe4Error(DirectoryEntry->Node) || !DirectoryEntry->Node)
@@ -29,7 +29,7 @@ int
 VFS_ChangeOwner(const char* Path, long UserID, long GroupID, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_VFS_ChangeOwner(Code) \
-        ErrorOut(Error, Code, FUNC_VFS_ChangeOwner)
+        ErrorOut(Error, NULL, Code, FUNC_VFS_ChangeOwner)
     
     DIRECTORY_ENTRY* DirectoryEntry = VFS_Resolve(Path, Error);
     if (Probe4Error(DirectoryEntry) || !DirectoryEntry || Probe4Error(DirectoryEntry->Node) || !DirectoryEntry->Node)

@@ -7,7 +7,7 @@ int
 VFS_RegisterFileSystem(const FILESYSTEM_TYPE* FileSystemType, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_VFS_RegisterFileSystem(Code) \
-        ErrorOut(Error, Code, FUNC_VFS_RegisterFileSystem)
+        ErrorOut(Error, NULL, Code, FUNC_VFS_RegisterFileSystem)
 
     if (Probe4Error(FileSystemType) || !FileSystemType || Probe4Error(FileSystemType->Name) || !FileSystemType->Name || Probe4Error(FileSystemType->Mount) || !FileSystemType->Mount)
     {
@@ -39,7 +39,7 @@ int
 VFS_UnRegisterFileSystem(const char* Name, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_VFS_UnRegisterFileSystem(Code) \
-        ErrorOut(Error, Code, FUNC_VFS_UnRegisterFileSystem)
+        ErrorOut(Error, NULL, Code, FUNC_VFS_UnRegisterFileSystem)
 
     if (Probe4Error(Name) || !Name)
     {
@@ -68,7 +68,7 @@ const FILESYSTEM_TYPE*
 VFS_FindFileSystem(const char* Name, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_VFS_FindFileSystem(Code) \
-        ErrorOut(Error, Code, FUNC_VFS_FindFileSystem)
+        ErrorOut(Error, NULL, Code, FUNC_VFS_FindFileSystem)
 
     if (Probe4Error(Name) || !Name)
     {
@@ -92,7 +92,7 @@ long
 VfsListFs(const char** Output, long Capacity, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_VfsListFs(Code) \
-        ErrorOut(Error, Code, FUNC_VfsListFs)
+        ErrorOut(Error, NULL, Code, FUNC_VfsListFs)
 
     if (Probe4Error(Output) || !Output || Capacity <= 0)
     {

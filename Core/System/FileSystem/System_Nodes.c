@@ -7,7 +7,7 @@ SYSTEM_NODE*
 System_CreateNode(const char* Name, SYSTEM_NODE_TYPE_ENUMERATION Type, const SYSTEM_OPERATIONS* Operations, void* Context, uint64_t ContextSize, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_System_CreateNode(Code) \
-        ErrorOut(Error, Code, FUNC_System_CreateNode)
+        ErrorOut(Error, NULL, Code, FUNC_System_CreateNode)
 
     if (NodeAllocatedCount >= MaxSystemNodes)
     {
@@ -40,7 +40,7 @@ int
 System_DeleteNode(SYSTEM_NODE* Node, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_System_DeleteNode(Code) \
-        ErrorOut(Error, Code, FUNC_System_DeleteNode)
+        ErrorOut(Error, NULL, Code, FUNC_System_DeleteNode)
 
     if (Probe4Error(Node) || !Node)
     {
@@ -82,7 +82,7 @@ SYSTEM_NODE*
 System_FindNode(SYSTEM_NODE* Parent, const char* Name, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_System_FindNode(Code) \
-        ErrorOut(Error, Code, FUNC_System_FindNode)
+        ErrorOut(Error, NULL, Code, FUNC_System_FindNode)
 
     if (Probe4Error(Parent) || !Parent || Probe4Error(Name) || !Name)
     {
@@ -109,7 +109,7 @@ int
 System_AttachNode(SYSTEM_NODE* Parent, SYSTEM_NODE* Child, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_System_AttachNode(Code) \
-        ErrorOut(Error, Code, FUNC_System_AttachNode)
+        ErrorOut(Error, NULL, Code, FUNC_System_AttachNode)
 
     if (Probe4Error(Parent) || !Parent || Probe4Error(Child) || !Child)
     {
@@ -134,7 +134,7 @@ SYSTEM_NODE*
 System_GetRoot(SYSTEM_ERROR* Error)
 {
     #define ErrorOut_System_GetRoot(Code) \
-        ErrorOut(Error, Code, FUNC_System_GetRoot)
+        ErrorOut(Error, NULL, Code, FUNC_System_GetRoot)
 
     if (Probe4Error(SystemRoot) || !SystemRoot)
     {

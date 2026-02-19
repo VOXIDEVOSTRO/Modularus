@@ -7,7 +7,7 @@ int
 VFS_NodeReferenceIncrement(VFS_NODE* Node, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_VFS_NodeReferenceIncrement(Code) \
-        ErrorOut(Error, Code, FUNC_VFS_NodeReferenceIncrement)
+        ErrorOut(Error, NULL, Code, FUNC_VFS_NodeReferenceIncrement)
 
     if (Probe4Error(Node) || !Node)
     {
@@ -24,7 +24,7 @@ int
 VFS_NodeReferenceDecrement(VFS_NODE* Node, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_VFS_NodeReferenceDecrement(Code) \
-        ErrorOut(Error, Code, FUNC_VFS_NodeReferenceDecrement)
+        ErrorOut(Error, NULL, Code, FUNC_VFS_NodeReferenceDecrement)
     
     if (Probe4Error(Node) || !Node)
     {
@@ -44,7 +44,7 @@ int
 VFS_NodeGetAttribute(VFS_NODE* Node, VFS_STAT* Buffer, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_VFS_NodeGetAttribute(Code) \
-        ErrorOut(Error, Code, FUNC_VFS_NodeGetAttribute)
+        ErrorOut(Error, NULL, Code, FUNC_VFS_NodeGetAttribute)
 
     if (Probe4Error(Node) || !Node || Probe4Error(Buffer) || !Buffer)
     {
@@ -65,7 +65,7 @@ int
 VFS_NodeSetAttribute(VFS_NODE* Node __unused, const VFS_STAT* Buffer __unused, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_VFS_NodeSetAttribute(Code) \
-        ErrorOut(Error, Code, FUNC_VFS_NodeSetAttribute)
+        ErrorOut(Error, NULL, Code, FUNC_VFS_NodeSetAttribute)
 
     ErrorOut_VFS_NodeSetAttribute(-ENOSYS);
     return Error->ErrorCode;

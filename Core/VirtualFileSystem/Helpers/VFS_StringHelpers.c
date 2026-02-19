@@ -23,7 +23,7 @@ NextCompare(const char* Path, char* Output, long Capacity, SYSTEM_ERROR* Error)
 {
     if (Probe4Error(Path) || !Path || !*Path)
     {   
-        ErrorOut(Error, -EINVAL, General);
+        ErrorOut(Error, NULL, -EINVAL, General);
         return Error->ErrorCode;
     }
 

@@ -7,7 +7,7 @@ VFS_NODE*
 System_LookUp(VFS_NODE* VFSNode, const char* Name, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_System_LookUp(Code) \
-        ErrorOut(Error, Code, FUNC_System_LookUp)
+        ErrorOut(Error, NULL, Code, FUNC_System_LookUp)
 
     if (Probe4Error(VFSNode) || !VFSNode || Probe4Error(Name) || !Name)
     {
@@ -51,7 +51,7 @@ SYSTEM_NODE*
 System_Walk(const char* Path, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_System_Walk(Code) \
-        ErrorOut(Error, Code, FUNC_System_Walk)
+        ErrorOut(Error, NULL, Code, FUNC_System_Walk)
 
     if (Probe4Error(Path) || !Path)
     {

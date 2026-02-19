@@ -8,7 +8,7 @@ long
 System_ReadDirectory(VFS_NODE* VFSNode, void* Buffer, long Size, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_System_ReadDirectory(Code) \
-        ErrorOut(Error, Code, FUNC_System_ReadDirectory)
+        ErrorOut(Error, NULL, Code, FUNC_System_ReadDirectory)
 
     if (Probe4Error(VFSNode) || !VFSNode || Probe4Error(Buffer) || !Buffer)
     {
@@ -44,7 +44,7 @@ int
 System_Stat(VFS_NODE* VFSNode, VFS_STAT* Stat, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_System_Stat(Code) \
-        ErrorOut(Error, Code, FUNC_System_Stat)
+        ErrorOut(Error, NULL, Code, FUNC_System_Stat)
 
     if (Probe4Error(VFSNode) || !VFSNode || Probe4Error(Stat) || !Stat)
     {
@@ -67,7 +67,7 @@ int
 System_StatFileSystem(SUPER_BLOCK* SuperBlock, VFS_STAT_FILESYSTEM* Stat, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_System_StatFileSystem(Code) \
-        ErrorOut(Error, Code, FUNC_System_StatFileSystem)
+        ErrorOut(Error, NULL, Code, FUNC_System_StatFileSystem)
 
     if (Probe4Error(SuperBlock) || !SuperBlock || Probe4Error(Stat) || !Stat)
     {

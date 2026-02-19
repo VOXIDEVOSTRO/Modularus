@@ -7,7 +7,7 @@ int
 VFS_FStats(FILE* FileHandle, VFS_STAT* StatBuffer, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_VFS_FStats(Code) \
-        ErrorOut(Error, Code, FUNC_VFS_FStats)
+        ErrorOut(Error, NULL, Code, FUNC_VFS_FStats)
     
     if (Probe4Error(FileHandle) || !FileHandle || Probe4Error(StatBuffer) || !StatBuffer)
     {
@@ -28,7 +28,7 @@ int
 VFS_Stats(const char* Path, VFS_STAT* StatBuffer, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_VFS_Stats(Code) \
-        ErrorOut(Error, Code, FUNC_VFS_Stats)
+        ErrorOut(Error, NULL, Code, FUNC_VFS_Stats)
     
     if (Probe4Error(Path) || !Path || Probe4Error(StatBuffer) || !StatBuffer)
     {

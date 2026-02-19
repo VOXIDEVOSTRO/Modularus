@@ -7,7 +7,7 @@ int
 VFS_RegisterDeviceNode(const char* Path, void* Private, long Flags __unused, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_VFS_RegisterDeviceNode(Code) \
-        ErrorOut(Error, Code, FUNC_VFS_RegisterDeviceNode)
+        ErrorOut(Error, NULL, Code, FUNC_VFS_RegisterDeviceNode)
 
     if (Probe4Error(Path) || !Path || Probe4Error(Private) || !Private)
     {
@@ -69,7 +69,7 @@ int
 VFS_RegisterPseudoFileSystem(const char* Path, SUPER_BLOCK* SuperBlock, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_VFS_RegisterPseudoFileSystem(Code) \
-        ErrorOut(Error, Code, FUNC_VFS_RegisterPseudoFileSystem)
+        ErrorOut(Error, NULL, Code, FUNC_VFS_RegisterPseudoFileSystem)
 
     if (Probe4Error(Path) || !Path || Probe4Error(SuperBlock) || !SuperBlock)
     {
@@ -101,7 +101,7 @@ int
 VFS_SetDefaultFileSystem(const char* Name, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_VFS_SetDefaultFileSystem(Code) \
-        ErrorOut(Error, Code, FUNC_VFS_SetDefaultFileSystem)
+        ErrorOut(Error, NULL, Code, FUNC_VFS_SetDefaultFileSystem)
 
     if (Probe4Error(Name) || !Name)
     {

@@ -7,7 +7,7 @@ long
 VFS_ReadDirectory(const char* Path, void* Buffer, long BufferLength, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_VFS_ReadDirectory(Code) \
-        ErrorOut(Error, Code, FUNC_VFS_ReadDirectory)
+        ErrorOut(Error, NULL, Code, FUNC_VFS_ReadDirectory)
     
     if (Probe4Error(Path) || !Path || Probe4Error(Buffer) || !Buffer || BufferLength <= 0)
     {
@@ -35,7 +35,7 @@ long
 VFS_ReadDirectoryF(FILE* FileHandle, void* Buffer, long BufferLength, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_VFS_ReadDirectoryF(Code) \
-        ErrorOut(Error, Code, FUNC_VFS_ReadDirectoryF)
+        ErrorOut(Error, NULL, Code, FUNC_VFS_ReadDirectoryF)
     
     if (Probe4Error(FileHandle) || !FileHandle || Probe4Error(Buffer) || !Buffer || BufferLength <= 0)
     {
@@ -57,7 +57,7 @@ int
 VFS_MakeDirectory(const char* Path, VFS_PERMISSIONS Permission, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_VFS_MakeDirectory(Code) \
-        ErrorOut(Error, Code, FUNC_VFS_MakeDirectory)
+        ErrorOut(Error, NULL, Code, FUNC_VFS_MakeDirectory)
 
     DIRECTORY_ENTRY* Base = 0;
     char    Name[256];
@@ -139,7 +139,7 @@ int
 VFS_RemoveDirectory(const char* Path, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_VFS_RemoveDirectory(Code) \
-        ErrorOut(Error, Code, FUNC_VFS_RemoveDirectory)
+        ErrorOut(Error, NULL, Code, FUNC_VFS_RemoveDirectory)
 
     DIRECTORY_ENTRY* Base = 0;
     char Name[256];

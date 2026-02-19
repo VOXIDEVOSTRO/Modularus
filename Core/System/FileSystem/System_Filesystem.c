@@ -49,7 +49,7 @@ SUPER_BLOCK*
 System_Mount(const char* Device __unused, const char* Options __unused, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_System_Mount(Code) \
-        ErrorOut(Error, Code, FUNC_System_Mount)
+        ErrorOut(Error, NULL, Code, FUNC_System_Mount)
 
     SUPER_BLOCK* SuperBlock = KMalloc(sizeof(SUPER_BLOCK), Error);
     if (Probe4Error(SuperBlock) || !SuperBlock)
@@ -93,7 +93,7 @@ int
 System_UnMount(SUPER_BLOCK* SuperBlock, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_System_UnMount(Code) \
-        ErrorOut(Error, Code, FUNC_System_UnMount)
+        ErrorOut(Error, NULL, Code, FUNC_System_UnMount)
 
     if (Probe4Error(SuperBlock) || !SuperBlock)
     {
@@ -120,7 +120,7 @@ int
 System_RegisterFileSystem(SYSTEM_ERROR* Error)
 {
     #define ErrorOut_System_RegisterFileSystem(Code) \
-        ErrorOut(Error, Code, FUNC_System_RegisterFileSystem)
+        ErrorOut(Error, NULL, Code, FUNC_System_RegisterFileSystem)
 
     SystemFileSystemType.Mount = System_Mount;
 
@@ -138,7 +138,7 @@ int
 System_UnRegisterFileSystem(SYSTEM_ERROR* Error)
 {
     #define ErrorOut_System_UnRegisterFileSystem(Code) \
-        ErrorOut(Error, Code, FUNC_System_UnRegisterFileSystem)
+        ErrorOut(Error, NULL, Code, FUNC_System_UnRegisterFileSystem)
 
     int Result = VFS_UnRegisterFileSystem(SystemFileSystemType.Name, Error);
     if (Result != GeneralOK)

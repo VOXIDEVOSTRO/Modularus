@@ -7,7 +7,7 @@ FILE*
 VFS_Open(const char* Path, long Flags, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_VFS_Open(Code) \
-        ErrorOut(Error, Code, FUNC_VFS_Open)
+        ErrorOut(Error, NULL, Code, FUNC_VFS_Open)
 
     DIRECTORY_ENTRY* DirectoryEntry = VFS_Resolve(Path, Error);
     if (Probe4Error(DirectoryEntry) || !DirectoryEntry || Probe4Error(DirectoryEntry->Node) || !DirectoryEntry->Node)
@@ -50,7 +50,7 @@ int
 VFS_Close(FILE* FileHandle, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_VFS_Close(Code) \
-        ErrorOut(Error, Code, FUNC_VFS_Close)
+        ErrorOut(Error, NULL, Code, FUNC_VFS_Close)
 
     if (Probe4Error(FileHandle) || !FileHandle)
     {
@@ -72,7 +72,7 @@ long
 VFS_Read(FILE* FileHandle, void* OutputBuffer, long BufferLength, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_VFS_Read(Code) \
-        ErrorOut(Error, Code, FUNC_VFS_Read)
+        ErrorOut(Error, NULL, Code, FUNC_VFS_Read)
     
     if (Probe4Error(FileHandle) || !FileHandle || Probe4Error(OutputBuffer) || !OutputBuffer || BufferLength <= 0)
     {
@@ -99,7 +99,7 @@ long
 VFS_Write(FILE* FileHandle, const void* InputBuffer, long BufferLength, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_VFS_Write(Code) \
-        ErrorOut(Error, Code, FUNC_VFS_Write)
+        ErrorOut(Error, NULL, Code, FUNC_VFS_Write)
     
     if (Probe4Error(FileHandle) || !FileHandle || Probe4Error(InputBuffer) || !InputBuffer || BufferLength <= 0)
     {
@@ -126,7 +126,7 @@ FILE*
 VFS_OpenAt(DIRECTORY_ENTRY* BaseDirectory, const char* ResolvePath, long Flags, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_VFS_OpenAt(Code) \
-        ErrorOut(Error, Code, FUNC_VFS_OpenAt)
+        ErrorOut(Error, NULL, Code, FUNC_VFS_OpenAt)
     
     DIRECTORY_ENTRY* DirectoryEntry = VFS_ResolveAt(BaseDirectory, ResolvePath, Error);
     if (Probe4Error(DirectoryEntry) || !DirectoryEntry || Probe4Error(DirectoryEntry->Node) || !DirectoryEntry->Node)
@@ -170,7 +170,7 @@ long
 VFS_LSeek(FILE* FileHandle, long Offset, int Whence, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_VFS_LSeek(Code) \
-        ErrorOut(Error, Code, FUNC_VFS_LSeek)
+        ErrorOut(Error, NULL, Code, FUNC_VFS_LSeek)
     
     if (Probe4Error(FileHandle) || !FileHandle)
     {
@@ -197,7 +197,7 @@ int
 VFS_IOControl(FILE* FileHandle, uint64_t Command, void* Argument, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_VFS_IOControl(Code) \
-        ErrorOut(Error, Code, FUNC_VFS_IOControl)
+        ErrorOut(Error, NULL, Code, FUNC_VFS_IOControl)
     
     if (Probe4Error(FileHandle) || !FileHandle)
     {

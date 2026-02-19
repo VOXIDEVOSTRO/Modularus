@@ -58,7 +58,7 @@
             }
             default:
             {
-                ErrorOut(Error, -EINVAL, FUNC_Limine_REQUEST);
+                ErrorOut(Error, NULL, -EINVAL, FUNC_Limine_REQUEST);
                 return Error2Pointer(-EINVAL);
             }
         }

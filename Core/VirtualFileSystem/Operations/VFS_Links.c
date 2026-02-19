@@ -7,7 +7,7 @@ int
 VFS_SymbolLink(const char* TargetPath, const char* LinkPath, VFS_PERMISSIONS Permission, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_VFS_SymbolLink(Code) \
-        ErrorOut(Error, Code, FUNC_VFS_SymbolLink)
+        ErrorOut(Error, NULL, Code, FUNC_VFS_SymbolLink)
 
     DIRECTORY_ENTRY* Base = NULL;
     char Name[256];
@@ -89,7 +89,7 @@ int
 VFS_ReadLink(const char* Path, char* Buffer, long Length, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_VFS_ReadLink(Code) \
-        ErrorOut(Error, Code, FUNC_VFS_ReadLink)
+        ErrorOut(Error, NULL, Code, FUNC_VFS_ReadLink)
 
     if (Probe4Error(Path) || !Path || Probe4Error(Buffer) || !Buffer || Length <= 0)
     {
@@ -121,7 +121,7 @@ int
 VFS_Link(const char* OldPath, const char* NewPath, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_VFS_Link(Code) \
-        ErrorOut(Error, Code, FUNC_VFS_Link)
+        ErrorOut(Error, NULL, Code, FUNC_VFS_Link)
 
     if (Probe4Error(OldPath) || !OldPath || Probe4Error(NewPath) || !NewPath)
     {

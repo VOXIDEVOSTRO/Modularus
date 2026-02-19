@@ -21,6 +21,34 @@ SYSTEM_OPERATIONS LoaderOperations =
     .Setattr = NULL
 };
 
+static const ERROR_KEYS* LoaderContext;
+
+enum
+{
+    FUNC_Loader_Ioctl,
+    FUNC_Loader_GetModules,
+    FUNC_Loader_FindModules,
+
+    Max_Loader_Traces
+};
+
+static const char* Loader_TraceMapper(int ID)
+{
+    static const char* TraceTable[] =
+    {
+        "Core/BuiltIns/Loader/*->Loader_Ioctl",
+        "Core/BuiltIns/Loader/*->Loader_GetModules",
+        "Core/BuiltIns/Loader/*->Loader_FindModules",
+    };
+
+    if (ID < 0 || ID >= Max_Loader_Traces)
+    {
+        return "Unknown";
+    }
+
+    return TraceTable[ID];
+}
+
 int Loader_Open(SYSTEM_NODE* Node __unused, SYSTEM_FILE* File __unused, SYSTEM_ERROR* Error __unused)
 {
     return GeneralOK;
@@ -49,7 +77,7 @@ long Loader_Read(SYSTEM_FILE* File __unused, void* Buffer, uint64_t Size, SYSTEM
 long Loader_Ioctl(SYSTEM_FILE* File __unused, uint64_t Request, void* Arguments, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_Loader_Ioctl(Code) \
-        ErrorOut(Error, Code, General)
+        ErrorOut(Error, LoaderContext, Code, FUNC_Loader_Ioctl)
 
     switch (Request)
     {
@@ -113,7 +141,7 @@ LOADED_MODULE*
 Loader_GetModules(SYSTEM_ERROR* Error)
 {
     #define ErrorOut_Loader_GetModules(Code) \
-        ErrorOut(Error, Code, General)
+        ErrorOut(Error, LoaderContext, Code, FUNC_Loader_GetModules)
 
     /* Request MODULE from boot services, simplest of all loaders it can be */
     BOOT_REQUEST Request = RequestBootService(RequestMODULE, Error);
@@ -199,6 +227,7 @@ Loader_GetModules(SYSTEM_ERROR* Error)
             {
                 System_AttachNode(SystemRoot, LoaderNode, Error);
             }
+            LoaderContext = RegisterErrorKeys("BuiltIn_Loader", Loader_TraceMapper, Max_Loader_Traces, Error);
         }
 
         return First;
@@ -209,7 +238,7 @@ LOADED_MODULE*
 Loader_FindModule(const char* Name, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_Loader_FindModule(Code) \
-        ErrorOut(Error, Code, General)
+        ErrorOut(Error, LoaderContext, Code, FUNC_Loader_FindModules)
 
     for (LOADED_MODULE* Modules = LoadedModules; Modules; Modules = Modules->Next)
     {

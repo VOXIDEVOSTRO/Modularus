@@ -7,7 +7,7 @@ int
 System_GetAttribute(SYSTEM_NODE* Node, VFS_STAT* Stat, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_System_GetAttribute(Code) \
-        ErrorOut(Error, Code, FUNC_System_GetAttribute)
+        ErrorOut(Error, NULL, Code, FUNC_System_GetAttribute)
 
     if (Probe4Error(Node) || !Node || Probe4Error(Stat) || !Stat)
     {
@@ -35,7 +35,7 @@ int
 System_SetAttribute(SYSTEM_NODE* Node, const VFS_STAT* Stat, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_System_SetAttribute(Code) \
-        ErrorOut(Error, Code, FUNC_System_SetAttribute)
+        ErrorOut(Error, NULL, Code, FUNC_System_SetAttribute)
 
     if (Probe4Error(Node) || !Node || Probe4Error(Stat) || !Stat)
     {

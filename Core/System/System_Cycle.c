@@ -16,7 +16,7 @@ int
 System_KickStart(SYSTEM_ERROR* Error)
 {
     #define ErrorOut_System_KickStart(Code) \
-        ErrorOut(Error, Code, FUNC_System_KickStart)
+        ErrorOut(Error, NULL, Code, FUNC_System_KickStart)
 
     NodeAllocatedCount = 0;
     FileAllocatedCount = 0;

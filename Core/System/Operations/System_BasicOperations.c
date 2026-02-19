@@ -8,7 +8,7 @@ int
 System_Open(VFS_NODE* VFSNode, FILE* File, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_System_Open(Code) \
-        ErrorOut(Error, Code, FUNC_System_Open)
+        ErrorOut(Error, NULL, Code, FUNC_System_Open)
 
     if (Probe4Error(VFSNode) || !VFSNode || Probe4Error(File) || !File)
     {
@@ -52,7 +52,7 @@ int
 System_Close(FILE* File, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_System_Close(Code) \
-        ErrorOut(Error, Code, FUNC_System_Close)
+        ErrorOut(Error, NULL, Code, FUNC_System_Close)
 
     if (Probe4Error(File) || !File)
     {
@@ -78,7 +78,7 @@ long
 System_Read(FILE* File, void* Buffer, long Size, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_System_Read(Code) \
-        ErrorOut(Error, Code, FUNC_System_Read)
+        ErrorOut(Error, NULL, Code, FUNC_System_Read)
 
     if (Probe4Error(File) || !File || Probe4Error(Buffer) || !Buffer)
     {
@@ -127,7 +127,7 @@ long
 System_Write(FILE* File, const void* Buffer, long Size, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_System_Write(Code) \
-        ErrorOut(Error, Code, FUNC_System_Write)
+        ErrorOut(Error, NULL, Code, FUNC_System_Write)
 
     if (Probe4Error(File) || !File || Probe4Error(Buffer) || !Buffer)
     {
@@ -158,7 +158,7 @@ int
 System_Ioctl(FILE* File, uint64_t Request, void* Arguments, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_System_Ioctl(Code) \
-        ErrorOut(Error, Code, FUNC_System_Ioctl)
+        ErrorOut(Error, NULL, Code, FUNC_System_Ioctl)
 
     SYSTEM_FILE* SystemFile = (SYSTEM_FILE*)File->Private;
     if (Probe4Error(SystemFile) || !SystemFile || Probe4Error(SystemFile->Node) || !SystemFile->Node)

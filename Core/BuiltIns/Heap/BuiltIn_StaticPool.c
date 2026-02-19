@@ -27,7 +27,7 @@ void* StaticKMalloc(uint64_t Size, SYSTEM_ERROR* Error)
     
     if(Pointer + Size > Ending)
     {
-        ErrorOut(Error, -ENOMEM, General);
+        ErrorOut(Error, NULL, -ENOMEM, General);
         return Error2Pointer(-ENOMEM);
     }
 

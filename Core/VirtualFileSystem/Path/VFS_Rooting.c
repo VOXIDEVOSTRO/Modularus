@@ -15,7 +15,7 @@ int
 VFS_GetWorkingDirectory(char* Buffer, long Length, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_VFS_GetWorkingDirectory(Code) \
-        ErrorOut(Error, Code, FUNC_VFS_GetWorkingDirectory)
+        ErrorOut(Error, NULL, Code, FUNC_VFS_GetWorkingDirectory)
 
     if (Probe4Error(Buffer) || !Buffer || Length <= 0)
     {
@@ -46,7 +46,7 @@ int
 VFS_GetRoot(char* Buffer, long Length, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_VFS_GetRoot(Code) \
-        ErrorOut(Error, Code, FUNC_VFS_GetRoot)
+        ErrorOut(Error, NULL, Code, FUNC_VFS_GetRoot)
 
     if (Probe4Error(Buffer) || !Buffer || Length <= 0)
     {

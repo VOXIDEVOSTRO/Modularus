@@ -7,7 +7,7 @@ int
 VFS_MountTableEnumerate(char* Buffer, long Length, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_VFS_MountTableEnumerate(Code) \
-        ErrorOut(Error, Code, FUNC_VFS_MountTableEnumerate)
+        ErrorOut(Error, NULL, Code, FUNC_VFS_MountTableEnumerate)
  
     if (Probe4Error(Buffer) || !Buffer || Length <= 0)
     {
@@ -42,7 +42,7 @@ int
 VFS_MountTableFind(const char* Path, char* Buffer, long Length, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_VFS_MountTableFind(Code) \
-        ErrorOut(Error, Code, FUNC_VFS_MountTableFind)
+        ErrorOut(Error, NULL, Code, FUNC_VFS_MountTableFind)
     
     if (Probe4Error(Path) || !Path || Probe4Error(Buffer) || !Buffer || Length <= 0)
     {

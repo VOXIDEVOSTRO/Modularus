@@ -7,7 +7,7 @@ DIRECTORY_ENTRY*
 VFS_Resolve(const char* Path, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_VFS_Resolve(Code) \
-        ErrorOut(Error, Code, FUNC_VFS_Resolve)
+        ErrorOut(Error, NULL, Code, FUNC_VFS_Resolve)
 
     if (Probe4Error(Path) || !Path)
     {
@@ -76,7 +76,7 @@ DIRECTORY_ENTRY*
 VFS_ResolveAt(DIRECTORY_ENTRY* Base, const char* ResolvePath, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_VFS_ResolveAt(Code) \
-        ErrorOut(Error, Code, FUNC_VFS_ResolveAt)
+        ErrorOut(Error, NULL, Code, FUNC_VFS_ResolveAt)
 
     if (Probe4Error(Base) || !Base || Probe4Error(Base->Node) || !Base->Node || Probe4Error(ResolvePath) || !ResolvePath)
     {
@@ -101,7 +101,7 @@ VFS_NODE*
 VFS_LookUp(DIRECTORY_ENTRY* Base, const char* Name, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_VFS_LookUp(Code) \
-        ErrorOut(Error, Code, FUNC_VFS_LookUp)
+        ErrorOut(Error, NULL, Code, FUNC_VFS_LookUp)
 
     if (Probe4Error(Base) || !Base || Probe4Error(Base->Node) || !Base->Node || Probe4Error(Name) || !Name)
     {

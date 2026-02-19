@@ -19,7 +19,7 @@ int
 VFS_NotifyPoll(const char* Path __unused, long* OutMask, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_VFS_NotifyPoll(Code) \
-        ErrorOut(Error, Code, FUNC_VFS_NotifyPoll)
+        ErrorOut(Error, NULL, Code, FUNC_VFS_NotifyPoll)
 
     if (Probe4Error(OutMask) || !OutMask)
     {

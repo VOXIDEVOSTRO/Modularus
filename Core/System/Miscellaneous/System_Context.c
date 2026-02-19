@@ -7,7 +7,7 @@ int
 System_SetContext(SYSTEM_NODE* Node, void* Context, uint64_t Size, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_System_SetContext(Code) \
-        ErrorOut(Error, Code, FUNC_System_SetContext)
+        ErrorOut(Error, NULL, Code, FUNC_System_SetContext)
 
     if (Probe4Error(Node) || !Node)
     {
@@ -25,7 +25,7 @@ void*
 System_GetContext(SYSTEM_NODE* Node, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_System_GetContext(Code) \
-        ErrorOut(Error, Code, FUNC_System_GetContext)
+        ErrorOut(Error, NULL, Code, FUNC_System_GetContext)
 
     if (Probe4Error(Node) || !Node)
     {
@@ -40,7 +40,7 @@ uint64_t
 System_GetContextSize(SYSTEM_NODE* Node, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_System_GetContextSize(Code) \
-        ErrorOut(Error, Code, FUNC_System_GetContextSize)
+        ErrorOut(Error, NULL, Code, FUNC_System_GetContextSize)
 
     if (Probe4Error(Node) || !Node)
     {

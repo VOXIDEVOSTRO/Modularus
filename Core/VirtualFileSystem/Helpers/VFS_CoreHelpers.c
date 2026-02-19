@@ -7,7 +7,7 @@ DIRECTORY_ENTRY*
 AllocateDirectoryEntry(const char* Name, DIRECTORY_ENTRY* Parent, VFS_NODE* Node, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_AllocateDirectoryEntry(Code) \
-        ErrorOut(Error, Code, FUNC_AllocateDirectoryEntry)
+        ErrorOut(Error, NULL, Code, FUNC_AllocateDirectoryEntry)
 
     DIRECTORY_ENTRY* DirectoryEntry = (DIRECTORY_ENTRY*)KMalloc(sizeof(DIRECTORY_ENTRY), Error);
     if (Probe4Error(DirectoryEntry) || !DirectoryEntry)
@@ -27,7 +27,7 @@ DIRECTORY_ENTRY*
 Walk(VFS_NODE* StartingNode, DIRECTORY_ENTRY* StartingDirectoryEntry, const char* Path, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_Walk(Code) \
-        ErrorOut(Error, Code, FUNC_Walk)
+        ErrorOut(Error, NULL, Code, FUNC_Walk)
 
     if (Probe4Error(StartingNode) || !StartingNode || Probe4Error(Path) || !Path)
     {

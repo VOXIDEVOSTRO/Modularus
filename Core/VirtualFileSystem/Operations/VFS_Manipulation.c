@@ -7,7 +7,7 @@ int
 VFS_ReName(const char* OldPath, const char* NewPath, long Flags, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_VFS_ReName(Code) \
-        ErrorOut(Error, Code, FUNC_VFS_ReName)
+        ErrorOut(Error, NULL, Code, FUNC_VFS_ReName)
 
     DIRECTORY_ENTRY* OldBase = 0;
     DIRECTORY_ENTRY* NewBase = 0;
@@ -167,7 +167,7 @@ int
 VFS_Truncate(const char* Path, long Length, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_VFS_Truncate(Code) \
-        ErrorOut(Error, Code, FUNC_VFS_Truncate)
+        ErrorOut(Error, NULL, Code, FUNC_VFS_Truncate)
 
     DIRECTORY_ENTRY* DirectoryEntry = VFS_Resolve(Path, Error);
     if (Probe4Error(DirectoryEntry) || !DirectoryEntry || Probe4Error(DirectoryEntry->Node) || !DirectoryEntry->Node)
@@ -189,7 +189,7 @@ int
 VFS_Copy(const char* Source, const char* Destination, long Flags __unused, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_VFS_Copy(Code) \
-        ErrorOut(Error, Code, FUNC_VFS_Copy)
+        ErrorOut(Error, NULL, Code, FUNC_VFS_Copy)
 
     FILE* SourceFileHandle = VFS_Open(Source, VFS_OpenFlag_READONLY, Error);
     if (Probe4Error(SourceFileHandle) || !SourceFileHandle)
@@ -246,7 +246,7 @@ int
 VFS_Move(const char* Source, const char* Destination, long Flags, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_VFS_Move(Code) \
-        ErrorOut(Error, Code, FUNC_VFS_Move)
+        ErrorOut(Error, NULL, Code, FUNC_VFS_Move)
 
     int Return = VFS_ReName(Source, Destination, Flags, Error);
     if (Return == GeneralOK)

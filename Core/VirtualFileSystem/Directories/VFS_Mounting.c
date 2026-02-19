@@ -7,7 +7,7 @@ SUPER_BLOCK*
 VFS_Mount(const char* Device, const char* Path, const char* Type, long Flags __unused, const char* Options, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_VFS_Mount(Code) \
-        ErrorOut(Error, Code, FUNC_VFS_Mount)
+        ErrorOut(Error, NULL, Code, FUNC_VFS_Mount)
 
     const FILESYSTEM_TYPE* FileSystem = VFS_FindFileSystem(Type, Error);
     if (Probe4Error(FileSystem) || !FileSystem)
@@ -59,7 +59,7 @@ int
 VFS_UnMount(const char* Path, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_VFS_UnMount(Code) \
-        ErrorOut(Error, Code, FUNC_VFS_UnMount)
+        ErrorOut(Error, NULL, Code, FUNC_VFS_UnMount)
         
     if (Probe4Error(Path) || !Path)
     {
@@ -107,7 +107,7 @@ int /*chroot???*/
 VFS_ChangeRoot(const char* NewRoot, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_VFS_ChangeRoot(Code) \
-        ErrorOut(Error, Code, FUNC_VFS_ChangeRoot)
+        ErrorOut(Error, NULL, Code, FUNC_VFS_ChangeRoot)
 
     if (Probe4Error(NewRoot) || !NewRoot)
     {
@@ -132,7 +132,7 @@ int
 VFS_BindMount(const char* Source, const char* Destination, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_VFS_BindMount(Code) \
-        ErrorOut(Error, Code, FUNC_VFS_BindMount)
+        ErrorOut(Error, NULL, Code, FUNC_VFS_BindMount)
 
     if (Probe4Error(Source) || !Source || Probe4Error(Destination) || !Destination)
     {
@@ -171,7 +171,7 @@ int
 VFS_MoveMount(const char* Source, const char* Destination, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_VFS_MoveMount(Code) \
-        ErrorOut(Error, Code, FUNC_VFS_MoveMount)
+        ErrorOut(Error, NULL, Code, FUNC_VFS_MoveMount)
 
     if (Probe4Error(Source) || !Source || Probe4Error(Destination) || !Destination)
     {
@@ -202,7 +202,7 @@ int
 VFS_ReMount(const char* Path, long Flags __unused, const char* Options __unused, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_VFS_ReMount(Code) \
-        ErrorOut(Error, Code, FUNC_VFS_ReMount)
+        ErrorOut(Error, NULL, Code, FUNC_VFS_ReMount)
 
     MOUNT_ENTRY* MountEntry = FindMount(Path, Error);
     if (Probe4Error(MountEntry) || !MountEntry || Probe4Error(MountEntry->SuperBlock) || !MountEntry->SuperBlock)

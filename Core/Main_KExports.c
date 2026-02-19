@@ -7,7 +7,7 @@ void*
 LookUpKExport(const char* Symbol, SYSTEM_ERROR* Error)
 {
     #define ErrorOut_LookUpKExport(Code) \
-        ErrorOut(Error, Code, FUNC_LookUpKExport)
+        ErrorOut(Error, NULL, Code, FUNC_LookUpKExport)
 
     if (Probe4Error(Symbol) || !Symbol)
     {

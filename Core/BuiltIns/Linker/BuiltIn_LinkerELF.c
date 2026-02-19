@@ -40,10 +40,12 @@ long Linker_Ioctl(SYSTEM_FILE* File __unused, uint64_t Request, void* Arguments,
                 return Error->ErrorCode;
             }
 
-            if (!Module_Link(ModuleImage, Error))
+            if (!Module_Link(ModuleImage, Error) || Probe4Error(Module_Link(ModuleImage, Error)))
             {
+                ErrorOut_Linker_Ioctl(-EFAULT);
                 return Error->ErrorCode;
             }
+            
             return GeneralOK;
         }
 

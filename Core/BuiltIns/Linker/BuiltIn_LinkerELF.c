@@ -154,7 +154,7 @@ void* Module_Link(void* ImageBase, SYSTEM_ERROR* Error)
         {
             void* Address = LookUpKExport(Name, Error);
 
-            if (!Address)
+            if (Probe4Error(Address) || !Address)
             {
                 ErrorOut_Module_Link(-ENOENT);
                 return Error2Pointer(Error->ErrorCode);
@@ -261,7 +261,7 @@ void* Module_Link(void* ImageBase, SYSTEM_ERROR* Error)
         }
     }
 
-    if (!ModuleStart)
+    if (Probe4Error(ModuleStart) || !ModuleStart)
     {
         ErrorOut_Module_Link(-ENOENT);
         return Error2Pointer(Error->ErrorCode);

@@ -327,22 +327,17 @@ struct
                 (ErrorSlot)->TraceBack = (Trace);                                  \
                                                                                    \
                 int __err_signed = (Code);                                         \
-                int __err_abs = (__err_signed < 0)                                 \
-                                    ? -__err_signed                                \
-                                    : __err_signed;                                \
+                const char* __err_string = MapError(ErrorSlot);                    \
                                                                                    \
-                const char* __err_string =                                         \
-                    (__err_abs < MaxErrors)                                        \
-                        ? ErrorMap[__err_abs]                                      \
-                        : "Unknown Error";                                         \
+                const char* __err_reason = MapErrorReason(ErrorSlot);              \
                                                                                    \
                 const char* __trace_string = TraceError(ErrorSlot);                \
                                                                                    \
                 PError("Errored\n");                                               \
                                                                                    \
-                KrnPrintf("                 Code  : %d (abs:%d)\n",                \
-                          __err_signed, __err_abs);                                \
-                KrnPrintf("                 Reason: %s\n", __err_string);          \
+                KrnPrintf("                 Code  : %d | %s\n",                    \
+                          __err_signed, __err_string);                             \
+                KrnPrintf("                 Reason: %s\n", __err_reason);          \
                 KrnPrintf("                 Trace : %d -> %s\n",                   \
                           (Trace), __trace_string);                                \
             }                                                                      \
@@ -369,7 +364,7 @@ struct
 /*String maps for the error Code enum*/
 /*Global*/
 static const char*
-ErrorMap[MaxErrors]=
+ErrorReasonMap[MaxErrors]=
 {
     [0]  = "Success/OK",
     [1]  = "Operation not permitted",
@@ -477,6 +472,117 @@ ErrorMap[MaxErrors]=
     [113]= "Host unreachable",
     [114]= "Operation already in progress",
     [115]= "Operation now in progress",
+};
+
+static const char*
+ErrorMap[MaxErrors]=
+{
+    [0]   = "OK",
+    [1]   = "EPERM", 
+    [2]   = "ENOENT", 
+    [3]   = "ESRCH", 
+    [4]   = "EINTR", 
+    [5]   = "EIO", 
+    [6]   = "ENXIO", 
+    [7]   = "E2BIG", 
+    [8]   = "ENOEXEC", 
+    [9]   = "EBADF", 
+    [10]  = "ECHILD", 
+    [11]  = "EAGAIN", 
+    [12]  = "ENOMEM",
+    [13]  = "EACCES",
+    [14]  = "EFAULT",
+    [15]  = "ENOTBLK",
+    [16]  = "EBUSY",
+    [17]  = "EEXIST",
+    [18]  = "EXDEV",
+    [19]  = "ENODEV",
+    [20]  = "ENOTDIR",
+    [21]  = "EISDIR",
+    [22]  = "EINVAL",
+    [23]  = "ENFILE",
+    [24]  = "EMFILE",
+    [25]  = "ENOTTY",
+    [26]  = "ETXTBSY",
+    [27]  = "EFBIG",
+    [28]  = "ENOSPC",
+    [29]  = "ESPIPE",
+    [30]  = "EROFS",
+    [31]  = "EMLINK",
+    [32]  = "EPIPE",
+    [33]  = "EDOM",
+    [34]  = "ERANGE",
+    [35]  = "EDEADLK",
+    [36]  = "ENAMETOOLONG",
+    [37]  = "ENOLCK",
+    [38]  = "ENOSYS",
+    [39]  = "ENOTEMPTY",
+    [40]  = "ELOOP",
+    [42]  = "ENOMSG",
+    [43]  = "EIDRM",
+    [44]  = "ECHRNG",
+    [45]  = "EL2NSYNC",
+    [46]  = "EL3HLT",
+    [47]  = "EL3RST",
+    [48]  = "ELNRNG",
+    [49]  = "EUNATCH",
+    [50]  = "ENOCSI",
+    [51]  = "EL2HLT",
+    [52]  = "EBADE",
+    [53]  = "EBADR",
+    [54]  = "EXFULL",
+    [55]  = "ENOANO",
+    [56]  = "EBADRQC",
+    [57]  = "EBADSLT",
+    [59]  = "EBFONT",
+    [60]  = "ENOSTR",
+    [61]  = "ENODATA",
+    [62]  = "ETIME",
+    [63]  = "ENOSR",
+    [64]  = "ENONET",
+    [65]  = "ENOPKG",
+    [66]  = "EREMOTE",
+    [67]  = "ENOLINK",
+    [68]  = "EADV",
+    [69]  = "ESRMNT",
+    [70]  = "ECOMM",
+    [71]  = "EPROTO",
+    [72]  = "EMULTIHOP",
+    [73]  = "EDOTDOT",
+    [74]  = "EBADMSG",
+    [75]  = "EOVERFLOW",
+    [76]  = "ENOTUNIQ",
+    [77]  = "EBADFD",
+    [78]  = "EREMCHG",
+    [79]  = "ELIBACC",
+    [80]  = "ELIBBAD",
+    [81]  = "ELIBSCN",
+    [82]  = "ELIBMAX",
+    [83]  = "ELIBEXEC",
+    [84]  = "EILSEQ",
+    [85]  = "ERESTART",
+    [86]  = "ESTRPIPE",
+    [95]  = "EOPNOTSUPP",
+    [96]  = "EPFNOSUPPORT",
+    [97]  = "EAFNOSUPPORT",
+    [98]  = "EADDRINUSE",
+    [99]  = "EADDRNOTAVAIL",
+    [100] = "ENETDOWN", 
+    [101] = "ENETUNREACH",
+    [102] = "ENETRESET",
+    [103] = "ECONNABORTED",
+    [104] = "ECONNRESET",
+    [105] = "ENOBUFS",
+    [106] = "EISCONN",
+    [107] = "ENOTCONN",
+    [108] = "ESHUTDOWN",
+    [109] = "ETOOMANYREFS",
+    [110] = "ETIMEDOUT",
+    [111] = "ECONNREFUSED",
+    [112] = "EHOSTDOWN", 
+    [113] = "EHOSTUNREACH",
+    [114] = "EALREADY",
+    [115] = "EINPROGRESS"
 };
 
 /*Core Local*/
@@ -623,6 +729,23 @@ TraceBackMap[MaxTraceback]=
 };
 
 /*Another helper but to map the enum Code to a error string map*/
+static inline const char*
+MapErrorReason(const SYSTEM_ERROR* Error)
+{
+    int Code = Error->ErrorCode;
+    if (Code < 0)
+    {
+        Code = -Code;
+    }
+
+    if (Code >= MaxErrors)
+    {
+        return "Bad Error";
+    }
+
+    return ErrorReasonMap[Code];
+}
+
 static inline const char*
 MapError(const SYSTEM_ERROR* Error)
 {

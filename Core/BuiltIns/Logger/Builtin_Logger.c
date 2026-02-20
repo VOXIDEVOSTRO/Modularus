@@ -5,7 +5,7 @@
 #include <BuiltIns/Logger/Emitter.h>
 
 void
-PError(const char* Format, ...)
+_PError(const char* Format, ...)
 {
     if (Probe4Error(Format) || !Format)
     {
@@ -35,7 +35,7 @@ PError(const char* Format, ...)
 }
 
 void
-PWarn(const char* Format, ...)
+_PWarn(const char* Format, ...)
 {
     if (Probe4Error(Format) || !Format)
     {
@@ -65,7 +65,7 @@ PWarn(const char* Format, ...)
 }
 
 void
-PInfo(const char* Format, ...)
+_PInfo(const char* Format, ...)
 {
     if (Probe4Error(Format) || !Format)
     {
@@ -125,7 +125,7 @@ _PDebug(const char* Format, ...)
 }
 
 void
-PSuccess(const char* Format, ...)
+_PSuccess(const char* Format, ...)
 {
     if (Probe4Error(Format) || !Format)
     {

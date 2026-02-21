@@ -79,14 +79,33 @@ typedef struct ELF64_PROGRAM_HEADER
 
 #define ELF64_R_SYM(i) ((i) >> 32)
 #define ELF64_R_TYPE(i) ((i) & 0xffffffff)
+#define ELF64_ST_TYPE(i) ((i) & 0x0F)
+#define ELF64_ST_BIND(i) ((i) >> 4)
 
 #define SHT_SYMTAB 2
 #define SHT_STRTAB 3
 #define SHT_RELA 4
 
+#define STT_NOTYPE   0
+#define STT_OBJECT   1
+#define STT_FUNC     2
+#define STT_SECTION  3
+#define STT_FILE     4
+#define STT_COMMON   5
+#define STT_TLS      6
+
+#define STB_GLOBAL 1
+#define STB_WEAK   2
+
 #define SHN_UNDEF 0
 
 #define SHN_ABS 0xFFF1
+
+#define ET_REL 1
+
+#define SHF_ALLOC (1ULL << 1)
+
+#define SHT_NOBITS 8
 
 #define R_X86_64_64 1
 #define R_X86_64_PC32 2

@@ -70,13 +70,10 @@ long Linker_Ioctl(SYSTEM_FILE* File __unused, uint64_t Request, void* Arguments,
                 return Error->ErrorCode;
             }
 
-            void* BaseAddress = Module_Link(ModuleImage, Error);
-            if (!BaseAddress || Probe4Error(BaseAddress))
+            if (!Module_Link(ModuleImage, Error))
             {
-                ErrorOut_Linker_Ioctl(Error->ErrorCode);
                 return Error->ErrorCode;
             }
-            
             return GeneralOK;
         }
 
@@ -186,9 +183,9 @@ void* Module_Link(void* ImageBase, SYSTEM_ERROR* Error)
         {
             void* Address = LookUpKExport(Name, Error);
 
-            if (Probe4Error(Address) || !Address)
+            if (!Address)
             {
-                ErrorOut_Module_Link(-EFAULT);
+                ErrorOut_Module_Link(-ENOENT);
                 return Error2Pointer(Error->ErrorCode);
             }
 
@@ -293,7 +290,7 @@ void* Module_Link(void* ImageBase, SYSTEM_ERROR* Error)
         }
     }
 
-    if (Probe4Error(ModuleStart) || !ModuleStart)
+    if (!ModuleStart)
     {
         ErrorOut_Module_Link(-ENOENT);
         return Error2Pointer(Error->ErrorCode);

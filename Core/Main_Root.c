@@ -64,21 +64,46 @@ void KernelMain(void)
         
         #ifdef BUILTIN_Loader
             FILE* LoaderFile = VFS_Open("/loader", VFS_OpenFlag_WRITEONLY, Error);
+            if (Probe4Error(LoaderFile) || !LoaderFile)
+            {
+                goto Error;
+            }
+
             LOADED_MODULE TestModule;
             LOADER_COMMAND_GET_ARGUMENTS TestModuleRequest =
             {
                 .Name = "Test.ko",
                 .Out = &TestModule
             };
-            VFS_IOControl(LoaderFile, LoaderCommand_GET, &TestModuleRequest, Error);
+
+            if (VFS_IOControl(LoaderFile, LoaderCommand_GET, &TestModuleRequest, Error) != GeneralOK)
+            {
+                goto Error;
+            }
         #endif
 
         #ifdef BUILTIN_Linker
             #ifdef BUILTIN_Loader
                 FILE* LinkerFile = VFS_Open("/linker", VFS_OpenFlag_WRITEONLY, Error);
-                VFS_IOControl(LinkerFile, LinkerCommand_LINK, TestModule.Address, Error);
+                if (Probe4Error(LinkerFile) || !LinkerFile)
+                {
+                    goto Error;
+                }
+                
+                if (Probe4Error(TestModule.Address) || !TestModule.Address)
+                {
+                    goto Error;
+                }
+
+                if (VFS_IOControl(LinkerFile, LinkerCommand_LINK, TestModule.Address, Error) != GeneralOK)
+                {
+                    goto Error;
+                }
             #endif
-            VFS_IOControl(LinkerFile, LinkerCommand_RUN, NULL, Error);
+            if (VFS_IOControl(LinkerFile, LinkerCommand_RUN, NULL, Error) != GeneralOK)
+            {
+                goto Error;
+            }
         #endif
 
     #else
@@ -88,7 +113,6 @@ void KernelMain(void)
             FILE* LoaderFile = VFS_Open("/loader", VFS_OpenFlag_WRITEONLY, Error);
             if (Probe4Error(LoaderFile) || !LoaderFile)
             {
-                ErrorOut(Error, NULL, -EBADF, General);
                 goto Error;
             }
 
@@ -101,7 +125,6 @@ void KernelMain(void)
 
             if (VFS_IOControl(LoaderFile, LoaderCommand_GET, &STANDARD_InitModuleRequest, Error) != GeneralOK)
             {
-                ErrorOut(Error, NULL, Error->ErrorCode, General);
                 goto Error;
             }
         #endif
@@ -111,25 +134,21 @@ void KernelMain(void)
                 FILE* LinkerFile = VFS_Open("/linker", VFS_OpenFlag_WRITEONLY, Error);
                 if (Probe4Error(LinkerFile) || !LinkerFile)
                 {
-                    ErrorOut(Error, NULL, -EBADF, General);
                     goto Error;
                 }
                 
                 if (Probe4Error(STANDARD_InitModule.Address) || !STANDARD_InitModule.Address)
                 {
-                    ErrorOut(Error, NULL, -EFAULT, General);
                     goto Error;
                 }
 
                 if (VFS_IOControl(LinkerFile, LinkerCommand_LINK, STANDARD_InitModule.Address, Error) != GeneralOK)
                 {
-                    ErrorOut(Error, NULL, Error->ErrorCode, General);
                     goto Error;
                 }
             #endif
             if (VFS_IOControl(LinkerFile, LinkerCommand_RUN, NULL, Error) != GeneralOK)
             {
-                ErrorOut(Error, NULL, Error->ErrorCode, General);
                 goto Error;
             }
         #endif

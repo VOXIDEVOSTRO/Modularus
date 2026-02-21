@@ -114,7 +114,44 @@ int System_UnRegisterFileSystem(SYSTEM_ERROR*);
 SUPER_BLOCK* System_Mount(const char*, const char*, SYSTEM_ERROR*);
 int System_UnMount(SUPER_BLOCK*, SYSTEM_ERROR*);
 
-KEXPORT(System_CreateFile)
+KEXPORT(System_KickStart)
+KEXPORT(System_PowerOff)
+
+KEXPORT(System_CreateNode)
+KEXPORT(System_DeleteNode)
+KEXPORT(System_FindNode)
+KEXPORT(System_GetRoot)
 KEXPORT(System_AttachNode)
 KEXPORT(System_DetachNode)
-KEXPORT(System_DeleteNode)
+
+KEXPORT(System_CreateFile)
+KEXPORT(System_CreateDirectory)
+
+KEXPORT(System_Open)
+KEXPORT(System_Close)
+KEXPORT(System_Read)
+KEXPORT(System_Write)
+KEXPORT(System_Ioctl)
+
+KEXPORT(System_ReadDirectory)
+KEXPORT(System_LookUp)
+
+KEXPORT(System_Stat)
+KEXPORT(System_GetAttribute)
+KEXPORT(System_SetAttribute)
+
+KEXPORT(System_StatFileSystem)
+KEXPORT(System_Sync)
+KEXPORT(System_Release)
+
+KEXPORT(System_SetContext)
+KEXPORT(System_GetContext)
+KEXPORT(System_GetContextSize)
+
+KEXPORT(System_Walk)
+
+KEXPORT(System_RegisterFileSystem)
+KEXPORT(System_UnRegisterFileSystem)
+
+KEXPORT(System_Mount)
+KEXPORT(System_UnMount)

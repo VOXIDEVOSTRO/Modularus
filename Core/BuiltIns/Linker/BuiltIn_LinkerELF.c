@@ -70,7 +70,8 @@ long Linker_Ioctl(SYSTEM_FILE* File __unused, uint64_t Request, void* Arguments,
                 return Error->ErrorCode;
             }
 
-            if (!Module_Link(ModuleImage, Error) || Probe4Error(Module_Link(ModuleImage, Error)))
+            void* BaseAddress = Module_Link(ModuleImage, Error);
+            if (!BaseAddress || Probe4Error(BaseAddress))
             {
                 ErrorOut_Linker_Ioctl(Error->ErrorCode);
                 return Error->ErrorCode;

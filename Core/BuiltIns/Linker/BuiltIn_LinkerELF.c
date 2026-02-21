@@ -72,6 +72,7 @@ long Linker_Ioctl(SYSTEM_FILE* File __unused, uint64_t Request, void* Arguments,
 
             if (!Module_Link(ModuleImage, Error))
             {
+                ErrorOut_Linker_Ioctl(Error->ErrorCode);
                 return Error->ErrorCode;
             }
             return GeneralOK;
@@ -299,7 +300,7 @@ void* Module_Link(void* ImageBase, SYSTEM_ERROR* Error)
     return ImageBase;
 }
 
-void Module_Run(SYSTEM_ERROR* Error __unused)
+void Module_Run(SYSTEM_ERROR* Error)
 {
     #define ErrorOut_Module_Run(Code) \
         ErrorOut(Error, LinkerContext, Code, FUNC_Module_Run)
@@ -313,7 +314,7 @@ void Module_Run(SYSTEM_ERROR* Error __unused)
     ModuleStart(); /*Call out the "_start"*/
 }
 
-void Module_Exit(SYSTEM_ERROR* Error __unused)
+void Module_Exit(SYSTEM_ERROR* Error)
 {
     #define ErrorOut_Module_Exit(Code) \
         ErrorOut(Error, LinkerContext, Code, FUNC_Module_Exit)

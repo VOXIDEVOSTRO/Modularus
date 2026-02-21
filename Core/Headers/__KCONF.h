@@ -35,7 +35,7 @@
 */
 /*__>*/ /*Misc Toggles*/
 /*|_>*/ #define BUILTINS
-/*|_>*/ // #define TESTING
+/*|_>*/ #define TESTING
 /*|_>*/ #define TRACEBACK
 /*|*/
 /*|_>*/ /*BuiltIns Toggles*/

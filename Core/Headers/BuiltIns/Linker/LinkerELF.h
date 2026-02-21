@@ -122,5 +122,5 @@ typedef struct ELF64_PROGRAM_HEADER
 void Linker_Init(SYSTEM_ERROR*);
 
 void* Module_Link(void*, SYSTEM_ERROR*);
-void Module_Run(SYSTEM_ERROR*);
-void Module_Exit(SYSTEM_ERROR*);
+int Module_Run(SYSTEM_ERROR*);
+int Module_Exit(SYSTEM_ERROR*);

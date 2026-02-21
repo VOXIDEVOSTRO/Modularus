@@ -72,7 +72,7 @@ long Linker_Ioctl(SYSTEM_FILE* File __unused, uint64_t Request, void* Arguments,
 
             if (!Module_Link(ModuleImage, Error) || Probe4Error(Module_Link(ModuleImage, Error)))
             {
-                ErrorOut_Linker_Ioctl(-EFAULT);
+                ErrorOut_Linker_Ioctl(Error->ErrorCode);
                 return Error->ErrorCode;
             }
             
@@ -187,7 +187,7 @@ void* Module_Link(void* ImageBase, SYSTEM_ERROR* Error)
 
             if (Probe4Error(Address) || !Address)
             {
-                ErrorOut_Module_Link(-ENOENT);
+                ErrorOut_Module_Link(-EFAULT);
                 return Error2Pointer(Error->ErrorCode);
             }
 

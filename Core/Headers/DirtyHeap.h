@@ -4,6 +4,9 @@
 #include <Errors.h>
 #include <KExports.h>
 
+#include <CTools.h>
+#include <Types.h>
+
 typedef struct DIRTY_HEAP_OPERATIONS
 {
     void* (*Alloc)(uint64_t, SYSTEM_ERROR*);

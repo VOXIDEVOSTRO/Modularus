@@ -1,5 +1,6 @@
 #pragma once
-#include <Types.h>
+
+#include <Types/__int__.h>
 
 /// compiler definitions - copyright (c) 2026 assembler-0
 
@@ -14,17 +15,17 @@
 #define __noreturn      __attribute__((__noreturn__))
 #define __noinline      __attribute__((__noinline__))
 #define noinline        __noinline
-#define __always_inline __attribute__((__always_inline__))
+// #define __always_inline __attribute__((__always_inline__))
 #define __flatten       __attribute__((__flatten__))
 #define __hot           __attribute__((__hot__))
 #define __cold          __attribute__((__cold__))
 #define __unused        __attribute__((__unused__))
 #define __used          __attribute__((__used__))
-#define __nonnull(x)    __attribute__((__nonnull__(x)))
+// #define __nonnull(x)    __attribute__((__nonnull__(x)))
 #define __finline        __attribute__((__always_inline__))
 #define __optimize(x)   __attribute__((__optimize__(x)))
 #define __deprecated    __attribute__((__deprecated__))
-#define __attribute_const__ __attribute__((__const__))
+// #define __attribute_const__ __attribute__((__const__))
 /* include/linux/compiler_attributes.h:368 */
 #define __must_check    __attribute__((__warn_unused_result__))
 #define __no_sanitize   __attribute__((no_sanitize("undefined", "address", "integer", "null", "bounds", "vla-bound", "object-size")))

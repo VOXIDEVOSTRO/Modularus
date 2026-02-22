@@ -2,6 +2,9 @@
 
 #include <__KCONF.h>
 
+#include <CTools.h>
+#include <Types.h>
+
 typedef struct
 {
     const char* Format;

@@ -3,6 +3,9 @@
 #include <Errors.h>
 #include <BuiltIns/Logger/Formatter.h>
 #include <System.h>
+#include <CTools.h>
+#include <Types.h>
+#include <KernelCLibrary.h>
 
 /*.ko*/
 
